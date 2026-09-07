@@ -1,0 +1,147 @@
+{
+  "all_semantically_identical": true,
+  "base_signatures": 328438,
+  "body_summaries": {
+    "2": {
+      "body_clauses": 223810,
+      "reused_for_branches": 3,
+      "variables": 76728
+    },
+    "3": {
+      "body_clauses": 222976,
+      "reused_for_branches": 3,
+      "variables": 76440
+    },
+    "4": {
+      "body_clauses": 222258,
+      "reused_for_branches": 2,
+      "variables": 76195
+    }
+  },
+  "branches": [
+    {
+      "branch": [
+        2,
+        0,
+        0
+      ],
+      "bytes": 31103398,
+      "clauses": 880702,
+      "cnf": "p3-c8-t2-p0-z0.cnf",
+      "semantic_match": true,
+      "sha256": "b9eabfd0e6e6cb49ebc6bace5b1c564dcf59f843ed177a11ac048580d6304701",
+      "variables": 76728
+    },
+    {
+      "branch": [
+        2,
+        1,
+        0
+      ],
+      "bytes": 31103397,
+      "clauses": 880702,
+      "cnf": "p3-c8-t2-p1-z0.cnf",
+      "semantic_match": true,
+      "sha256": "bf1f529621e064444fb346e23645547f0ed9f957c18433747d6340b5d7d5e302",
+      "variables": 76728
+    },
+    {
+      "branch": [
+        2,
+        0,
+        1
+      ],
+      "bytes": 31103399,
+      "clauses": 880702,
+      "cnf": "p3-c8-t2-p0-z1.cnf",
+      "semantic_match": true,
+      "sha256": "adda3519970dcaf4df314608ef8172c87fdc9a699ae36b6c54deac1ad1976e95",
+      "variables": 76728
+    },
+    {
+      "branch": [
+        3,
+        0,
+        0
+      ],
+      "bytes": 31089853,
+      "clauses": 879868,
+      "cnf": "p3-c8-t3-p0-z0.cnf",
+      "semantic_match": true,
+      "sha256": "ee6933dab9a43a4c0d0c0e6f9d5b12b4ce4dac039ede3f7c094765996ad9696f",
+      "variables": 76440
+    },
+    {
+      "branch": [
+        3,
+        1,
+        0
+      ],
+      "bytes": 31089852,
+      "clauses": 879868,
+      "cnf": "p3-c8-t3-p1-z0.cnf",
+      "semantic_match": true,
+      "sha256": "be769394b37bfeb63770d45b2533fe9c1930c82669308702977b53794e67bc83",
+      "variables": 76440
+    },
+    {
+      "branch": [
+        3,
+        0,
+        1
+      ],
+      "bytes": 31089854,
+      "clauses": 879868,
+      "cnf": "p3-c8-t3-p0-z1.cnf",
+      "semantic_match": true,
+      "sha256": "e891b89513858e247c92814b608d4453bd2d13a033db5663e129370c5d0bdda7",
+      "variables": 76440
+    },
+    {
+      "branch": [
+        4,
+        0,
+        0
+      ],
+      "bytes": 31078946,
+      "clauses": 879150,
+      "cnf": "p3-c8-t4-p0-z0.cnf",
+      "semantic_match": true,
+      "sha256": "e8f6cd4eaaf64abe0acee26299844cdfadaf404d193cb4fa13a46fd7532cd43b",
+      "variables": 76195
+    },
+    {
+      "branch": [
+        4,
+        1,
+        0
+      ],
+      "bytes": 31078945,
+      "clauses": 879150,
+      "cnf": "p3-c8-t4-p1-z0.cnf",
+      "semantic_match": true,
+      "sha256": "b5bac575e6909cce3039e5fbed0774cc687663400ddbe955680773dd42fe8cb0",
+      "variables": 76195
+    }
+  ],
+  "cycle_type": "3^8 1^19",
+  "edge_orbit_variables": 415,
+  "normalized_configurations": 2142,
+  "parameters": {
+    "cycles": 8,
+    "degree_bounds": [
+      18,
+      24
+    ],
+    "fixed": 19,
+    "homogeneous_size": 5,
+    "order": 43,
+    "prime": 3
+  },
+  "provenance": {
+    "generator": "src/orbit_cnf.py",
+    "generator_sha256": "d7549746f52ad40646adbbf8115c5a85bb7da8a380ee158802ce2c2c5e0dd358",
+    "reference_verifier": "tools/verify_c8_formula_semantics.py",
+    "reference_verifier_sha256": "0a165f8204863a4b5db2592eec15b1091d8d8a44319842b62a912c26f1940b22"
+  }
+}

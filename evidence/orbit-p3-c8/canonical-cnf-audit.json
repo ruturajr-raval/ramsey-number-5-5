@@ -1,0 +1,266 @@
+{
+  "audit_passed": true,
+  "audit_scope": "DIMACS integrity, metadata, branch units, and common bodies. Exact formula semantics are checked by the independent reference verifier.",
+  "branches": [
+    {
+      "branch": [
+        2,
+        0,
+        0
+      ],
+      "bytes": 31103398,
+      "clauses": 880702,
+      "common_body_sha256": "e34d3d31797947042700be84e2754e4b5efcbf911c3a4f8be331240851295860",
+      "maximum_literal_variable": 76728,
+      "sha256": "b9eabfd0e6e6cb49ebc6bace5b1c564dcf59f843ed177a11ac048580d6304701",
+      "typed_unit_clauses": [
+        1,
+        42,
+        -80,
+        -115,
+        -147,
+        -176,
+        -202,
+        -225,
+        -23,
+        -61,
+        96,
+        128,
+        157,
+        183,
+        206,
+        226
+      ],
+      "variables": 76728
+    },
+    {
+      "branch": [
+        2,
+        0,
+        1
+      ],
+      "bytes": 31103399,
+      "clauses": 880702,
+      "common_body_sha256": "e34d3d31797947042700be84e2754e4b5efcbf911c3a4f8be331240851295860",
+      "maximum_literal_variable": 76728,
+      "sha256": "adda3519970dcaf4df314608ef8172c87fdc9a699ae36b6c54deac1ad1976e95",
+      "typed_unit_clauses": [
+        1,
+        42,
+        -80,
+        -115,
+        -147,
+        -176,
+        -202,
+        -225,
+        -23,
+        -61,
+        -96,
+        128,
+        157,
+        183,
+        206,
+        226
+      ],
+      "variables": 76728
+    },
+    {
+      "branch": [
+        2,
+        1,
+        0
+      ],
+      "bytes": 31103397,
+      "clauses": 880702,
+      "common_body_sha256": "e34d3d31797947042700be84e2754e4b5efcbf911c3a4f8be331240851295860",
+      "maximum_literal_variable": 76728,
+      "sha256": "bf1f529621e064444fb346e23645547f0ed9f957c18433747d6340b5d7d5e302",
+      "typed_unit_clauses": [
+        1,
+        42,
+        -80,
+        -115,
+        -147,
+        -176,
+        -202,
+        -225,
+        23,
+        -61,
+        96,
+        128,
+        157,
+        183,
+        206,
+        226
+      ],
+      "variables": 76728
+    },
+    {
+      "branch": [
+        3,
+        0,
+        0
+      ],
+      "bytes": 31089853,
+      "clauses": 879868,
+      "common_body_sha256": "2b51332c734324b3429ff1f3cb80c9f4108312e68d00b8dd4bf9b9fac57c981f",
+      "maximum_literal_variable": 76440,
+      "sha256": "ee6933dab9a43a4c0d0c0e6f9d5b12b4ce4dac039ede3f7c094765996ad9696f",
+      "typed_unit_clauses": [
+        1,
+        42,
+        80,
+        -115,
+        -147,
+        -176,
+        -202,
+        -225,
+        -23,
+        -61,
+        -96,
+        128,
+        157,
+        183,
+        206,
+        226
+      ],
+      "variables": 76440
+    },
+    {
+      "branch": [
+        3,
+        0,
+        1
+      ],
+      "bytes": 31089854,
+      "clauses": 879868,
+      "common_body_sha256": "2b51332c734324b3429ff1f3cb80c9f4108312e68d00b8dd4bf9b9fac57c981f",
+      "maximum_literal_variable": 76440,
+      "sha256": "e891b89513858e247c92814b608d4453bd2d13a033db5663e129370c5d0bdda7",
+      "typed_unit_clauses": [
+        1,
+        42,
+        80,
+        -115,
+        -147,
+        -176,
+        -202,
+        -225,
+        -23,
+        -61,
+        -96,
+        -128,
+        157,
+        183,
+        206,
+        226
+      ],
+      "variables": 76440
+    },
+    {
+      "branch": [
+        3,
+        1,
+        0
+      ],
+      "bytes": 31089852,
+      "clauses": 879868,
+      "common_body_sha256": "2b51332c734324b3429ff1f3cb80c9f4108312e68d00b8dd4bf9b9fac57c981f",
+      "maximum_literal_variable": 76440,
+      "sha256": "be769394b37bfeb63770d45b2533fe9c1930c82669308702977b53794e67bc83",
+      "typed_unit_clauses": [
+        1,
+        42,
+        80,
+        -115,
+        -147,
+        -176,
+        -202,
+        -225,
+        23,
+        -61,
+        -96,
+        128,
+        157,
+        183,
+        206,
+        226
+      ],
+      "variables": 76440
+    },
+    {
+      "branch": [
+        4,
+        0,
+        0
+      ],
+      "bytes": 31078946,
+      "clauses": 879150,
+      "common_body_sha256": "848a85dbe68addd95018ecc8c17128bcd13d78f4cca9ab8fdd27354ee73914a6",
+      "maximum_literal_variable": 76195,
+      "sha256": "e8f6cd4eaaf64abe0acee26299844cdfadaf404d193cb4fa13a46fd7532cd43b",
+      "typed_unit_clauses": [
+        1,
+        42,
+        80,
+        115,
+        -147,
+        -176,
+        -202,
+        -225,
+        -23,
+        -61,
+        -96,
+        -128,
+        157,
+        183,
+        206,
+        226
+      ],
+      "variables": 76195
+    },
+    {
+      "branch": [
+        4,
+        1,
+        0
+      ],
+      "bytes": 31078945,
+      "clauses": 879150,
+      "common_body_sha256": "848a85dbe68addd95018ecc8c17128bcd13d78f4cca9ab8fdd27354ee73914a6",
+      "maximum_literal_variable": 76195,
+      "sha256": "b5bac575e6909cce3039e5fbed0774cc687663400ddbe955680773dd42fe8cb0",
+      "typed_unit_clauses": [
+        1,
+        42,
+        80,
+        115,
+        -147,
+        -176,
+        -202,
+        -225,
+        23,
+        -61,
+        -96,
+        -128,
+        157,
+        183,
+        206,
+        226
+      ],
+      "variables": 76195
+    }
+  ],
+  "common_body_sha256_by_triangle_count": {
+    "2": "e34d3d31797947042700be84e2754e4b5efcbf911c3a4f8be331240851295860",
+    "3": "2b51332c734324b3429ff1f3cb80c9f4108312e68d00b8dd4bf9b9fac57c981f",
+    "4": "848a85dbe68addd95018ecc8c17128bcd13d78f4cca9ab8fdd27354ee73914a6"
+  },
+  "cycles": 8,
+  "order": 43,
+  "prime": 3,
+  "provenance": {
+    "auditor": "tools/verify_c8_branch_artifacts.py",
+    "auditor_sha256": "0aa9fdb3584587475330909e268d3dc4c44a84e3b990289a9d462c0bf4d565bd"
+  }
+}

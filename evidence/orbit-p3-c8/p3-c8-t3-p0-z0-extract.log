@@ -1,0 +1,75 @@
+c reading proof from stdin
+c parsing input formula with 76440 variables and 879868 clauses
+c finished parsing, read 12888609 bytes from proof file
+c detected empty clause; start verification via backward checking
+c 1179 of 879868 clauses in core                            
+c 3685 of 162178 lemmas in core using 94662 resolution steps
+c 3 RAT lemmas in core; 165 redundant literals in core lemmas
+s VERIFIED
+c verification time: 1.912 seconds
+c proof optimization started (ignoring the timeout)
+c detected empty clause; start verification via backward checking
+c 1193 of 879868 clauses in core                            
+c 3621 of 3685 lemmas in core using 94547 resolution steps
+c 3 RAT lemmas in core; 95 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1166 of 879868 clauses in core                            
+c 3566 of 3621 lemmas in core using 96307 resolution steps
+c 3 RAT lemmas in core; 27 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1160 of 879868 clauses in core                            
+c 3511 of 3566 lemmas in core using 96686 resolution steps
+c 3 RAT lemmas in core; 19 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1167 of 879868 clauses in core                            
+c 3465 of 3511 lemmas in core using 96835 resolution steps
+c 2 RAT lemmas in core; 19 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1149 of 879868 clauses in core                            
+c 3404 of 3465 lemmas in core using 97671 resolution steps
+c 2 RAT lemmas in core; 6 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1117 of 879868 clauses in core                            
+c 3338 of 3404 lemmas in core using 95955 resolution steps
+c 2 RAT lemmas in core; 6 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1081 of 879868 clauses in core                            
+c 3256 of 3338 lemmas in core using 97321 resolution steps
+c 0 RAT lemmas in core; 9 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1081 of 879868 clauses in core                            
+c 3193 of 3256 lemmas in core using 99369 resolution steps
+c 0 RAT lemmas in core; 1 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1088 of 879868 clauses in core                            
+c 3126 of 3193 lemmas in core using 99171 resolution steps
+c 0 RAT lemmas in core; 4 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1078 of 879868 clauses in core                            
+c 3063 of 3126 lemmas in core using 100470 resolution steps
+c 0 RAT lemmas in core; 14 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1070 of 879868 clauses in core                            
+c 2986 of 3063 lemmas in core using 100787 resolution steps
+c 0 RAT lemmas in core; 10 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1075 of 879868 clauses in core                            
+c 2923 of 2986 lemmas in core using 101058 resolution steps
+c 0 RAT lemmas in core; 4 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1079 of 879868 clauses in core                            
+c 2868 of 2923 lemmas in core using 101712 resolution steps
+c 0 RAT lemmas in core; 2 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1079 of 879868 clauses in core                            
+c 2814 of 2868 lemmas in core using 101800 resolution steps
+c 0 RAT lemmas in core; 3 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1082 of 879868 clauses in core                            
+c 2755 of 2814 lemmas in core using 102421 resolution steps
+c 0 RAT lemmas in core; 3 redundant literals in core lemmas
+c detected empty clause; start verification via backward checking
+c 1079 of 879868 clauses in core                            
+c 2709 of 2755 lemmas in core using 102584 resolution steps
+c 0 RAT lemmas in core; 0 redundant literals in core lemmas
+drat_trim_exit_code=0

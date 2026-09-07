@@ -6,8 +6,19 @@ from __future__ import annotations
 import itertools
 import unittest
 
-from orbit_cnf import Formula, OrbitRamseyEncoding
+from orbit_cnf import (
+    T4_MIXED_MATRICES,
+    Formula,
+    OrbitRamseyEncoding,
+)
 from verify_branch_coverage import canonical_prefix, representative_branch, verify
+from verify_c8_branch_coverage import (
+    EXPECTED_BRANCHES,
+    exception_count,
+    representative_branch as c8_representative_branch,
+    verify as verify_c8,
+)
+from verify_c8_t4_reduction import verify as verify_c8_t4
 
 
 def clause_satisfied(clause: tuple[int, ...], assignment: dict[int, bool]) -> bool:
@@ -176,6 +187,33 @@ class OrbitEncodingTests(unittest.TestCase):
                                 solver.solve(assumptions=assumptions),
                             )
 
+    def test_cardinality_range_with_signed_literals(self) -> None:
+        try:
+            from pysat.solvers import Cadical195
+        except ImportError as error:
+            self.fail(f"PySAT is required for semantic tests: {error}")
+
+        formula = Formula(4)
+        formula.add_cardinality_range([1, -2, 3], 1, 2)
+        with Cadical195(bootstrap_with=formula.clauses) as solver:
+            for first, second, third in itertools.product(
+                (False, True),
+                repeat=3,
+            ):
+                assumptions = [
+                    variable if value else -variable
+                    for variable, value in (
+                        (1, first),
+                        (2, second),
+                        (3, third),
+                    )
+                ]
+                signed_sum = first + (not second) + third
+                self.assertEqual(
+                    1 <= signed_sum <= 2,
+                    solver.solve(assumptions=assumptions),
+                )
+
     def test_root_prefix_is_canonical_under_cycle_relabeling(self) -> None:
         for pattern in itertools.product((False, True), repeat=6):
             adjacent = sum(pattern)
@@ -194,6 +232,215 @@ class OrbitEncodingTests(unittest.TestCase):
             branch, complemented = representative_branch(pattern)
             self.assertIn(branch, (0, 1, 2, 3))
             self.assertEqual(sum(pattern) > 3, complemented)
+
+    def test_order_three_cycle_type_units(self) -> None:
+        encoding = OrbitRamseyEncoding(13, 3, 4, 3)
+        encoding.add_order_three_cycle_types(2)
+        expected = [
+            (encoding.cycle_internal_variable(cycle),)
+            if cycle < 2
+            else (-encoding.cycle_internal_variable(cycle),)
+            for cycle in range(4)
+        ]
+        self.assertEqual(expected, encoding.formula.clauses)
+
+    def test_typed_root_signature_units(self) -> None:
+        encoding = OrbitRamseyEncoding(13, 3, 4, 3)
+        encoding.add_typed_root_signature(
+            triangle_cycles=2,
+            adjacent_triangle_cycles=1,
+            nonadjacent_independent_cycles=1,
+        )
+        expected_signs = (True, False, False, True)
+        expected = [
+            (
+                encoding.root_cycle_variable(cycle)
+                if adjacent
+                else -encoding.root_cycle_variable(cycle),
+            )
+            for cycle, adjacent in enumerate(expected_signs)
+        ]
+        self.assertEqual(expected, encoding.formula.clauses)
+
+    def test_c8_structural_constraints_accept_forced_t4_profile(self) -> None:
+        try:
+            from pysat.solvers import Cadical195
+        except ImportError as error:
+            self.fail(f"PySAT is required for semantic tests: {error}")
+
+        encoding = OrbitRamseyEncoding(43, 3, 8)
+        encoding.add_order_three_eight_structure(4)
+
+        primary_assignment = {
+            variable: False
+            for variable in range(1, encoding.edge_variable_count + 1)
+        }
+        for cycle in range(8):
+            fixed_literals = encoding.cycle_fixed_literals(cycle)
+            for index, variable in enumerate(fixed_literals):
+                primary_assignment[variable] = (
+                    index < 4 if cycle < 4 else index >= 4
+                )
+
+        for left, right in itertools.combinations(range(4), 2):
+            for variable in encoding.between_cycle_literals(left, right)[:2]:
+                primary_assignment[variable] = True
+        for left, right in itertools.combinations(range(4, 8), 2):
+            variable = encoding.between_cycle_literals(left, right)[0]
+            primary_assignment[variable] = True
+
+        mixed_pairs = list(itertools.product(range(4), range(4, 8)))
+        for left, right in mixed_pairs:
+            take = 2 if (left + right) % 2 == 0 else 1
+            for variable in encoding.between_cycle_literals(left, right)[:take]:
+                primary_assignment[variable] = True
+
+        assumptions = [
+            variable if value else -variable
+            for variable, value in primary_assignment.items()
+        ]
+        with Cadical195(bootstrap_with=encoding.formula.clauses) as solver:
+            self.assertTrue(solver.solve(assumptions=assumptions))
+
+            first_triangle_fixed = encoding.cycle_fixed_literals(0)[0]
+            violating = [
+                literal
+                for literal in assumptions
+                if abs(literal) != first_triangle_fixed
+            ]
+            violating.append(-first_triangle_fixed)
+            self.assertFalse(solver.solve(assumptions=violating))
+
+    def test_c8_t4_matrix_reduction_accepts_a_valid_profile(self) -> None:
+        try:
+            from pysat.solvers import Cadical195
+        except ImportError as error:
+            self.fail(f"PySAT is required for semantic tests: {error}")
+
+        encoding = OrbitRamseyEncoding(43, 3, 8)
+        encoding.add_order_three_eight_structure(4)
+        encoding.add_order_three_eight_t4_matrix(
+            "two-c4",
+            exclude_zero_fixed_signatures=False,
+        )
+
+        assignment = {
+            variable: False
+            for variable in range(1, encoding.edge_variable_count + 1)
+        }
+        triangle_sets = [
+            set(range(4 * cycle, 4 * cycle + 4))
+            for cycle in range(4)
+        ]
+        independent_sets = [
+            {column + 4 * row for row in range(4)}
+            for column in range(4)
+        ]
+        for cycle, offsets in enumerate(triangle_sets):
+            for offset, variable in enumerate(
+                encoding.cycle_fixed_literals(cycle)
+            ):
+                assignment[variable] = offset in offsets
+        for index, offsets in enumerate(independent_sets):
+            cycle = 4 + index
+            for offset, variable in enumerate(
+                encoding.cycle_fixed_literals(cycle)
+            ):
+                assignment[variable] = offset not in offsets
+
+        for left, right in itertools.combinations(range(4), 2):
+            literals = encoding.between_cycle_literals(left, right)
+            selected = (1, 2) if left == 0 else (0, 1)
+            for index in selected:
+                assignment[literals[index]] = True
+        for left, right in itertools.combinations(range(4, 8), 2):
+            literals = encoding.between_cycle_literals(left, right)
+            assignment[literals[0]] = True
+        for triangle, row in enumerate(T4_MIXED_MATRICES["two-c4"]):
+            for independent, weight in enumerate(row):
+                literals = encoding.between_cycle_literals(
+                    triangle,
+                    4 + independent,
+                )
+                selected = (0,) if weight == 1 else (1, 2)
+                for index in selected:
+                    assignment[literals[index]] = True
+
+        fixed_start = 24
+        for offsets in independent_sets:
+            vertices = [fixed_start + offset for offset in offsets]
+            for left, right in itertools.combinations(vertices, 2):
+                edge = (
+                    (left, right)
+                    if left < right
+                    else (right, left)
+                )
+                assignment[encoding.edge_variables[edge]] = True
+
+        assumptions = [
+            variable if value else -variable
+            for variable, value in assignment.items()
+        ]
+        with Cadical195(bootstrap_with=encoding.formula.clauses) as solver:
+            self.assertTrue(solver.solve(assumptions=assumptions))
+
+        no_zero = OrbitRamseyEncoding(43, 3, 8)
+        no_zero.add_order_three_eight_structure(4)
+        no_zero.add_order_three_eight_t4_matrix(
+            "two-c4",
+            exclude_zero_fixed_signatures=True,
+        )
+        with Cadical195(bootstrap_with=no_zero.formula.clauses) as solver:
+            self.assertFalse(solver.solve(assumptions=assumptions))
+
+    def test_c8_eight_branches_cover_all_low_exception_roots(self) -> None:
+        result = verify_c8()
+        self.assertTrue(result["arithmetic_coverage_complete"])
+        self.assertEqual(
+            2304,
+            result["low_exception_configurations_total"],
+        )
+        self.assertEqual(162, result["elementary_configurations"])
+        self.assertEqual(2142, result["certificate_configurations"])
+        self.assertTrue(result["elementary_audit"]["verified"])
+        self.assertEqual(
+            [list(branch) for branch in EXPECTED_BRANCHES],
+            result["solved_branches"],
+        )
+        self.assertEqual(1, result["guaranteed_root_exception_upper"])
+
+        triangles = (True, True, True, True, False, False, False, False)
+        root = (False, False, False, False, False, True, True, True)
+        self.assertEqual(1, exception_count(triangles, root))
+        branch, _ = c8_representative_branch(triangles, root)
+        self.assertEqual((4, 1, 0), branch)
+
+    def test_c8_t4_matrix_reduction_has_two_classes(self) -> None:
+        result = verify_c8_t4()
+        self.assertTrue(result["verified"])
+        self.assertEqual(90, result["labeled_matrices"])
+        self.assertEqual(2, result["ordinary_matrix_classes"])
+        self.assertEqual(
+            2,
+            result["distinguished_row_matrix_classes"],
+        )
+        self.assertEqual(
+            3**7,
+            result["phase_gauge"]["phase_assignments"],
+        )
+        self.assertTrue(
+            result["phase_gauge"]["unique_normalization"],
+        )
+        self.assertTrue(
+            result["fixed_exception_lemmas"][
+                "triangle_independent_exception_intersection_at_most_one"
+            ],
+        )
+        self.assertTrue(
+            result["root_partition"][
+                "disjoint_and_complete_for_low_exception_roots"
+            ],
+        )
 
 
 if __name__ == "__main__":

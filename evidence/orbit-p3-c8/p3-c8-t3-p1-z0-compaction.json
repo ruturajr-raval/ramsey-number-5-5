@@ -1,0 +1,40 @@
+{
+  "checker": {
+    "path": "drat-trim",
+    "sha256": "f58f63b0f76945d4c4c9ff6e87afaf870f579e67c0f7cca589492df8fc7ebd47",
+    "source_commit": "2e3b2dc0ecf938addbd779d42877b6ed69d9a985"
+  },
+  "cnf": {
+    "bytes": 31089852,
+    "path": "p3-c8-t3-p1-z0.cnf",
+    "sha256": "be769394b37bfeb63770d45b2533fe9c1930c82669308702977b53794e67bc83"
+  },
+  "compacted_proof": {
+    "compressed_bytes": 32316,
+    "compressed_sha256": "ba39cf2e76b10c32e3e935f450f1123cf00b2bd4c1456c2be1cd0913bcac5f69",
+    "decompressed_bytes": 107953,
+    "decompressed_sha256": "0baa9aec9154708737fea2eb5efc13f85e341713b0d08a4a9f4f2e52a6deb8eb",
+    "path": "p3-c8-t3-p1-z0.drat.xz",
+    "role": "retained-core"
+  },
+  "extraction": {
+    "log": "p3-c8-t3-p1-z0-extract.log",
+    "log_sha256": "f02589761e91aa26910087a99b462962398998a65131e1ca29452495c4feb525",
+    "strategy": "fixpoint",
+    "wall_seconds": 5.378143
+  },
+  "source_proof": {
+    "compressed_bytes": 1343188,
+    "compressed_sha256": "9a25b7c9c377b4613e76acdc7736749bc54384e657acf3af7fe6957ac6dbd045",
+    "decompressed_bytes": 13191672,
+    "decompressed_sha256": "74ac9d2633073e452f13275824e802fbfcd7671264a2b1daecb85dc57067342a",
+    "path": "p3-c8-t3-p1-z0.drat.xz",
+    "role": "solver-output"
+  },
+  "verification": {
+    "log": "p3-c8-t3-p1-z0-verify.log",
+    "log_sha256": "a991cf0a6a82efecc1b1567f4246829d81378ed847c3c69ee47522ec43af5048",
+    "wall_seconds": 0.819302
+  },
+  "verified": true
+}

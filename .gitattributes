@@ -7,3 +7,6 @@
 Makefile text eol=lf
 evidence/orbit-p3-c6/*.log binary
 evidence/orbit-p3-c6/*.drat.xz binary
+evidence/orbit-p3-c8/*.log binary
+evidence/orbit-p3-c8/*.drat.xz binary
+evidence/orbit-p3-c8/*.drat.xz.part-* binary

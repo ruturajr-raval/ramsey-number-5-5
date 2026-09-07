@@ -37,9 +37,16 @@ Its q7 case list contains four representatives for `3^6 1^25`, named
 `3^7 1^22` records are pending, and the campaign record states that the
 remaining order-3 cycle types are unfinished.
 
+The same q7 summary lists `p3_c8_k1`, `p3_c8_k2`, `p3_c8_k3`, `p3_c8_k4`,
+and `p3_c8_k8` as pending. Its order-3 UNSAT representative list is empty.
+The current head remained
+`4b7b8275d41682a98add180ee05540be84037100` when rechecked on
+2026-09-07.
+
 The earlier coverage audit at
 [`AlecKriebel/Math`](https://github.com/AlecKriebel/Math/tree/main/ramsey55)
-lists both `3^6 1^25` and `3^7 1^22` among 54 uncovered prime-order types.
+lists `3^6 1^25`, `3^7 1^22`, and `3^8 1^19` among 54 uncovered prime-order
+types.
 The audited main commit was
 `137ffa9f1a340f621651395ad0236cf1bdadb51c`.
 
@@ -61,11 +68,15 @@ p3-c6 ramsey
 "3^{7}1^{22}"
 p3_c7 ramsey
 p3-c7 ramsey
+"3^8 1^19"
+"3^{8}1^{19}"
+p3_c8 ramsey
+p3-c8 ramsey
 ```
 
 The exact cycle-type searches returned only case listings in the repositories
 above. No public construction, completed exclusion, or independently
-checkable certificate for either type was found.
+checkable certificate for any of the three order-3 types was found.
 
 Targeted searches also examined the fixed-point threshold `26`, the degree
 expressions `3c+3`, `39-3c`, `2c+12`, and `30-2c`, and the complete
@@ -76,12 +87,12 @@ novelty statement is:
 
 > To the best of the targeted search of public literature and repositories
 > available through 2026-09-07, no previous source states or proves the 12
-> project-original elementary exclusions or supplies a completed certificate
-> for `3^6 1^25`.
+> project-original elementary exclusions or supplies a completed,
+> independently checkable exclusion of `3^6 1^25` or `3^8 1^19`.
 
-The `3^7 1^22` case had been explicitly prepared as a finite computational
-case before this project. The novelty claim is therefore resolution, not
-first attempt.
+The `3^6 1^25`, `3^7 1^22`, and `3^8 1^19` cases had been explicitly
+prepared as finite computational cases before this project. The novelty
+claim is therefore resolution, not first attempt.
 
 ## Methodological Ancestry
 
@@ -89,7 +100,7 @@ Orbit-based Ramsey search, automorphism restrictions, SAT encodings, and DRAT
 proofs are established methods and are not claimed as new. The original
 contribution is the applied elementary theorem, its exact cycle-type
 consequences including `3^7 1^22`, and the completed proof-logged exclusion
-of `3^6 1^25`.
+of `3^6 1^25` and `3^8 1^19`.
 
 ## Primary References
 

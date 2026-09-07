@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this work, please cite it using the metadata below."
-title: "Prime-Order Automorphism Exclusions for Ramsey (5,5,43) Graphs"
+title: "Prime-Order Automorphism Exclusions for Ramsey (5,5;43) Graphs"
 type: software
 authors:
   - family-names: Raval
@@ -11,7 +11,7 @@ repository-code: "https://github.com/ruturajr-raval/ramsey-number-5-5"
 version: 0.1.0
 license: MIT
 abstract: >-
-  Elementary and proof-logged exclusions of thirteen prime-order automorphism
+  Elementary and proof-logged exclusions of fourteen prime-order automorphism
   cycle types listed as uncovered or unfinished in dated public audits of
   hypothetical Ramsey (5,5,43) graphs.
 keywords:

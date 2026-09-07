@@ -51,12 +51,32 @@ class PackageBoundaryTests(unittest.TestCase):
             "evidence/orbit-p3-c6/p3-c6-k0.drat.xz",
             paths,
         )
+        self.assertIn(
+            "evidence/orbit-p3-c8/certificate-manifest.json",
+            paths,
+        )
+        self.assertIn(
+            "evidence/orbit-p3-c8/p3-c8-t2-p0-z0.drat.xz",
+            paths,
+        )
+        self.assertIn(
+            "evidence/orbit-p3-c8/p3-c8-t2-p0-z1.drat.xz.part-000",
+            paths,
+        )
+        self.assertIn(
+            "evidence/orbit-p3-c8/p3-c8-t4-p1-z0-mc8-run.json",
+            paths,
+        )
         self.assertIn("paper/main.tex", paths)
         self.assertIn("src/check_small_support.py", paths)
         self.assertIn("src/orbit_cnf.py", paths)
+        self.assertIn("tools/build_release_assets.py", paths)
+        self.assertIn("tools/record_paper_build.py", paths)
+        self.assertIn("tools/replay_c8_proofs.py", paths)
         self.assertIn("tools/replay_proofs.py", paths)
         self.assertIn("tools/verify_branch_artifacts.py", paths)
         self.assertIn("tools/verify_certificates.py", paths)
+        self.assertIn("tools/verify_release_gate.py", paths)
         self.assertIn("tools/release_manifest.py", paths)
 
     def test_manifest_contains_only_tracked_files(self) -> None:
@@ -87,6 +107,21 @@ class PackageBoundaryTests(unittest.TestCase):
         finally:
             fixture.unlink()
 
+    def test_oversized_release_file_is_rejected(self) -> None:
+        build = ROOT / "build"
+        build.mkdir(exist_ok=True)
+        fixture = build / "oversized-release-fixture.bin"
+        with fixture.open("wb") as stream:
+            stream.truncate(release_manifest.MAX_PACKAGE_FILE_BYTES + 1)
+        try:
+            with self.assertRaisesRegex(ValueError, "exceeds"):
+                release_manifest.validate_package_file(
+                    fixture,
+                    Path("oversized-release-fixture.bin"),
+                )
+        finally:
+            fixture.unlink()
+
     def test_manifest_check_works_without_git_metadata(self) -> None:
         build = ROOT / "build"
         build.mkdir(exist_ok=True)
@@ -110,6 +145,65 @@ class PackageBoundaryTests(unittest.TestCase):
             release_manifest.MANIFEST = manifest
             try:
                 self.assertEqual(0, release_manifest.check_manifest())
+            finally:
+                release_manifest.ROOT = original_root
+                release_manifest.MANIFEST = original_manifest
+
+    def test_archive_manifest_rejects_unlisted_file(self) -> None:
+        build = ROOT / "build"
+        build.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(
+            dir=build,
+            prefix="archive-extra-check-",
+        ) as temporary:
+            archive = Path(temporary)
+            payload = archive / "README.md"
+            payload.write_text("archive fixture\n", encoding="ascii")
+            extra = archive / "unlisted.txt"
+            extra.write_text("not in manifest\n", encoding="ascii")
+            digest = hashlib.sha256(payload.read_bytes()).hexdigest()
+            manifest = archive / "release-manifest.sha256"
+            manifest.write_text(
+                f"{digest}  README.md\n",
+                encoding="ascii",
+            )
+
+            original_root = release_manifest.ROOT
+            original_manifest = release_manifest.MANIFEST
+            release_manifest.ROOT = archive
+            release_manifest.MANIFEST = manifest
+            try:
+                self.assertEqual(1, release_manifest.check_manifest())
+            finally:
+                release_manifest.ROOT = original_root
+                release_manifest.MANIFEST = original_manifest
+
+    def test_manifest_check_rejects_oversized_archive_file(self) -> None:
+        build = ROOT / "build"
+        build.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(
+            dir=build,
+            prefix="oversized-archive-check-",
+        ) as temporary:
+            archive = Path(temporary)
+            payload = archive / "proof.drat.xz"
+            with payload.open("wb") as stream:
+                stream.truncate(
+                    release_manifest.MAX_PACKAGE_FILE_BYTES + 1
+                )
+            manifest = archive / "release-manifest.sha256"
+            manifest.write_text(
+                f"{hashlib.sha256().hexdigest()}  {payload.name}\n",
+                encoding="ascii",
+            )
+
+            original_root = release_manifest.ROOT
+            original_manifest = release_manifest.MANIFEST
+            release_manifest.ROOT = archive
+            release_manifest.MANIFEST = manifest
+            try:
+                with self.assertRaisesRegex(ValueError, "exceeds"):
+                    release_manifest.read_manifest()
             finally:
                 release_manifest.ROOT = original_root
                 release_manifest.MANIFEST = original_manifest

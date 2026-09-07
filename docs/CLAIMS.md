@@ -77,14 +77,35 @@ Evidence:
 - the deterministic arithmetic consistency audit is in
   `src/check_small_support.py`.
 
-### C6 - Combined original result
+### C6 - Certified `3^8 1^19` exclusion
 
-The project excludes 13 cycle types that the dated public audits listed as
+No such graph has an automorphism of cycle type `3^8 1^19`.
+
+Evidence:
+
+- the internal-type counts `0,1,7,8` are excluded by elementary incidence
+  arguments;
+- complementation and a low-exception fixed root reduce the remaining cases
+  to eight normalized root branches;
+- an exact slack identity supplies the encoded exception, same-type, mixed
+  row, and mixed column bounds;
+- the two `t=4` root branches split into four branches using the complete
+  classification of 90 mixed-link matrices into two equivalence classes;
+- six canonical `t=2,3` formulas and four strengthened `t=4` formulas match
+  independent reference encoders exactly;
+- all ten branches are UNSAT and every retained compact DRAT proof passes
+  independent `drat-trim` replay; and
+- the central record is
+  `evidence/orbit-p3-c8/certificate-manifest.json`.
+
+### C7 - Combined original result
+
+The project excludes 14 cycle types that the dated public audits listed as
 uncovered or unfinished:
 
 ```text
 2^c 1^(43-2c), 1 <= c <= 3
-3^c 1^(43-3c), 1 <= c <= 7
+3^c 1^(43-3c), 1 <= c <= 8
 5^c 1^(43-5c), 1 <= c <= 3
 ```
 

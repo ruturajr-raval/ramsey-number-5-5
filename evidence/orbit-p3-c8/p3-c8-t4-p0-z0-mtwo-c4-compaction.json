@@ -1,0 +1,40 @@
+{
+  "checker": {
+    "path": "drat-trim",
+    "sha256": "f58f63b0f76945d4c4c9ff6e87afaf870f579e67c0f7cca589492df8fc7ebd47",
+    "source_commit": "2e3b2dc0ecf938addbd779d42877b6ed69d9a985"
+  },
+  "cnf": {
+    "bytes": 31191000,
+    "path": "p3-c8-t4-p0-z0-mtwo-c4.cnf",
+    "sha256": "ed70dbfff1bb6204883b81f7a65d6ed5f9e62bb106f7fa5568ffe3056a31b341"
+  },
+  "compacted_proof": {
+    "compressed_bytes": 17144400,
+    "compressed_sha256": "d17e99a5d36d015d92d300e6cead5190011e2b93d97c0c3f3929b1ff2279a740",
+    "decompressed_bytes": 62472979,
+    "decompressed_sha256": "3b44352d38ec54a8155318c06976597e46b41d3eed33cd1e8dc01b408e4c74de",
+    "path": "p3-c8-t4-p0-z0-mtwo-c4.drat.xz",
+    "role": "retained-core"
+  },
+  "extraction": {
+    "log": "p3-c8-t4-p0-z0-mtwo-c4-extract.log",
+    "log_sha256": "b3c29bca4d6a5d1212f84bd743c535a511f88f285faf53bad2e95db59820e1df",
+    "strategy": "single-pass",
+    "wall_seconds": 138.204118
+  },
+  "source_proof": {
+    "compressed_bytes": 98323132,
+    "compressed_sha256": "1afa280292c6f39d87d6c3adbaaf29e62261ec05d4275bb6c4fa691a4fbb8bea",
+    "decompressed_bytes": 259755026,
+    "decompressed_sha256": "eac5b1209778c728438e7d28fdecc66026035c942453fc237b029acd0fa13074",
+    "path": "p3-c8-t4-p0-z0-mtwo-c4.drat.xz",
+    "role": "solver-output"
+  },
+  "verification": {
+    "log": "p3-c8-t4-p0-z0-mtwo-c4-verify.log",
+    "log_sha256": "590e08ee2cd35f78f44e6df08148564489c48f1f024ea1c996d083d8e9103e67",
+    "wall_seconds": 302.80836
+  },
+  "verified": true
+}

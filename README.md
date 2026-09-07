@@ -1,8 +1,6 @@
-# Prime-Order Automorphism Exclusions for Ramsey `(5,5,43)` Graphs
+# Prime-Order Automorphism Exclusions for Ramsey `(5,5;43)` Graphs
 
 ## Project Overview
-
-### Project Metadata
 
 | Field | Value |
 | --- | --- |
@@ -11,151 +9,38 @@
 | ORCID | [0000-0003-4930-8981](https://orcid.org/0000-0003-4930-8981) |
 | Field | Ramsey theory, graph automorphisms, and proof-logged SAT |
 | Problem | Restrict prime-order automorphisms of hypothetical Ramsey `(5,5,43)` graphs |
-| Current result | Thirteen previously uncovered or unfinished automorphism cycle types are excluded: twelve by elementary arguments and `3^6 1^25` by four checked DRAT certificates |
+| Current result | Fourteen previously uncovered or unfinished automorphism cycle types are excluded: twelve by elementary arguments, `3^6 1^25` by four checked DRAT certificates, and `3^8 1^19` by ten checked DRAT certificates after elementary and structural reductions |
 | Result type | Scoped structural theorem and certified finite exclusion |
 | Release | not yet released |
 | Version DOI | not yet assigned |
 | Concept DOI | not yet assigned |
 | License | MIT |
 
-### Problem And Context
+The repository develops elementary structural arguments and proof-logged SAT
+exclusions for prime-order automorphisms of a hypothetical graph on 43
+vertices with neither a clique nor an independent set of size 5.
+
+All 14 retained proof packages exist. The complete c6 and c8 certificate
+manifests and both local release-grade replays pass. Final snapshot review,
+hosted CI, public release, and DOI remain pending.
+
+## Problem And Background
 
 The diagonal Ramsey number `R(5,5)` is the least integer `n` such that every
 graph on `n` vertices contains a clique of size 5 or an independent set of
-size 5. Exoo published the lower bound 43 in 1989. McKay and Radziszowski
-proved the upper bound 49 in 1997, Angeltveit and McKay improved it to 48 in
-2018, and their 2025 computation improved it to 46. The verified frontier on
-2026-09-07 was therefore
+size 5. Write `R(5,5,n)` for the class of finite simple undirected graphs on
+`n` vertices with clique number and independence number at most 4.
 
-```text
-43 <= R(5,5) <= 46.
-```
+The problem's origin is Ramsey's 1930 theorem on unavoidable homogeneous
+sets. For this specific diagonal case, Exoo established the enduring
+43-vertex lower bound in 1989, while later work by McKay, Radziszowski,
+Angeltveit, and McKay reduced the upper bound to 46.
 
-The lower endpoint had stood for 37 years. A complete search at order 43 is
-not currently practical, so this project studies a finite structural
-subproblem: which prime-order automorphisms could a hypothetical graph on 43
-vertices have while avoiding both a clique and an independent set of size 5?
-
-### Work And Verified Outcome
-
-Elementary fixed-point, degree, and incidence arguments exclude 16
-prime-order cycle types. Four of those cases had already been covered by
-later computational campaigns, while the following 12 were still uncovered
-or unfinished in the audited public coverage:
-
-```text
-2^c 1^(43-2c), 1 <= c <= 3
-3^c 1^(43-3c), 1 <= c <= 5
-3^7 1^22
-5^c 1^(43-5c), 1 <= c <= 3
-```
-
-For `3^7 1^22`, degree sums first force all seven moved cycles to have the
-same internal type. After complementation they may be taken independent.
-Every pair is then joined by exactly one invariant matching, and each moved
-cycle has exactly four fixed nonneighbors. There are therefore 28
-fixed-cycle nonneighbor incidences. On the other hand, fixed vertices missing
-at most one moved cycle are pairwise nonadjacent and hence number at most
-four, forcing at least 36 incidences. This contradiction is elementary.
-
-The intervening order-3 type, `3^6 1^25`, is closed by an independent
-orbit-CNF encoder. Relabeling the six moved cycles and complementing the
-graph reduce all 64 fixed-root adjacency patterns to four branches. Kissat
-reported each branch UNSAT, and `drat-trim` independently verified every
-retained binary DRAT proof. The combined original result excludes 13 cycle
-types that the dated public audits left unresolved.
-
-### Claim Boundary
-
-The project proves only the stated automorphism exclusions. It does not
-determine `R(5,5)`, improve the global interval, construct a 43-vertex Ramsey
-graph, prove that every hypothetical graph is asymmetric, or exclude all
-nontrivial automorphisms. Graphs with trivial automorphism group and many
-remaining order-2, order-3, and order-5 cycle types remain possible.
-
-The novelty statement is based on a targeted search of public literature and
-repositories available through 2026-09-07. It is not a claim of priority over
-unpublished, inaccessible, or unindexed work. The computation is
-proof-checked but not formally verified in a proof assistant.
-
-### Verification And Reproduction
-
-The repository contains:
-
-- executable arithmetic checks for the elementary theorem;
-- unit and exhaustive small-instance tests for the orbit-CNF encoder;
-- an exhaustive audit of all 64 branch patterns;
-- independent DIMACS structure and hash checks;
-- four compressed binary DRAT proofs;
-- original solver and checker logs; and
-- a machine-readable certificate manifest.
-
-Run the deterministic checks and regenerate all four CNFs:
-
-```bash
-python3 -m pip install -r requirements-dev.txt
-make test
-make verify-certificates
-```
-
-Freshly replay all four proofs with a local `drat-trim` executable:
-
-```bash
-make verify-proofs DRAT_TRIM=/path/to/drat-trim
-```
-
-The proof target requires that executable to reside in a source checkout at
-the pinned commit recorded in `docs/REPRODUCIBILITY.md`.
-
-The regenerated formulas total about 134 MB. Retained compressed proofs total
-about 57 MB and expand to about 159 MB. Formula generation and proof checking
-are CPU-bound, require no GPU, and fit a commodity workstation. Exact hashes
-and recorded runtimes are in
-`evidence/orbit-p3-c6/certificate-manifest.json`.
-
-### Significance, Limitations, And Future Work
-
-The result removes a finite set of symmetry classes from any future
-`R(5,5)` search. The elementary fixed-point lemma replaces several
-certificate-heavy cases with a short reusable argument, while the
-certificate pipeline gives a reproducible route for harder cycle types.
-These reductions can shrink symmetry-aware searches and clarify which
-automorphism groups still deserve computational effort.
-
-The main limitation is scope: an asymmetric graph is untouched, and the
-global interval remains unchanged. The strongest next route is
-`3^8 1^19`, followed by the remaining order-2 and order-5 branches. A
-public release requires a complete package review, fresh certificate replay
-on a clean environment, a built and inspected paper, and a refreshed
-prior-art audit.
-
-### Release, Citation, And Author
-
-This package is not yet released or archived. Its permanent public repository
-is planned as
-[`ruturajr-raval/ramsey-number-5-5`](https://github.com/ruturajr-raval/ramsey-number-5-5).
-Citation metadata is prepared in `CITATION.cff`, and archive metadata is
-prepared in `.zenodo.json`.
-
-Project-original software, proofs, evidence records, and documentation are
-MIT licensed. Third-party solvers, proof checkers, papers, and public
-coverage records are referenced but not relicensed. The author is
-Ruturaj R Raval, Independent Researcher, ORCID
-[`0000-0003-4930-8981`](https://orcid.org/0000-0003-4930-8981).
-
-## Detailed Technical Record
-
-### Definitions
-
-Write `R(5,5,n)` for the class of finite simple undirected graphs on `n`
-vertices with clique number and independence number at most 4. A
-prime-order automorphism with `c` moved cycles of length `p` has cycle type
+A prime-order automorphism with `c` moved cycles of length `p` has cycle type
 
 ```text
 p^c 1^(43-pc).
 ```
-
-### Degree Interval
 
 For a vertex `v` in a graph from `R(5,5,43)`, its neighborhood contains
 neither a `K4` nor an independent 5-set. Since `R(4,5)=25`, this gives
@@ -166,7 +51,76 @@ independent 4-set, so `42-d(v) <= 24`. Hence every vertex satisfies
 18 <= d(v) <= 24.
 ```
 
-### Elementary Exclusions
+A complete search at order 43 is not currently practical. This project
+therefore addresses a finite structural subproblem: which prime-order
+automorphisms could a hypothetical graph in `R(5,5,43)` admit?
+
+## Starting Frontier And Longstanding Gap
+
+Exoo published the lower bound 43 in 1989. McKay and Radziszowski proved the
+upper bound 49 in 1997, Angeltveit and McKay improved it to 48 in 2018, and
+their 2025 computation improved it to 46. The verified global frontier on
+2026-09-07 was
+
+```text
+43 <= R(5,5) <= 46.
+```
+
+The lower endpoint had stood for 37 years. Existing prescribed-automorphism
+campaigns had settled many symmetry classes, but the dated public audit
+identified several small-support or unfinished prime-order cases for which a
+short elementary exclusion or a retained, reproducible proof package was not
+publicly available.
+
+The project began from that scoped gap. It does not attempt to replace the
+global order-43 search.
+
+## Main Result
+
+Elementary fixed-point, degree, and incidence arguments exclude 16
+prime-order cycle types:
+
+```text
+2^c 1^(43-2c), c = 1,2,3
+3^c 1^(43-3c), c = 1,2,3,4,5,7
+5^c 1^(43-5c), c = 1,2,3
+7^c 1^(43-7c), c = 1,2
+11^1 1^32
+13^1 1^30
+```
+
+Four of these elementary cases, the two order-7 types and the order-11 and
+order-13 types, had already been covered by later computational campaigns.
+The following 12 elementary exclusions were still uncovered or unfinished
+in the audited public coverage:
+
+```text
+2^c 1^(43-2c), 1 <= c <= 3
+3^c 1^(43-3c), 1 <= c <= 5
+3^7 1^22
+5^c 1^(43-5c), 1 <= c <= 3
+```
+
+Two additional order-3 types are closed by proof-logged SAT:
+
+- `3^6 1^25`, through four normalized orbit-CNF branches;
+- `3^8 1^19`, through six canonical `t=2,3` branches and four
+  matrix-split `t=4` branches.
+
+The combined original result excludes 14 cycle types that the dated public
+audit left unresolved or unfinished: the 12 elementary cases above,
+`3^6 1^25`, and `3^8 1^19`.
+
+In particular:
+
+```text
+No graph on 43 vertices with clique number and independence number at most 4
+admits an automorphism of cycle type 3^8 1^19.
+```
+
+## Method And Proof Architecture
+
+### Elementary Prime-Order Exclusions
 
 For prime `p >= 5`, choose a moved `p`-cycle `C`. Its induced graph is
 neither complete nor empty, so it contains an edge and a nonedge. Every fixed
@@ -280,7 +234,219 @@ prefix, and complementation maps a prefix of length `k` to one of length
 | 2 | 67,709 | 910,918 | `5543127a0f17e56c05cf9cdcd79935fd44433b6d2777c3d8c314361d4a96679c` | `6c570981d5c2c10cc609fa3e720e8a16dafcbc56715af4563a58c7b31f9a9489` |
 | 3 | 67,709 | 910,918 | `e8a8e8453f45a0242c32a3c8c8cbca5b1743e34ae25f67829211223f79e4e688` | `ecc37245286371169abf5f6b5c3703d8ea464a685d253dd92534952a0eaac4c1` |
 
-### Repository Layout
+### Certified `3^8 1^19` Exclusion
+
+Let `t` of the eight moved 3-cycles be triangles and let `s=8-t` be
+independent triples. A triangle cycle has at most four fixed neighbors. An
+independent cycle has at most four fixed nonneighbors. These are called
+fixed-vertex exceptions.
+
+When `t=1`, each of the seven independent cycles contributes at most four
+fixed nonneighbor incidences, for a total at most 28. Any two fixed vertices
+that each miss at most one independent cycle share at least five independent
+cycles in their common neighborhood. They therefore cannot be adjacent,
+since an adjacent pair has at most 13 common neighbors by `R(3,5)=14`.
+There are at most four such fixed vertices, so the incidence total is at
+least `2(19-4)=30`, a contradiction.
+
+When `t=0`, the corresponding incidence total is at most 32. The same
+common-neighborhood argument shows that fixed vertices missing at most one
+moved cycle form an independent set of size at most four. The incidence
+bound then forces at least two fixed vertices to miss no moved cycle. Each
+has 24 moved neighbors and therefore no fixed neighbors. The other 17 fixed
+vertices can contain neither a 5-clique nor an independent triple, contrary
+to `R(5,3)=14`. Complementation excludes `t=7,8`.
+
+It remains to consider `t=2,3,4`. For a triangle cycle `T_i`, write `a_i`
+for its number of fixed neighbors and set `alpha_i=4-a_i`. For an independent
+cycle `I_j`, write `b_j` for its number of fixed nonneighbors and set
+`beta_j=4-b_j`. Let `u_i` be the amount by which the degree on `T_i` exceeds
+18, and let `v_j` be the amount by which the degree on `I_j` falls below 24.
+A triangle-triangle link has weight at most two; write its deficit from two
+as `D`. An independent-independent link has weight at least one; write its
+excess over one as `B`. Summing the mixed-link rows and columns in two ways
+gives the exact identity
+
+```text
+sum alpha_i + sum beta_j + sum u_i + sum v_j
+  + 2 sum D + 2 sum B = (t-4)^2.
+```
+
+Every term is a nonnegative integer. This yields all structural bounds used
+by the encoder, including at least `32-(t-4)^2` exception incidences, at most
+`floor((t-4)^2/2)` total same-type deviation, mixed total between
+`2t(7-t)` and `(8-t)(t+2)`, triangle-row lower bound `14-2t`, and independent
+column upper bound `t+2`.
+
+At most 32 exception incidences are distributed over 19 fixed vertices, so
+some fixed root has at most one exception. Relabeling cycles and
+complementing the graph reduce all 2,304 low-exception configurations to
+eight root branches:
+
+```text
+(2,0,0), (2,1,0), (2,0,1)
+(3,0,0), (3,1,0), (3,0,1)
+(4,0,0), (4,1,0)
+```
+
+The entries record the number of triangle cycles, the root's adjacent
+triangle exceptions, and the root's nonadjacent independent exceptions.
+The arithmetic audit assigns 162 configurations to the elementary cases and
+2,142 to these certificate branches.
+
+For `t=4`, the slack identity has zero right-hand side. Every triangle cycle
+therefore has exactly four fixed neighbors and degree 18, every independent
+cycle has exactly four fixed nonneighbors and degree 24, every
+triangle-triangle link has weight two, every independent-independent link
+has weight one, and every mixed row and column has total weight six.
+
+A mixed weight cannot be three: otherwise the four fixed neighbors of its
+triangle cycle equal the four fixed nonneighbors of its independent cycle,
+but the first set is independent and the second is a clique. Complementation
+excludes mixed weight zero. Every mixed weight is therefore one or two, with
+two entries of each value in every row and column. The 90 labeled matrices
+form exactly two classes under row and column permutations, represented by a
+single 8-cycle and by two 4-cycles after subtracting one from every entry.
+
+The four strengthened `t=4` formulas also encode three direct consequences:
+two fixed vertices sharing a triangle exception are nonadjacent, two sharing
+an independent exception are adjacent, and a triangle-exception set meets an
+independent-exception set in at most one vertex. Seven independent cycle
+rotations fix the matching phases on a spanning star. The `p1` branches
+exclude zero-exception fixed signatures because any such vertex would
+instead be chosen as the `p0` root.
+
+The resulting retained certificate family consists of six canonical
+`t=2,3` formulas and four matrix-split `t=4` formulas. Independent reference
+encoders reproduce every clause. The ten solver branches are UNSAT, and
+`drat-trim` has verified each compacted proof individually and in one
+release-grade ten-branch replay.
+
+## Verification And Evidence
+
+The repository contains:
+
+- executable arithmetic checks for the elementary theorem;
+- unit and exhaustive small-instance tests for the orbit-CNF encoder;
+- exhaustive audits of the c6 root patterns and all 2,304 low-exception c8
+  configurations;
+- independent DIMACS structure and hash checks;
+- four compressed binary DRAT proof streams for `3^6 1^25`;
+- ten compressed binary DRAT proof packages for `3^8 1^19`;
+- original solver and checker logs; and
+- machine-readable metadata, coverage records, hashes, and audits.
+
+The c6 and c8 families have complete certificate manifests independently
+reconstructed from regenerated formulas, retained proofs, solver records, and
+audit files. Fresh builds from pinned clean `drat-trim` source verified all
+four c6 branches and all ten c8 branches. The c6 replay covers 56,884,692
+compressed bytes and 159,015,979 decompressed bytes; its record SHA-256 is
+`68eeba9b18aabdc42cca443666741eae75bd43df29d37990907a775e6aa8c5af`.
+The c8 replay covers 557,888,932 compressed bytes and 2,730,397,896
+decompressed bytes; its record SHA-256 is
+`0de9d8c9c66901ed326a13d6b2e54255b19556321f26c8d03e8ec13999611ddf`.
+Final snapshot review and hosted CI are still pending.
+
+The c8 evidence records distinguish original solver output from retained
+proof cores and disclose whether exact artifact hashes came from the original
+solver log or from a labeled post-run attestation. Formula generation and
+proof checking are CPU-bound and require no GPU. Exact formula sizes, proof
+sizes, hashes, and recorded runtimes are retained under
+`evidence/orbit-p3-c6/` and `evidence/orbit-p3-c8/`.
+
+The final release manifest will bind the source, documentation, formulas,
+proof packages, logs, audits, and report to one reviewed snapshot.
+
+## Reproduction
+
+Install the development requirements and run the deterministic test suite:
+
+```bash
+python3 -m pip install -r requirements-dev.txt
+make test
+python3 src/check_small_support.py
+```
+
+Regenerate the audited CNFs and verify the certificate families with:
+
+```bash
+make verify-certificates
+```
+
+The certificate target reconstructs and checks the complete c8 certificate
+manifest before any proof replay begins.
+
+Freshly replay all 14 retained proofs with a local `drat-trim` checkout:
+
+```bash
+make verify-proofs DRAT_TRIM=/path/to/drat-trim
+```
+
+The proof target requires that executable to reside in a source checkout at
+the pinned commit recorded in `docs/REPRODUCIBILITY.md`. The c8 replay builds
+its own fresh checker from that clean source before checking the ten proofs.
+
+Runtime depends on processor speed and current load. The proof replay is
+CPU-bound and requires sufficient local storage for regenerated formulas and
+streamed proof checking.
+
+## Claims
+
+The repository claims the stated elementary exclusions and the two scoped
+certificate-backed order-3 exclusions. The original contribution consists
+of the 12 elementary cases and the certified exclusions of `3^6 1^25` and
+`3^8 1^19` identified above.
+
+The novelty statement is based on a targeted search of public literature and
+repositories available through 2026-09-07. The exact claim boundary is
+recorded in `docs/CLAIMS.md` and `research/claim.json`.
+
+## Limitations And Nonclaims
+
+The project does not determine `R(5,5)`, improve the global interval
+`43 <= R(5,5) <= 46`, construct a 43-vertex Ramsey graph, prove that every
+hypothetical graph is asymmetric, or exclude all nontrivial automorphisms.
+Graphs with trivial automorphism group and many remaining order-2, order-3,
+and order-5 cycle types are not excluded.
+
+The computation is proof-checked but not formally verified in a proof
+assistant. The encoder, structural reductions, artifact-binding code, and
+proof checker remain within the computational trust boundary.
+
+The public-source audit does not establish priority over unpublished,
+inaccessible, or unindexed work.
+
+## Significance And Use
+
+The result removes a finite set of symmetry classes from any future
+`R(5,5)` search. The elementary fixed-point lemma replaces several
+certificate-heavy cases with a short reusable argument, while the orbit-CNF
+and proof-package pipeline gives a reproducible route for harder cycle
+types.
+
+These exclusions can reduce symmetry-aware search spaces, provide regression
+targets for independent encoders, and clarify which automorphism groups still
+deserve computational effort. The c8 slack identity and matrix
+classification may also be useful in related prescribed-automorphism
+problems.
+
+## Remaining Work And Future Directions
+
+Before public release, the project still requires:
+
+- final closed-world release-manifest generation and archive reconstruction;
+- final independent snapshot review;
+- hosted replay and candidate CI on the committed release snapshot;
+- immutable PDF, source, and checksum release assets;
+- public repository release; and
+- DOI archival.
+
+The strongest next mathematical order-3 route is `3^9 1^16`, followed by the
+remaining order-2 and order-5 branches. Longer-term work includes reducing
+the checker trust boundary and reconstructing the elementary and certificate
+arguments in a proof assistant.
+
+## Repository Layout
 
 ```text
 docs/       claims, prior art, reproducibility, and next research steps
@@ -292,20 +458,54 @@ tests/      semantic, regression, and package-boundary tests
 tools/      independent audits, proof replay, and release tooling
 ```
 
-### References
+## Publication Citation And Archive
 
-1. R. E. Greenwood and A. M. Gleason, "Combinatorial relations and
+The planned permanent public repository is
+[`ruturajr-raval/ramsey-number-5-5`](https://github.com/ruturajr-raval/ramsey-number-5-5).
+No public release or DOI has yet been assigned.
+
+Package status: not yet released.
+
+Citation metadata is prepared in `CITATION.cff`, archive metadata is prepared
+in `.zenodo.json`, technical report source and submission metadata are in
+`paper/`, and the release dossier is in `PUBLICATION.md`. Final citation and
+archive links will be added only after the release gate, hosted CI, and
+archival checks pass.
+
+## Authorship
+
+**Ruturaj R Raval**
+
+Independent Researcher
+
+ORCID: [0000-0003-4930-8981](https://orcid.org/0000-0003-4930-8981)
+
+## Licensing And Provenance
+
+Project-original software, proofs, evidence records, and documentation are
+MIT licensed under the root `LICENSE`.
+
+Third-party solvers, proof checkers, papers, and public coverage records are
+referenced but not relicensed. Their versions, commits, and roles in the
+verification chain are recorded in the reproducibility and evidence
+materials.
+
+## References
+
+1. F. P. Ramsey, "On a problem of formal logic," Proceedings of the London
+   Mathematical Society s2-30(1), 264-286, 1930.
+2. R. E. Greenwood and A. M. Gleason, "Combinatorial relations and
    chromatic graphs," Canadian Journal of Mathematics 7, 1-7, 1955.
-2. Geoffrey Exoo, "A lower bound for R(5,5)," Journal of Graph Theory 13(1),
+3. Geoffrey Exoo, "A lower bound for R(5,5)," Journal of Graph Theory 13(1),
    97-98, 1989.
-3. Brendan D. McKay and Stanislaw P. Radziszowski, "R(4,5)=25," Journal of
+4. Brendan D. McKay and Stanislaw P. Radziszowski, "R(4,5)=25," Journal of
    Graph Theory 19(3), 309-322, 1995.
-4. Brendan D. McKay and Stanislaw P. Radziszowski, "Subgraph counting
+5. Brendan D. McKay and Stanislaw P. Radziszowski, "Subgraph counting
    identities and Ramsey numbers," Journal of Combinatorial Theory, Series B
    69(2), 193-209, 1997.
-5. Vigleik Angeltveit and Brendan D. McKay, "R(5,5) <= 48," Journal of Graph
+6. Vigleik Angeltveit and Brendan D. McKay, "R(5,5) <= 48," Journal of Graph
    Theory 89(1), 5-13, 2018.
-6. Vigleik Angeltveit and Brendan D. McKay, "R(5,5) <= 46,"
+7. Vigleik Angeltveit and Brendan D. McKay, "R(5,5) <= 46,"
    [arXiv:2409.15709](https://arxiv.org/abs/2409.15709), version 2, 2025.
-7. Current public prescribed-automorphism audit:
+8. Current public prescribed-automorphism audit:
    [wustep/maths](https://github.com/wustep/maths/tree/main/problems/ramsey-r55).

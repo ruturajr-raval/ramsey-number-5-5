@@ -1,0 +1,53 @@
+{
+  "all_semantically_identical": true,
+  "branches": [
+    {
+      "bytes": 31191000,
+      "clauses": 886323,
+      "cnf": "p3-c8-t4-p0-z0-mtwo-c4.cnf",
+      "exclude_zero_fixed_signatures": false,
+      "matrix_type": "two-c4",
+      "root_adjacent_triangle_cycles": 0,
+      "semantic_match": true,
+      "sha256": "ed70dbfff1bb6204883b81f7a65d6ed5f9e62bb106f7fa5568ffe3056a31b341",
+      "variables": 78411
+    },
+    {
+      "bytes": 31191000,
+      "clauses": 886323,
+      "cnf": "p3-c8-t4-p0-z0-mc8.cnf",
+      "exclude_zero_fixed_signatures": false,
+      "matrix_type": "c8",
+      "root_adjacent_triangle_cycles": 0,
+      "semantic_match": true,
+      "sha256": "8fa8b7471d3212050354a97f0a0702f3b22a00ca6165f722d78cacc5651d8049",
+      "variables": 78411
+    },
+    {
+      "bytes": 31191679,
+      "clauses": 886342,
+      "cnf": "p3-c8-t4-p1-z0-mtwo-c4.cnf",
+      "exclude_zero_fixed_signatures": true,
+      "matrix_type": "two-c4",
+      "root_adjacent_triangle_cycles": 1,
+      "semantic_match": true,
+      "sha256": "cca646967145adc7e752cc84a2b3f731337a780d62afa8a52810372b34ce40f7",
+      "variables": 78411
+    },
+    {
+      "bytes": 31191679,
+      "clauses": 886342,
+      "cnf": "p3-c8-t4-p1-z0-mc8.cnf",
+      "exclude_zero_fixed_signatures": true,
+      "matrix_type": "c8",
+      "root_adjacent_triangle_cycles": 1,
+      "semantic_match": true,
+      "sha256": "c9454239b0132e679bdc3aec232d60307c2d165fe56248b438289545a72035bb",
+      "variables": 78411
+    }
+  ],
+  "cycle_type": "3^8 1^19",
+  "generator_sha256": "d7549746f52ad40646adbbf8115c5a85bb7da8a380ee158802ce2c2c5e0dd358",
+  "reference_verifier_sha256": "8a2aceb6ff4ba08b0c739e75f37d1e96fde303694a034dec344c3aab1424f62d",
+  "scope": "strengthened t=4 certificate branches"
+}

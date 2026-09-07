@@ -28,10 +28,12 @@ incidence arguments exclude 16 prime-order automorphism cycle types. A dated
 public-source audit found 12 of those types previously uncovered or
 unfinished. We also exclude the intervening order-3 type, $3^6 1^{25}$,
 using four orbit-CNF branches whose compressed binary DRAT proofs are
-retained and independently checked. The combined original result closes 13
-cycle types that the audited public records listed as uncovered or
-unfinished. The result does not determine $R(5,5)$ or change the interval
-$43 \le R(5,5) \le 46$.
+retained and independently checked. A second reduction excludes
+$3^8 1^{19}$ using elementary incidence arguments, an exact structural
+slack identity, and ten checked orbit-CNF branches. The combined original
+result closes 14 cycle types that the audited public records listed as
+uncovered or unfinished. The result does not determine $R(5,5)$ or change
+the interval $43 \le R(5,5) \le 46$.
 \end{abstract}
 
 \section{Context}
@@ -280,6 +282,267 @@ relabeling and complementation map that pattern to one of the four encoded
 branches. Every branch is UNSAT by a checked DRAT proof.
 \end{proof}
 
+\section{\texorpdfstring{The cycle type $3^8 1^{19}$}
+{The cycle type 3\string^8 1\string^19}}
+
+\subsection{Internal types and the elementary extremes}
+
+Let $C_1,\ldots,C_8$ be the moved 3-cycles. Each $C_i$ induces either a
+triangle or an independent triple. Let $t$ be the number of triangle cycles
+and put $s=8-t$.
+
+For an independent cycle $I_j$, let $B_j$ be the fixed vertices
+anticomplete to $I_j$. The set $B_j$ is a clique, since two nonadjacent
+vertices of $B_j$ together with $I_j$ would form an independent set of size
+five. Hence $|B_j|\le4$. Dually, the fixed vertices complete to a triangle
+cycle form an independent set and also number at most four.
+
+\begin{lemma}[Extreme internal-type counts]
+\label{lem:c8-extremes}
+The values $t=0,1,7,8$ are impossible.
+\end{lemma}
+
+\begin{proof}
+First suppose $t=1$, so there are seven independent cycles. For a fixed
+vertex $x$, let $z_x$ be the number of independent cycles anticomplete to
+$x$. Counting incidences with the sets $B_j$ gives
+\[
+\sum_x z_x\le7\cdot4=28. \tag{2}
+\]
+If fixed vertices $x$ and $y$ both satisfy $z_x,z_y\le1$, then they are
+complete to at least five common independent cycles. Were $xy$ an edge,
+their common neighborhood would contain at least 15 vertices. The common
+neighborhood of an adjacent pair contains neither a triangle nor an
+independent set of size five, so $R(3,5)=14$ gives a contradiction. Thus the
+fixed vertices with $z_x\le1$ form an independent set and number at most
+four. Every other fixed vertex has $z_x\ge2$, forcing
+\[
+\sum_x z_x\ge2(19-4)=30,
+\]
+contrary to (2).
+
+Now suppose $t=0$. The same argument shows that the fixed vertices with
+$z_x\le1$ form an independent set of size at most four, while
+\[
+\sum_x z_x\le8\cdot4=32. \tag{3}
+\]
+Let $n_0$ and $n_1$ count fixed vertices with $z_x=0$ and $z_x=1$.
+Since $n_0+n_1\le4$, if $n_0\le1$ then
+\[
+\sum_x z_x\ge n_1+2(19-n_0-n_1)\ge33,
+\]
+contrary to (3). Hence $n_0\ge2$.
+
+A fixed vertex with $z_x=0$ is adjacent to all 24 moved vertices. The degree
+upper bound therefore makes it anticomplete to every fixed vertex. Choose
+two such vertices. The other 17 fixed vertices contain neither a clique of
+size five nor an independent triple, since an independent triple together
+with the chosen two vertices would form an independent set of size five.
+This contradicts $R(5,3)=14$.
+
+Complementation sends $t$ to $8-t$, so it also excludes $t=7,8$.
+\end{proof}
+
+\subsection{The exact slack identity}
+
+It remains to consider $t=2,3,4$, since complementation covers $t=5,6$.
+Write the triangle cycles as $T_1,\ldots,T_t$ and the independent cycles as
+$I_1,\ldots,I_s$.
+
+For $T_i$, let $a_i$ be its number of fixed neighbors, put
+$\alpha_i=4-a_i$, and write its degree as $18+u_i$. For $I_j$, let $b_j$ be
+its number of fixed nonneighbors, put $\beta_j=4-b_j$, and write its degree
+as $24-v_j$. All four quantities $\alpha_i,\beta_j,u_i,v_j$ are
+nonnegative.
+
+The invariant edges between two moved cycles split into three perfect
+matchings. A triangle-triangle link has weight at most two; write
+$D_{ik}=2-w_{ik}\ge0$. An independent-independent link has weight at least
+one; write $B_{j\ell}=w_{j\ell}-1\ge0$. Let $m_{ij}$ be the mixed weight
+between $T_i$ and $I_j$, and define the mixed row and column sums
+\[
+R_i=\sum_jm_{ij},\qquad C_j=\sum_im_{ij}.
+\]
+
+The degree equation at $T_i$ is
+\[
+18+u_i=2+(4-\alpha_i)
+ +\sum_{k\ne i}(2-D_{ik})+R_i,
+\]
+and therefore
+\[
+R_i=14-2t+\alpha_i+u_i+\sum_{k\ne i}D_{ik}. \tag{4}
+\]
+The degree equation at $I_j$ is
+\[
+24-v_j=(15+\beta_j)
+ +\sum_{\ell\ne j}(1+B_{j\ell})+C_j,
+\]
+and therefore
+\[
+C_j=t+2-\beta_j-v_j-\sum_{\ell\ne j}B_{j\ell}. \tag{5}
+\]
+Summing (4) and (5), then using $\sum_iR_i=\sum_jC_j$, gives the exact
+identity
+\[
+\sum_i\alpha_i+\sum_j\beta_j+\sum_iu_i+\sum_jv_j
+ +2\sum_{i<k}D_{ik}+2\sum_{j<\ell}B_{j\ell}
+ =(t-4)^2. \tag{6}
+\]
+
+Every term in (6) is a nonnegative integer. Consequently:
+\[
+\begin{aligned}
+\sum_i a_i+\sum_j b_j&\ge32-(t-4)^2,\\
+\sum_{i<k}D_{ik}+\sum_{j<\ell}B_{j\ell}
+ &\le\left\lfloor\frac{(t-4)^2}{2}\right\rfloor,\\
+2t(7-t)\le\sum_{i,j}m_{ij}&\le(8-t)(t+2),\\
+R_i&\ge14-2t,\qquad C_j\le t+2.
+\end{aligned} \tag{7}
+\]
+The encoder also uses the row upper and column lower bounds obtained by
+subtracting the other rows or columns from the two mixed-total bounds.
+
+\subsection{Complete low-exception branch cover}
+
+Each moved cycle has at most four fixed-vertex exceptions, so the total
+number of exception incidences is at most 32. Among 19 fixed vertices there
+is therefore a root with at most one exception. Relabel triangle cycles and
+independent cycles separately. For $t=2,3$, the normalized root branches are
+\[
+(t,0,0),\qquad(t,1,0),\qquad(t,0,1),
+\]
+where the last two coordinates count adjacent triangle exceptions and
+nonadjacent independent exceptions. For $t=4$, complementation identifies
+$(4,0,1)$ with $(4,1,0)$.
+
+An executable audit enumerates all $2^8$ internal-type patterns and the nine
+root patterns with zero or one exception. Of the 2,304 configurations, 162
+belong to Lemma~\ref{lem:c8-extremes}. The remaining 2,142 configurations
+reduce exactly as shown in Table~\ref{tab:c8-cover}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rr}
+\toprule
+Branch & Configurations\\
+\midrule
+$(2,0,0)$ & 56\\
+$(2,1,0)$ & 112\\
+$(2,0,1)$ & 336\\
+$(3,0,0)$ & 112\\
+$(3,1,0)$ & 336\\
+$(3,0,1)$ & 560\\
+$(4,0,0)$ & 70\\
+$(4,1,0)$ & 560\\
+\bottomrule
+\end{tabular}
+\caption{Normalized low-exception root branches for $3^8 1^{19}$.}
+\label{tab:c8-cover}
+\end{table}
+
+\subsection{The zero-slack case}
+
+When $t=4$, the right side of (6) is zero. Thus every term on the left is
+zero. In particular, each triangle cycle has exactly four fixed neighbors
+and degree 18, each independent cycle has exactly four fixed nonneighbors
+and degree 24, every triangle-triangle weight is two, every
+independent-independent weight is one, and every mixed row and column has
+sum six.
+
+\begin{lemma}[Mixed-matrix classification]
+\label{lem:c8-matrix}
+Every mixed weight is one or two. Up to independent permutations of the four
+triangle cycles and four independent cycles, the mixed-weight matrix is one
+of
+\[
+\begin{pmatrix}
+1&1&2&2\\
+1&1&2&2\\
+2&2&1&1\\
+2&2&1&1
+\end{pmatrix},
+\qquad
+\begin{pmatrix}
+1&1&2&2\\
+1&2&1&2\\
+2&1&2&1\\
+2&2&1&1
+\end{pmatrix}. \tag{8}
+\]
+\end{lemma}
+
+\begin{proof}
+Let $A_i$ be the four fixed neighbors of triangle cycle $T_i$, and let
+$B_j$ be the four fixed nonneighbors of independent cycle $I_j$. If
+$m_{ij}=3$, then every vertex of $A_i$ must be nonadjacent to $I_j$, since
+otherwise $T_i$, that fixed vertex, and one vertex of $I_j$ form a
+5-clique. Hence $A_i\subseteq B_j$, and equality follows from their sizes.
+But $A_i$ is independent while $B_j$ is a clique, a contradiction.
+Complementation excludes $m_{ij}=0$.
+
+Every entry is therefore one or two. Since each row and column sums to six,
+subtracting one from each entry gives the adjacency matrix of a 2-regular
+simple bipartite graph on four plus four vertices. Its cycle decomposition
+is either one 8-cycle or two 4-cycles, giving the two matrices in (8). A
+direct enumeration finds 90 labeled matrices and exactly these two classes,
+even when the first triangle row is distinguished by the root.
+\end{proof}
+
+The strengthened formulas also use three immediate consequences. Two fixed
+vertices sharing a triangle exception are nonadjacent, since otherwise they
+join that triangle to form a 5-clique. Two fixed vertices sharing an
+independent exception are adjacent, since otherwise they join that
+independent triple to form an independent set of size five. Hence
+$|A_i\cap B_j|\le1$. Independent rotations of the seven nonroot moved
+cycles fix seven matching phases on a spanning star. In the $(4,1,0)$
+branch, a fixed vertex with zero exceptions would instead be selected as the
+$(4,0,0)$ root, so zero-exception fixed signatures are excluded to make the
+two root branches disjoint.
+
+\subsection{Checked certificates}
+
+The six $t=2,3$ branches use the canonical structural formula. The two
+$t=4$ root branches split by Lemma~\ref{lem:c8-matrix}, giving four
+strengthened formulas. Table~\ref{tab:c8-formulas} records their dimensions.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+Family & Branches & Variables & Clauses\\
+\midrule
+$t=2$ canonical & 3 & 76,728 & 880,702\\
+$t=3$ canonical & 3 & 76,440 & 879,868\\
+$t=4$, root $(4,0,0)$ & 2 & 78,411 & 886,323\\
+$t=4$, root $(4,1,0)$ & 2 & 78,411 & 886,342\\
+\bottomrule
+\end{tabular}
+\caption{Retained certificate formulas for $3^8 1^{19}$.}
+\label{tab:c8-formulas}
+\end{table}
+
+An independent reference implementation reconstructs every clause in all
+ten formulas. A separate audit verifies the branch arithmetic, the
+zero-slack matrix classification, DIMACS integrity, metadata, and SHA-256
+digests. Kissat reported every branch UNSAT. Each source proof was reduced
+to a compact core and both the extraction and the retained compact proof
+were independently checked with \texttt{drat-trim}.
+
+\begin{theorem}[Certified order-3 exclusion]
+\label{thm:c8}
+No graph in $\Rcal(5,5;43)$ admits an automorphism of cycle type
+$3^8 1^{19}$.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{lem:c8-extremes} excludes four internal-type counts.
+Complementation reduces the others to $t=2,3,4$. The exhaustive
+low-exception audit reduces every remaining configuration to one of the six
+canonical or four matrix-split branches. Each branch is UNSAT by a checked
+DRAT proof.
+\end{proof}
+
 \section{Novelty boundary and limitations}
 
 A targeted audit of public literature and repositories through September 7,
@@ -293,24 +556,35 @@ Theorem~\ref{thm:elementary}:
 \]
 The same audit found $3^6 1^{25}$ listed as uncovered or unfinished in the
 closest public prescribed-automorphism records \cite{Wustep2026,Kriebel2026}.
+It also found $3^8 1^{19}$ pending in the current case list and uncovered in
+the independent coverage ledger.
 The order-7, order-11, and order-13 consequences of
 Theorem~\ref{thm:elementary} are elementary reproofs of cases already covered
 computationally.
 
-The $3^7 1^{22}$ case had been prepared as a pending finite computation in
-the closest public campaign, so the contribution is its resolution rather
-than its first attempted formulation.
+The $3^6 1^{25}$, $3^7 1^{22}$, and $3^8 1^{19}$ cases had been prepared as
+pending finite computations in the closest public campaign, so the
+contribution is their resolution rather than their first attempted
+formulation.
 
-The combined original result therefore excludes 13 previously uncovered or
+The combined original result therefore excludes 14 previously uncovered or
 unfinished cycle types. This is a structural restriction, not a new Ramsey
 bound. It does not address graphs with trivial automorphism group and does
-not imply that a hypothetical graph is asymmetric.
+not imply that a hypothetical graph is asymmetric. Many other prime-order
+and composite-order automorphism types remain untreated.
+
+The computational exclusions depend on the correctness of the orbit encoder,
+the proof checker, and the executing hardware. Independent formula
+reconstruction, regression tests, retained hashes, and fresh proof replay
+reduce this trust boundary, but neither the encoder nor the complete theorem
+has been verified in a proof assistant.
 
 \section{Reproducibility}
 
 The repository contains the encoder, elementary checker, exhaustive branch
-audit, formula auditor, compressed proofs, original logs, fresh replay tool,
-and a machine-readable certificate manifest. The principal commands are:
+audits, formula auditors, compressed proofs, original logs, fresh replay
+tools, and machine-readable certificate manifests. The principal commands
+are:
 \begin{verbatim}
 make test
 make verify-certificates

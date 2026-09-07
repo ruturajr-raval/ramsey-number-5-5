@@ -71,6 +71,80 @@
     }
   ],
   "order": 43,
+  "order_three_eight_internal_type_audit": {
+    "all_independent_case": {
+      "excluded": true,
+      "incidence_upper": 32,
+      "minimum_zero_signatures": 2,
+      "r_5_3_minus_one": 13,
+      "remaining_fixed_vertices": 17
+    },
+    "cycle_type_excluded": false,
+    "cycles": 8,
+    "exception_incidence_upper": 32,
+    "excluded_triangle_cycle_counts": [
+      0,
+      1,
+      7,
+      8
+    ],
+    "fixed_vertices": 19,
+    "guaranteed_root_exception_upper": 1,
+    "maximum_exceptions_per_cycle": 4,
+    "normalized_remaining_triangle_cycle_counts": [
+      2,
+      3,
+      4
+    ],
+    "one_triangle_case": {
+      "excluded": true,
+      "incidence_lower": 30,
+      "incidence_upper": 28,
+      "independent_cycles": 7,
+      "maximum_vertices_missing_at_most_one_cycle": 4
+    },
+    "remaining_case_bounds": [
+      {
+        "independent_cycles": 6,
+        "independent_mixed_column_lower": 0,
+        "independent_mixed_column_upper": 4,
+        "maximum_same_type_deviation": 2,
+        "minimum_exception_incidences": 28,
+        "mixed_weight_lower": 20,
+        "mixed_weight_upper": 24,
+        "slack_budget": 4,
+        "triangle_cycles": 2,
+        "triangle_mixed_row_lower": 10,
+        "triangle_mixed_row_upper": 14
+      },
+      {
+        "independent_cycles": 5,
+        "independent_mixed_column_lower": 4,
+        "independent_mixed_column_upper": 5,
+        "maximum_same_type_deviation": 0,
+        "minimum_exception_incidences": 31,
+        "mixed_weight_lower": 24,
+        "mixed_weight_upper": 25,
+        "slack_budget": 1,
+        "triangle_cycles": 3,
+        "triangle_mixed_row_lower": 8,
+        "triangle_mixed_row_upper": 9
+      },
+      {
+        "independent_cycles": 4,
+        "independent_mixed_column_lower": 6,
+        "independent_mixed_column_upper": 6,
+        "maximum_same_type_deviation": 0,
+        "minimum_exception_incidences": 32,
+        "mixed_weight_lower": 24,
+        "mixed_weight_upper": 24,
+        "slack_budget": 0,
+        "triangle_cycles": 4,
+        "triangle_mixed_row_lower": 6,
+        "triangle_mixed_row_upper": 6
+      }
+    ]
+  },
   "order_three_seven_cycle_audit": {
     "cycles": 7,
     "excluded": true,

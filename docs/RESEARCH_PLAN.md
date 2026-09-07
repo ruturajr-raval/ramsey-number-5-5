@@ -3,16 +3,16 @@
 ## Current Milestone
 
 The 16-type elementary theorem, including `3^7 1^22`, and the certified
-`3^6 1^25` exclusion are complete. The package remains prerelease under the
-recorded release gate.
+exclusions of `3^6 1^25` and `3^8 1^19` are complete. The package remains
+prerelease under the recorded release gate.
 
 ## Ranked Next Targets
 
 ### 1. Additional order-3 types
 
-Attempt `3^8 1^19` and then increase `c`, preferring elementary reductions
-when available. Computational exclusions retain the following proof
-contract:
+Attempt `3^9 1^16` and then increase `c`, preferring elementary reductions
+when available. The completed `3^8 1^19` proof establishes the following
+contract for computational exclusions:
 
 - complete branch coverage;
 - deterministic CNF hashes;

@@ -1,7 +1,7 @@
 {
-  "title": "Prime-Order Automorphism Exclusions for Ramsey (5,5,43) Graphs",
+  "title": "Prime-Order Automorphism Exclusions for Ramsey (5,5;43) Graphs",
   "upload_type": "software",
-  "description": "Elementary and proof-logged exclusions of thirteen prime-order automorphism cycle types listed as uncovered or unfinished in dated public audits of hypothetical Ramsey (5,5,43) graphs.",
+  "description": "Elementary and proof-logged exclusions of fourteen prime-order automorphism cycle types listed as uncovered or unfinished in dated public audits of hypothetical Ramsey (5,5,43) graphs.",
   "creators": [
     {
       "name": "Raval, Ruturaj R",

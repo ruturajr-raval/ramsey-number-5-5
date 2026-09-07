@@ -10,7 +10,7 @@
     "object": "prime-order automorphism cycle types of hypothetical Ramsey (5,5,43) graphs"
   },
   "current_supported_claim": {
-    "statement": "Thirteen cycle types left uncovered or unfinished in the dated public audits are excluded: 2^c 1^(43-2c) for 1 <= c <= 3, 3^c 1^(43-3c) for 1 <= c <= 7, and 5^c 1^(43-5c) for 1 <= c <= 3."
+    "statement": "Fourteen cycle types left uncovered or unfinished in the dated public audits are excluded: 2^c 1^(43-2c) for 1 <= c <= 3, 3^c 1^(43-3c) for 1 <= c <= 8, and 5^c 1^(43-5c) for 1 <= c <= 3."
   },
   "problem": {
     "global_frontier": "43 <= R(5,5) <= 46",
@@ -21,9 +21,15 @@
     "elementary_exclusions": 16,
     "previously_uncovered_elementary_exclusions": 12,
     "new_elementary_cycle_type": "3^7 1^22",
-    "certified_additional_cycle_type": "3^6 1^25",
-    "certificate_branches": 4,
-    "certificate_manifest": "evidence/orbit-p3-c6/certificate-manifest.json"
+    "certified_additional_cycle_types": [
+      "3^6 1^25",
+      "3^8 1^19"
+    ],
+    "certificate_branches": 14,
+    "certificate_manifests": [
+      "evidence/orbit-p3-c6/certificate-manifest.json",
+      "evidence/orbit-p3-c8/certificate-manifest.json"
+    ]
   },
   "limitations": [
     "The result does not determine R(5,5) or change its global interval.",

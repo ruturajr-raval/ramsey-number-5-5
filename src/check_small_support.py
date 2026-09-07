@@ -198,6 +198,134 @@ def order_three_seven_cycle_audit() -> dict[str, object]:
     }
 
 
+def order_three_eight_internal_type_audit() -> dict[str, object]:
+    """Audit the elementary internal-type reductions for 3^8 1^19."""
+    cycles = 8
+    fixed = ORDER - 3 * cycles
+    maximum_exceptions_per_cycle = 4
+
+    one_triangle_independent_cycles = cycles - 1
+    one_triangle_incidence_upper = (
+        one_triangle_independent_cycles * maximum_exceptions_per_cycle
+    )
+    one_triangle_low_signature_vertices = 4
+    one_triangle_incidence_lower = 2 * (
+        fixed - one_triangle_low_signature_vertices
+    )
+    one_triangle_excluded = (
+        one_triangle_incidence_upper
+        < one_triangle_incidence_lower
+    )
+
+    all_independent_incidence_upper = (
+        cycles * maximum_exceptions_per_cycle
+    )
+    feasible_low_signature_counts = []
+    for zero_signatures in range(fixed + 1):
+        for one_signatures in range(fixed - zero_signatures + 1):
+            if zero_signatures + one_signatures > 4:
+                continue
+            incidence_lower = (
+                one_signatures
+                + 2 * (fixed - zero_signatures - one_signatures)
+            )
+            if incidence_lower <= all_independent_incidence_upper:
+                feasible_low_signature_counts.append(
+                    {
+                        "zero_signatures": zero_signatures,
+                        "one_signatures": one_signatures,
+                        "incidence_lower": incidence_lower,
+                    }
+                )
+
+    minimum_zero_signatures = min(
+        row["zero_signatures"]
+        for row in feasible_low_signature_counts
+    )
+    remaining_after_two_zero_signatures = fixed - 2
+    all_independent_excluded = (
+        minimum_zero_signatures >= 2
+        and remaining_after_two_zero_signatures > R35_MINUS_ONE
+    )
+
+    exception_incidence_upper = cycles * maximum_exceptions_per_cycle
+    guaranteed_root_exception_upper = (
+        exception_incidence_upper // fixed
+    )
+    remaining_case_bounds = []
+    for triangle_cycles in (2, 3, 4):
+        independent_cycles = cycles - triangle_cycles
+        slack_budget = (triangle_cycles - 4) ** 2
+        remaining_case_bounds.append(
+            {
+                "triangle_cycles": triangle_cycles,
+                "independent_cycles": independent_cycles,
+                "slack_budget": slack_budget,
+                "minimum_exception_incidences": (
+                    32 - slack_budget
+                ),
+                "maximum_same_type_deviation": (
+                    slack_budget // 2
+                ),
+                "mixed_weight_lower": (
+                    2 * triangle_cycles * (7 - triangle_cycles)
+                ),
+                "mixed_weight_upper": (
+                    independent_cycles * (triangle_cycles + 2)
+                ),
+                "triangle_mixed_row_lower": (
+                    14 - 2 * triangle_cycles
+                ),
+                "triangle_mixed_row_upper": (
+                    independent_cycles * (triangle_cycles + 2)
+                    - (triangle_cycles - 1)
+                    * (14 - 2 * triangle_cycles)
+                ),
+                "independent_mixed_column_lower": max(
+                    0,
+                    2 * triangle_cycles * (7 - triangle_cycles)
+                    - (independent_cycles - 1)
+                    * (triangle_cycles + 2),
+                ),
+                "independent_mixed_column_upper": (
+                    triangle_cycles + 2
+                ),
+            }
+        )
+
+    return {
+        "cycles": cycles,
+        "fixed_vertices": fixed,
+        "maximum_exceptions_per_cycle": maximum_exceptions_per_cycle,
+        "one_triangle_case": {
+            "independent_cycles": one_triangle_independent_cycles,
+            "incidence_upper": one_triangle_incidence_upper,
+            "maximum_vertices_missing_at_most_one_cycle": (
+                one_triangle_low_signature_vertices
+            ),
+            "incidence_lower": one_triangle_incidence_lower,
+            "excluded": one_triangle_excluded,
+        },
+        "all_independent_case": {
+            "incidence_upper": all_independent_incidence_upper,
+            "minimum_zero_signatures": minimum_zero_signatures,
+            "remaining_fixed_vertices": (
+                remaining_after_two_zero_signatures
+            ),
+            "r_5_3_minus_one": R35_MINUS_ONE,
+            "excluded": all_independent_excluded,
+        },
+        "excluded_triangle_cycle_counts": [0, 1, 7, 8],
+        "normalized_remaining_triangle_cycle_counts": [2, 3, 4],
+        "exception_incidence_upper": exception_incidence_upper,
+        "guaranteed_root_exception_upper": (
+            guaranteed_root_exception_upper
+        ),
+        "remaining_case_bounds": remaining_case_bounds,
+        "cycle_type_excluded": False,
+    }
+
+
 def exclude_prime_at_least_five(prime: int, cycles: int) -> bool:
     fixed = ORDER - prime * cycles
     return prime >= 5 and fixed > 2 * R35_MINUS_ONE
@@ -254,6 +382,9 @@ def main() -> None:
                 "excluded_count": len(excluded),
                 "order_three_seven_cycle_audit": (
                     order_three_seven_cycle_audit()
+                ),
+                "order_three_eight_internal_type_audit": (
+                    order_three_eight_internal_type_audit()
                 ),
             },
             indent=2,

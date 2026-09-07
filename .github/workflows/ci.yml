@@ -11,7 +11,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 360
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -30,7 +30,6 @@ jobs:
         run: |
           make test PYTHON=python
           make verify-text PYTHON=python
-          make verify-elementary PYTHON=python
 
       - name: Build pinned drat-trim
         run: |
@@ -38,7 +37,7 @@ jobs:
           git -C build/drat-trim-src checkout 2e3b2dc0ecf938addbd779d42877b6ed69d9a985
           make -C build/drat-trim-src
 
-      - name: Regenerate formulas and replay proofs
+      - name: Regenerate all formulas and replay all proofs
         run: |
           make verify-proofs \
             PYTHON=python \
@@ -53,11 +52,17 @@ jobs:
       - name: Build technical report
         run: make paper
 
-      - name: Upload technical report
+      - name: Verify release candidate evidence
+        run: make verify-release-candidate PYTHON=python
+
+      - name: Upload candidate evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: technical-report
-          path: build/paper/main.pdf
+          name: release-candidate-evidence
+          path: |
+            build/paper/main.pdf
+            build/paper/paper-build.json
+            build/release-candidate-evidence.json
           if-no-files-found: error
 
       - name: Verify release manifest
@@ -67,6 +72,18 @@ jobs:
         run: |
           make release-manifest PYTHON=python
           git diff --exit-code -- release-manifest.sha256
+
+      - name: Build and verify deterministic release assets
+        run: |
+          make release-assets PYTHON=python
+          make verify-release-assets PYTHON=python
+
+      - name: Verify final release gate
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          make verify-release-gate \
+            PYTHON=python \
+            RELEASE_TAG="${GITHUB_REF_NAME}"
 
       - name: Assert tracked tree unchanged
         if: always()

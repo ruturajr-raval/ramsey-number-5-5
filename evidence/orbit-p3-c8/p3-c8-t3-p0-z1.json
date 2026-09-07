@@ -1,0 +1,24 @@
+{
+  "base_signatures": 328438,
+  "bytes": 31089854,
+  "clauses": 879868,
+  "cycles": 8,
+  "degree_bounds": [
+    18,
+    24
+  ],
+  "edge_orbit_variables": 415,
+  "extra_clauses": 222992,
+  "fixed": 19,
+  "homogeneous_size": 5,
+  "independent_cycles": 5,
+  "order": 43,
+  "order_three_eight_structure": true,
+  "prime": 3,
+  "root_adjacent_cycles": null,
+  "root_adjacent_triangle_cycles": 0,
+  "root_nonadjacent_independent_cycles": 1,
+  "sha256": "e891b89513858e247c92814b608d4453bd2d13a033db5663e129370c5d0bdda7",
+  "triangle_cycles": 3,
+  "variables": 76440
+}

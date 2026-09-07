@@ -1,0 +1,35 @@
+{
+  "artifact_binding": {
+    "cnf_sha256_logged": false,
+    "mode": "post-run-attestation",
+    "proof_bytes_logged": false,
+    "proof_sha256_logged": false
+  },
+  "branch": [
+    3,
+    0,
+    0
+  ],
+  "cnf": {
+    "bytes": 31089853,
+    "clauses": 879868,
+    "path": "p3-c8-t3-p0-z0.cnf",
+    "sha256": "ee6933dab9a43a4c0d0c0e6f9d5b12b4ce4dac039ede3f7c094765996ad9696f",
+    "variables": 76440
+  },
+  "proof": {
+    "compressed_bytes": 1287304,
+    "compressed_sha256": "e41fe68cf418eb729aca0d1e029b7d199eb5913c30e48e58bf68db69fcb12d38",
+    "path": "p3-c8-t3-p0-z0.drat.xz"
+  },
+  "record_complete": true,
+  "solver": {
+    "binary_sha256": "c86c7ccc2f727e1ef4716fd2fcf69539fbe0e8b1da8d89341fb48d643a3aeb28",
+    "exit_code": 20,
+    "log": "p3-c8-t3-p0-z0-proof.log",
+    "log_sha256": "afa17c39a72c640042b278b34ef9418aa30694bb0160d5227d5dd6e0272d1f44",
+    "result": "UNSATISFIABLE",
+    "source_commit": "8af8e56f174b778aef3aa45af9f739b2a5f492c2",
+    "wall_seconds": 8.27
+  }
+}

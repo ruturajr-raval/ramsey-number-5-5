@@ -1,0 +1,10 @@
+c reading proof from stdin
+c parsing input formula with 76440 variables and 879868 clauses
+c finished parsing, read 118893 bytes from proof file
+c detected empty clause; start verification via backward checking
+c 1097 of 879868 clauses in core                            
+c 2707 of 2710 lemmas in core using 102559 resolution steps
+c 0 RAT lemmas in core; 1 redundant literals in core lemmas
+s VERIFIED
+c verification time: 0.793 seconds
+drat_trim_exit_code=0

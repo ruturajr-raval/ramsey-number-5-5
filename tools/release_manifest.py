@@ -14,6 +14,7 @@ from typing import Dict, Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "release-manifest.sha256"
+MAX_PACKAGE_FILE_BYTES = 100_000_000
 EXCLUDED_PARTS = {
     ".git",
     ".search-sanitize-bin.dSYM",
@@ -29,6 +30,23 @@ EXCLUDED_NAMES = {
     MANIFEST.name,
 }
 LINE_RE = re.compile(r"^([0-9a-f]{64})  (.+)$")
+
+
+def validate_package_file(path: Path, relative: Path) -> None:
+    if not path.is_file() or path.is_symlink():
+        raise ValueError(
+            "tracked package path is not a regular file: "
+            + relative.as_posix()
+        )
+    size = path.stat().st_size
+    if size > MAX_PACKAGE_FILE_BYTES:
+        raise ValueError(
+            "tracked package file exceeds {} bytes: {} ({})".format(
+                MAX_PACKAGE_FILE_BYTES,
+                relative.as_posix(),
+                size,
+            )
+        )
 
 
 def package_files() -> Iterable[Path]:
@@ -56,11 +74,20 @@ def package_files() -> Iterable[Path]:
         if relative.name in EXCLUDED_NAMES:
             continue
         path = ROOT / relative
-        if not path.is_file() or path.is_symlink():
-            raise ValueError(
-                "tracked package path is not a regular file: "
-                + relative.as_posix()
-            )
+        validate_package_file(path, relative)
+        yield path
+
+
+def archive_files() -> Iterable[Path]:
+    for path in sorted(ROOT.rglob("*")):
+        relative = path.relative_to(ROOT)
+        if any(part in EXCLUDED_PARTS for part in relative.parts):
+            continue
+        if relative.name in EXCLUDED_NAMES:
+            continue
+        if path.is_dir():
+            continue
+        validate_package_file(path, relative)
         yield path
 
 
@@ -112,41 +139,40 @@ def read_manifest() -> Dict[str, str]:
             resolved.relative_to(ROOT.resolve())
         except ValueError:
             raise ValueError("manifest path escapes project: {}".format(relative))
-        if not path.is_file() or path.is_symlink():
-            raise ValueError(
-                "manifest path is not a regular file: {}".format(relative)
-            )
+        validate_package_file(path, Path(relative))
         entries[relative] = expected
     return entries
 
 
 def check_manifest() -> int:
     expected = read_manifest()
-    observed = {
-        relative: digest(ROOT / relative)
-        for relative in expected
-    }
+    observed = (
+        tracked_entries()
+        if (ROOT / ".git").is_dir()
+        else {
+            path.relative_to(ROOT).as_posix(): digest(path)
+            for path in archive_files()
+        }
+    )
     errors = []
     for relative in sorted(set(expected) & set(observed)):
         if expected[relative] != observed[relative]:
             errors.append("hash mismatch: {}".format(relative))
 
-    if (ROOT / ".git").is_dir():
-        tracked = tracked_entries()
-        missing = sorted(set(tracked) - set(expected))
-        stale = sorted(set(expected) - set(tracked))
-        if missing:
-            errors.append(
-                "manifest is missing tracked paths: {}".format(
-                    ", ".join(missing)
-                )
+    missing = sorted(set(observed) - set(expected))
+    stale = sorted(set(expected) - set(observed))
+    if missing:
+        errors.append(
+            "manifest is missing package paths: {}".format(
+                ", ".join(missing)
             )
-        if stale:
-            errors.append(
-                "manifest has untracked paths: {}".format(
-                    ", ".join(stale)
-                )
+        )
+    if stale:
+        errors.append(
+            "manifest has absent package paths: {}".format(
+                ", ".join(stale)
             )
+        )
 
     if errors:
         for error in errors:

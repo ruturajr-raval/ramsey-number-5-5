@@ -32,6 +32,10 @@ EMAIL_RE = re.compile(
 )
 
 
+def is_binary_proof(path: Path) -> bool:
+    return path.name.endswith(".drat.xz") or ".drat.xz.part-" in path.name
+
+
 def repository_files() -> Iterable[Path]:
     for path in sorted(ROOT.rglob("*")):
         if not path.is_file() or path.is_symlink():
@@ -40,6 +44,8 @@ def repository_files() -> Iterable[Path]:
         if any(part in EXCLUDED_PARTS for part in relative.parts):
             continue
         if path.name in EXCLUDED_NAMES:
+            continue
+        if is_binary_proof(path):
             continue
         yield path
 

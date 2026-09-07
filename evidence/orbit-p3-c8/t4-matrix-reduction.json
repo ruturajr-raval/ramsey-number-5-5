@@ -1,0 +1,125 @@
+{
+  "allowed_mixed_weights": [
+    1,
+    2
+  ],
+  "cycle_type": "3^8 1^19",
+  "distinguished_row_matrix_classes": 2,
+  "fixed_exception_lemmas": {
+    "reason": "Two fixed triangle exceptions cannot be adjacent without forming a 5-clique, while two fixed independent exceptions cannot be nonadjacent without forming an independent 5-set. Their intersection therefore has size at most one.",
+    "shared_independent_exception_forces_edge": true,
+    "shared_triangle_exception_forces_nonedge": true,
+    "triangle_independent_exception_intersection_at_most_one": true
+  },
+  "labeled_matrices": 90,
+  "local_graph_constraints": {
+    "mixed_weight_three_excluded": true,
+    "mixed_weight_zero_excluded": true,
+    "reason": "A complete or empty mixed link would force the four fixed triangle neighbors to equal the four fixed independent nonneighbors, but the former set is independent and the latter is a clique."
+  },
+  "ordinary_matrix_classes": 2,
+  "phase_gauge": {
+    "free_cycle_phases": 7,
+    "phase_assignments": 2187,
+    "root_cycle": 0,
+    "tree_edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        0,
+        7
+      ]
+    ],
+    "unique_normalization": true
+  },
+  "representatives": {
+    "c8": [
+      [
+        1,
+        1,
+        2,
+        2
+      ],
+      [
+        1,
+        2,
+        1,
+        2
+      ],
+      [
+        2,
+        1,
+        2,
+        1
+      ],
+      [
+        2,
+        2,
+        1,
+        1
+      ]
+    ],
+    "two-c4": [
+      [
+        1,
+        1,
+        2,
+        2
+      ],
+      [
+        1,
+        1,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        1,
+        1
+      ],
+      [
+        2,
+        2,
+        1,
+        1
+      ]
+    ]
+  },
+  "root_partition": {
+    "disjoint_and_complete_for_low_exception_roots": true,
+    "p0_branch": "the selected root has no exceptions",
+    "p1_branch": "the selected root has one triangle exception and no fixed vertex has zero exceptions"
+  },
+  "row_and_column_multisets": [
+    1,
+    1,
+    2,
+    2
+  ],
+  "triangle_cycles": 4,
+  "verified": true,
+  "verifier_sha256": "5552c1725ec55b8b819078a256ff1e50b1128efba8a272ebe6b66e34f5883aea"
+}
