@@ -22,7 +22,7 @@
 
 The diagonal Ramsey number `R(5,5)` is the least integer `n` such that every
 graph on `n` vertices contains a clique of size 5 or an independent set of
-size 5. Exoo established the lower bound 43 in 1989. McKay and Radziszowski
+size 5. Exoo published the lower bound 43 in 1989. McKay and Radziszowski
 proved the upper bound 49 in 1997, Angeltveit and McKay improved it to 48 in
 2018, and their 2025 computation improved it to 46. The verified frontier on
 2026-09-07 was therefore
@@ -130,8 +130,8 @@ prepared in `.zenodo.json`.
 
 Project-original software, proofs, evidence records, and documentation are
 MIT licensed. Third-party solvers, proof checkers, papers, and public
-coverage records are referenced but not relicensed. The author is Ruturaj R
-Raval, Independent Researcher, ORCID
+coverage records are referenced but not relicensed. The author is
+Ruturaj R Raval, Independent Researcher, ORCID
 [`0000-0003-4930-8981`](https://orcid.org/0000-0003-4930-8981).
 
 ## Detailed Technical Record

@@ -4,19 +4,17 @@
 
 | Field | Value |
 | --- | --- |
-| Title | Prime-Order Automorphism Exclusions for Ramsey `(5,5,43)` Graphs |
+| Title | Prime-Order Automorphism Exclusions for Ramsey (5,5,43) Graphs |
 | Author | Ruturaj R Raval |
 | Affiliation | Independent Researcher |
 | ORCID | `0000-0003-4930-8981` |
-| Candidate version | `0.1.0` |
+| Candidate version | `v0.1.0` |
 | License | MIT |
 | Package status | not yet released |
-| Version DOI | not yet assigned |
-| Concept DOI | not yet assigned |
 
 Package status: not yet released.
 
-## Claim-Safe Summary
+## Claim-Safe Public Summary
 
 The package excludes 12 prime-order automorphism cycle types that dated
 public coverage left unresolved. Eleven small-support types follow from an
