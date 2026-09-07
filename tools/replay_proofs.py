@@ -86,8 +86,16 @@ def build_fresh_checker(
         "-o",
         str(checker_path),
     ]
+    recorded_command = [
+        compiler,
+        source_path.name,
+        "-std=c99",
+        "-O2",
+        "-o",
+        checker_path.name,
+    ]
     with build_log_path.open("w", encoding="ascii", newline="\n") as log:
-        log.write("command=" + " ".join(command) + "\n")
+        log.write("command=" + " ".join(recorded_command) + "\n")
         log.write("compiler_version=" + version.stdout.splitlines()[0] + "\n")
         completed = subprocess.run(
             command,
@@ -106,7 +114,7 @@ def build_fresh_checker(
         "compiler_version": version.stdout.splitlines()[0],
         "source": source_path.name,
         "source_sha256": file_sha256(source_path),
-        "command": command,
+        "command": recorded_command,
         "log": build_log_path.name,
         "log_sha256": file_sha256(build_log_path),
     }

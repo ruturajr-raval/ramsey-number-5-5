@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "source": {
+    "path": "paper/main.tex",
+    "sha256": "c3197fac42aa1c0ee98bb6d6bbbcd0a4ab0e4320ec0faa77c60fa2a116a8be0f"
+  },
+  "pdf": {
+    "path": "paper/ramsey-number-5-5-paper-v0.1.0.pdf",
+    "bytes": 91189,
+    "pages": 9,
+    "sha256": "788061d4bd186c27c8559a02413e0b9d928c50ffc336fe71a31ad80366d1da01"
+  },
+  "build": {
+    "engine": "Tectonic 0.17.0",
+    "source_date_epoch": 1788739200,
+    "inspected_platform": "aarch64-apple-darwin",
+    "inspected_engine_archive_sha256": "a3f1cac7c5678f01661a92212f58480ae3b0634115d880dbc59e2953ded45667",
+    "inspected_engine_sha256": "b52b5a730e2b0b33087304f7720f649603953f270a6b1c88bb031e1ae01f7f9c",
+    "latex_log_path": "paper/ramsey-number-5-5-paper-v0.1.0.log",
+    "latex_log_sha256": "048cad08f1d428a0eb51c35d9a9342bc5725ee9d15a2f1b4e2fe102ec27717c1"
+  },
+  "inspection": {
+    "date": "2026-09-07",
+    "pages_inspected": 9,
+    "result": "pass"
+  }
+}

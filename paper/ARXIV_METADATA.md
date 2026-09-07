@@ -42,8 +42,8 @@ Planned choice: arXiv perpetual, non-exclusive license.
 
 ## Submission Status
 
-Not submitted. Source compilation, package review, and release gating remain
-in progress.
+Not submitted. The source compiles to the committed inspected PDF. Corrected
+package review, hosted CI, and release gating remain in progress.
 
 ## Claim Boundary
 

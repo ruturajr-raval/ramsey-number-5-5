@@ -10,3 +10,8 @@ evidence/orbit-p3-c6/*.drat.xz binary
 evidence/orbit-p3-c8/*.log binary
 evidence/orbit-p3-c8/*.drat.xz binary
 evidence/orbit-p3-c8/*.drat.xz.part-* binary
+evidence/replay-c6/drat-trim-fresh binary
+evidence/replay-c6/*.log binary
+evidence/replay-c8/drat-trim-fresh binary
+evidence/replay-c8/*.log binary
+paper/ramsey-number-5-5-paper-v0.1.0.log binary

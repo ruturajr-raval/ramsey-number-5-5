@@ -67,7 +67,24 @@ class PackageBoundaryTests(unittest.TestCase):
             "evidence/orbit-p3-c8/p3-c8-t4-p1-z0-mc8-run.json",
             paths,
         )
+        self.assertIn(
+            "evidence/replay-c6/fresh-proof-replay.json",
+            paths,
+        )
+        self.assertIn(
+            "evidence/replay-c8/fresh-proof-replay.json",
+            paths,
+        )
         self.assertIn("paper/main.tex", paths)
+        self.assertIn(
+            "paper/ramsey-number-5-5-paper-v0.1.0.pdf",
+            paths,
+        )
+        self.assertIn(
+            "paper/ramsey-number-5-5-paper-v0.1.0.log",
+            paths,
+        )
+        self.assertIn("paper/release-pdf.json", paths)
         self.assertIn("src/check_small_support.py", paths)
         self.assertIn("src/orbit_cnf.py", paths)
         self.assertIn("tools/build_release_assets.py", paths)

@@ -341,21 +341,26 @@ reconstructed from regenerated formulas, retained proofs, solver records, and
 audit files. Fresh builds from pinned clean `drat-trim` source verified all
 four c6 branches and all ten c8 branches. The c6 replay covers 56,884,692
 compressed bytes and 159,015,979 decompressed bytes; its record SHA-256 is
-`68eeba9b18aabdc42cca443666741eae75bd43df29d37990907a775e6aa8c5af`.
+`6815224208794b686c633b0d601bccbcfbd8d580dcaee991b4e8f2ec5af3d934`.
 The c8 replay covers 557,888,932 compressed bytes and 2,730,397,896
 decompressed bytes; its record SHA-256 is
 `0de9d8c9c66901ed326a13d6b2e54255b19556321f26c8d03e8ec13999611ddf`.
-Final snapshot review and hosted CI are still pending.
+The inspected PDF is committed, hash-bound, and reproducible byte for byte
+under the recorded source-date epoch. Final corrected-snapshot review and
+hosted CI are still pending.
 
 The c8 evidence records distinguish original solver output from retained
 proof cores and disclose whether exact artifact hashes came from the original
 solver log or from a labeled post-run attestation. Formula generation and
 proof checking are CPU-bound and require no GPU. Exact formula sizes, proof
 sizes, hashes, and recorded runtimes are retained under
-`evidence/orbit-p3-c6/` and `evidence/orbit-p3-c8/`.
+`evidence/orbit-p3-c6/` and `evidence/orbit-p3-c8/`. The release-grade replay
+records, fresh checker binaries, checker-build logs, and per-branch logs are
+retained under `evidence/replay-c6/` and `evidence/replay-c8/`.
 
-The final release manifest will bind the source, documentation, formulas,
-proof packages, logs, audits, and report to one reviewed snapshot.
+The verified release manifest binds the source, documentation, formulas,
+proof packages, retained replay records and logs, audits, and committed report
+to one candidate snapshot.
 
 ## Reproduction
 
@@ -434,10 +439,9 @@ problems.
 
 Before public release, the project still requires:
 
-- final closed-world release-manifest generation and archive reconstruction;
 - final independent snapshot review;
 - hosted replay and candidate CI on the committed release snapshot;
-- immutable PDF, source, and checksum release assets;
+- tag-bound source and checksum asset verification;
 - public repository release; and
 - DOI archival.
 

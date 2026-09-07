@@ -12,3 +12,5 @@ paper/*.aux
 paper/*.log
 paper/*.out
 paper/*.pdf
+!paper/ramsey-number-5-5-paper-v0.1.0.pdf
+!paper/ramsey-number-5-5-paper-v0.1.0.log

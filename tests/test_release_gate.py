@@ -1,7 +1,12 @@
 from __future__ import annotations
 
+import gzip
 import hashlib
+import io
 import json
+import shutil
+import subprocess
+import tarfile
 import tempfile
 import unittest
 from pathlib import Path
@@ -15,6 +20,7 @@ from verify_release_gate import (
     GATE_NAMES,
     EvidencePaths,
     file_sha256,
+    release_identity_errors,
     validation_errors,
 )
 
@@ -50,12 +56,25 @@ class ReleaseGateTests(unittest.TestCase):
             root=self.root,
             c6_replay=self.root / "build/c6/fresh-proof-replay.json",
             c8_replay=self.root / "build/c8/fresh-proof-replay.json",
+            retained_c6_replay=(
+                self.root / "evidence/replay-c6/fresh-proof-replay.json"
+            ),
+            retained_c8_replay=(
+                self.root / "evidence/replay-c8/fresh-proof-replay.json"
+            ),
             c6_manifest=self.root / "evidence/c6/certificate-manifest.json",
             c8_manifest=self.root / "evidence/c8/certificate-manifest.json",
             paper_source=self.root / "paper/main.tex",
             paper_pdf=self.root / "build/paper/main.pdf",
             paper_log=self.root / "build/paper/main.log",
             paper_record=self.root / "build/paper/paper-build.json",
+            release_pdf=(
+                self.root / "paper/ramsey-number-5-5-paper-v0.1.0.pdf"
+            ),
+            release_log=(
+                self.root / "paper/ramsey-number-5-5-paper-v0.1.0.log"
+            ),
+            release_pdf_record=self.root / "paper/release-pdf.json",
             release_manifest=self.root / "release-manifest.sha256",
             release_dir=self.root / "dist/release",
         )
@@ -97,7 +116,24 @@ class ReleaseGateTests(unittest.TestCase):
             },
         }
 
+    def branch_checker(
+        self,
+        directory: Path,
+        label: str,
+    ) -> dict[str, object]:
+        log = directory / f"{label}-fresh-drat-trim.log"
+        log.write_text("s VERIFIED\n", encoding="ascii")
+        return {
+            "result": "VERIFIED",
+            "exit_code": 0,
+            "wall_seconds": 0.1,
+            "log": log.name,
+            "log_sha256": file_sha256(log),
+        }
+
     def make_c6_evidence(self) -> None:
+        replay_directory = self.paths.c6_replay.parent
+        replay_directory.mkdir(parents=True, exist_ok=True)
         branches = []
         for branch in range(4):
             branches.append(
@@ -105,6 +141,10 @@ class ReleaseGateTests(unittest.TestCase):
                     "branch": branch,
                     "cnf": self.artifact(f"p3-c6-k{branch}.cnf"),
                     "proof": self.artifact(f"p3-c6-k{branch}.drat.xz"),
+                    "checker": self.branch_checker(
+                        replay_directory,
+                        f"p3-c6-k{branch}",
+                    ),
                 }
             )
         manifest = {
@@ -131,6 +171,8 @@ class ReleaseGateTests(unittest.TestCase):
         self.write_json(self.paths.c6_replay, replay)
 
     def make_c8_evidence(self) -> None:
+        replay_directory = self.paths.c8_replay.parent
+        replay_directory.mkdir(parents=True, exist_ok=True)
         keys = (
             (2, 0, 0, None),
             (2, 1, 0, None),
@@ -176,6 +218,10 @@ class ReleaseGateTests(unittest.TestCase):
                 "run_record": run_record,
                 "compaction_record": compaction_record,
                 "solver": solver,
+                "checker": self.branch_checker(
+                    replay_directory,
+                    f"c8-{index}",
+                ),
             }
             if matrix_type is not None:
                 expected["matrix_type"] = matrix_type
@@ -235,6 +281,48 @@ class ReleaseGateTests(unittest.TestCase):
                 self.paths.paper_log,
             ),
         )
+        self.paths.release_pdf.write_bytes(self.paths.paper_pdf.read_bytes())
+        self.paths.release_log.write_bytes(self.paths.paper_log.read_bytes())
+        self.write_json(
+            self.paths.release_pdf_record,
+            {
+                "schema_version": 1,
+                "source": {
+                    "path": "paper/main.tex",
+                    "sha256": file_sha256(self.paths.paper_source),
+                },
+                "pdf": {
+                    "path": self.paths.release_pdf.relative_to(
+                        self.root
+                    ).as_posix(),
+                    "bytes": self.paths.release_pdf.stat().st_size,
+                    "pages": 9,
+                    "sha256": file_sha256(self.paths.release_pdf),
+                },
+                "build": {
+                    "engine": "Tectonic 0.17.0",
+                    "source_date_epoch": 1788739200,
+                    "inspected_platform": "test-platform",
+                    "inspected_engine_archive_sha256": "2" * 64,
+                    "inspected_engine_sha256": "3" * 64,
+                    "latex_log_path": self.paths.release_log.relative_to(
+                        self.root
+                    ).as_posix(),
+                    "latex_log_sha256": file_sha256(
+                        self.paths.release_log
+                    ),
+                },
+                "inspection": {
+                    "date": "2026-09-07",
+                    "pages_inspected": 9,
+                    "result": "pass",
+                },
+            },
+        )
+        (self.root / "CITATION.cff").write_text(
+            "cff-version: 1.2.0\nversion: 0.1.0\n",
+            encoding="ascii",
+        )
 
     def make_release_manifest(self, gate: dict[str, object]) -> None:
         self.write_json(self.root / "research/release-gate.json", gate)
@@ -248,21 +336,24 @@ class ReleaseGateTests(unittest.TestCase):
             "tools/record_paper_build.py",
             "tools/build_release_assets.py",
             "tools/verify_release_gate.py",
+            "docs/detail.md",
         )
         for relative in required_stubs:
             path = self.root / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             if not path.exists():
                 path.write_text(relative + "\n", encoding="ascii")
-        required = (
-            *(self.root / relative for relative in required_stubs),
-            self.root / "research/release-gate.json",
-            self.paths.c6_manifest,
-            self.paths.c8_manifest,
-            self.paths.paper_source,
-        )
         lines = []
-        for path in sorted(required):
+        package_files = sorted(
+            path
+            for path in self.root.rglob("*")
+            if path.is_file()
+            and not path.is_symlink()
+            and "build" not in path.relative_to(self.root).parts
+            and "dist" not in path.relative_to(self.root).parts
+            and path != self.paths.release_manifest
+        )
+        for path in package_files:
             relative = path.relative_to(self.root).as_posix()
             lines.append(f"{file_sha256(path)}  {relative}\n")
         self.paths.release_manifest.write_text(
@@ -270,12 +361,23 @@ class ReleaseGateTests(unittest.TestCase):
             encoding="ascii",
         )
 
+    def retain_replay_evidence(self) -> None:
+        for source, destination in (
+            (self.paths.c6_replay.parent, self.paths.retained_c6_replay.parent),
+            (self.paths.c8_replay.parent, self.paths.retained_c8_replay.parent),
+        ):
+            destination.mkdir(parents=True, exist_ok=True)
+            for path in source.iterdir():
+                if path.is_file():
+                    shutil.copy2(path, destination / path.name)
+
     def make_evidence(self) -> None:
         self.make_c6_evidence()
         self.make_c8_evidence()
         self.make_paper_evidence()
-        self.make_release_assets()
+        self.retain_replay_evidence()
         self.make_release_manifest(complete_gate())
+        self.make_release_assets()
 
     def make_release_assets(self) -> None:
         self.paths.release_dir.mkdir(parents=True, exist_ok=True)
@@ -287,11 +389,42 @@ class ReleaseGateTests(unittest.TestCase):
             encoding="ascii",
         )
         (self.paths.release_dir / paper_name).write_bytes(
-            self.paths.paper_pdf.read_bytes()
+            self.paths.release_pdf.read_bytes()
         )
-        (self.paths.release_dir / source_name).write_bytes(
-            b"source archive fixture\n"
-        )
+        manifest_entries = []
+        for line in self.paths.release_manifest.read_text(
+            encoding="ascii"
+        ).splitlines():
+            _, relative = line.split("  ", maxsplit=1)
+            manifest_entries.append(relative)
+        source_path = self.paths.release_dir / source_name
+        prefix = f"ramsey-number-5-5-v{version}"
+        with source_path.open("wb") as raw_stream:
+            with gzip.GzipFile(
+                filename="",
+                mode="wb",
+                fileobj=raw_stream,
+                mtime=0,
+            ) as gzip_stream:
+                with tarfile.open(
+                    fileobj=gzip_stream,
+                    mode="w",
+                    format=tarfile.PAX_FORMAT,
+                ) as archive:
+                    for relative in (
+                        *manifest_entries,
+                        self.paths.release_manifest.name,
+                    ):
+                        data = (self.root / relative).read_bytes()
+                        info = tarfile.TarInfo(f"{prefix}/{relative}")
+                        info.size = len(data)
+                        info.mode = 0o644
+                        info.mtime = 0
+                        info.uid = 0
+                        info.gid = 0
+                        info.uname = "root"
+                        info.gname = "root"
+                        archive.addfile(info, io.BytesIO(data))
         lines = []
         for name in sorted((paper_name, source_name)):
             lines.append(
@@ -313,6 +446,7 @@ class ReleaseGateTests(unittest.TestCase):
             "final_release_snapshot_audit_passes",
             "paper_build_and_inspection_passes",
             "independent_package_review_passes",
+            "hosted_candidate_ci_passes",
         ):
             gate["gates"][name] = False
 
@@ -354,6 +488,39 @@ class ReleaseGateTests(unittest.TestCase):
             mode="candidate",
         )
         self.assertIn("c6 replay manifest hash mismatch", errors)
+
+    def test_manifest_checks_nonrequired_file_hashes(self) -> None:
+        (self.root / "docs/detail.md").write_text(
+            "changed\n",
+            encoding="ascii",
+        )
+        errors = validation_errors(
+            complete_gate(),
+            self.paths,
+            mode="candidate",
+        )
+        self.assertIn(
+            "release manifest hash mismatch: docs/detail.md",
+            errors,
+        )
+
+    def test_tampered_retained_branch_log_is_rejected(self) -> None:
+        log = (
+            self.paths.retained_c6_replay.parent
+            / "p3-c6-k0-fresh-drat-trim.log"
+        )
+        log.write_text("changed\n", encoding="ascii")
+        errors = validation_errors(
+            complete_gate(),
+            self.paths,
+            mode="candidate",
+        )
+        self.assertTrue(
+            any(
+                "checker log hash mismatch" in error
+                for error in errors
+            )
+        )
 
     def test_stale_paper_is_rejected(self) -> None:
         self.paths.paper_source.write_text(
@@ -407,8 +574,105 @@ class ReleaseGateTests(unittest.TestCase):
             mode="final",
         )
         self.assertIn(
-            "release paper does not match the inspected paper",
+            "release paper does not match the committed paper",
             errors,
+        )
+
+    def test_invalid_source_archive_is_rejected(self) -> None:
+        source_name = "ramsey-number-5-5-source-v0.1.0.tar.gz"
+        source_path = self.paths.release_dir / source_name
+        source_path.write_bytes(b"not a tar archive\n")
+        paper_name = "ramsey-number-5-5-paper-v0.1.0.pdf"
+        (self.paths.release_dir / "SHA256SUMS").write_text(
+            (
+                f"{file_sha256(self.paths.release_dir / paper_name)}  "
+                f"{paper_name}\n"
+                f"{file_sha256(source_path)}  {source_name}\n"
+            ),
+            encoding="ascii",
+        )
+
+        errors = validation_errors(
+            complete_gate(),
+            self.paths,
+            mode="final",
+        )
+        self.assertTrue(
+            any(
+                "release source archive is invalid" in error
+                for error in errors
+            )
+        )
+
+    def test_final_release_requires_hosted_candidate_ci(self) -> None:
+        gate = complete_gate()
+        gate["gates"]["hosted_candidate_ci_passes"] = False
+        errors = validation_errors(gate, self.paths, mode="final")
+        self.assertTrue(
+            any(
+                "hosted_candidate_ci_passes" in error
+                for error in errors
+            )
+        )
+
+    def test_release_identity_is_bound_to_exact_tag(self) -> None:
+        repository = self.root / "identity-repository"
+        repository.mkdir()
+        subprocess.run(
+            ["git", "init", "--quiet"],
+            cwd=repository,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.name", "Release Fixture"],
+            cwd=repository,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.email", "fixture.invalid"],
+            cwd=repository,
+            check=True,
+        )
+        payload = repository / "payload"
+        payload.write_text("first\n", encoding="ascii")
+        subprocess.run(["git", "add", "payload"], cwd=repository, check=True)
+        subprocess.run(
+            ["git", "commit", "--quiet", "-m", "first"],
+            cwd=repository,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "tag", "v0.1.0"],
+            cwd=repository,
+            check=True,
+        )
+
+        self.assertEqual(
+            [],
+            release_identity_errors(
+                repository,
+                "HEAD",
+                "v0.1.0",
+                "0.1.0",
+                "final",
+            ),
+        )
+        payload.write_text("second\n", encoding="ascii")
+        subprocess.run(["git", "add", "payload"], cwd=repository, check=True)
+        subprocess.run(
+            ["git", "commit", "--quiet", "-m", "second"],
+            cwd=repository,
+            check=True,
+        )
+        errors = release_identity_errors(
+            repository,
+            "HEAD",
+            "v0.1.0",
+            "0.1.0",
+            "final",
+        )
+        self.assertTrue(
+            any("expected" in error for error in errors)
         )
 
 

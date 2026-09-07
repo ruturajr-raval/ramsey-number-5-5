@@ -22,6 +22,10 @@ class ReleaseAssetTests(unittest.TestCase):
             "ramsey-number-5-5-source-v1.2.3.tar.gz",
             names["source"],
         )
+        self.assertEqual(
+            "paper/ramsey-number-5-5-paper-v1.2.3.pdf",
+            release_assets.committed_paper_relative("1.2.3"),
+        )
 
     def test_checksum_writer_is_sorted_and_exact(self) -> None:
         with tempfile.TemporaryDirectory() as directory_text:

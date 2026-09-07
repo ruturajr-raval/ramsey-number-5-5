@@ -1,0 +1,134 @@
+{
+  "all_expected_branches_verified": true,
+  "branches": [
+    {
+      "branch": 0,
+      "checker": {
+        "exit_code": 0,
+        "log": "p3-c6-k0-fresh-drat-trim.log",
+        "log_sha256": "caa7cebf3028b3f858f0a4b07e18302d3ab297ec85360a1e0fb07bcbc78db333",
+        "result": "VERIFIED",
+        "wall_seconds": 5.719229
+      },
+      "cnf": {
+        "bytes": 33375330,
+        "clauses": 910918,
+        "path": "p3-c6-k0.cnf",
+        "sha256": "ac56dd4e6633f8aac9efea957799059bf98f5cf71507e800036c4ef9235821fc",
+        "variables": 67709
+      },
+      "proof": {
+        "compressed_bytes": 10198768,
+        "compressed_sha256": "c4365b7394386c4ac8a0669982d9afe7f0ee48aa312d641092d14e50ae831d60",
+        "decompressed_bytes": 30784923,
+        "decompressed_sha256": "ebd06221f353493012775fab75d35d62b5e3b5a8ed72ff4156bf96d3f5a8e8ce",
+        "path": "p3-c6-k0.drat.xz"
+      }
+    },
+    {
+      "branch": 1,
+      "checker": {
+        "exit_code": 0,
+        "log": "p3-c6-k1-fresh-drat-trim.log",
+        "log_sha256": "8e7d53ab60fe8fdc9f5788370fc42e642bcf1bbeed73a5eae432cd59c8308b99",
+        "result": "VERIFIED",
+        "wall_seconds": 5.956125
+      },
+      "cnf": {
+        "bytes": 33375329,
+        "clauses": 910918,
+        "path": "p3-c6-k1.cnf",
+        "sha256": "2a92ff17114fbd30a0d6c152011c1cab1386839b7462b70c5ea95252c3b56089",
+        "variables": 67709
+      },
+      "proof": {
+        "compressed_bytes": 16489040,
+        "compressed_sha256": "e23f985a7dca17ecab5169dbdeba0d8e5f856e8c4ab89b8b0619dc368137f4bf",
+        "decompressed_bytes": 45131183,
+        "decompressed_sha256": "44ae0a1c13d970335856d1fc6a38a401855ccc88769f272a2cb4b36bec7256a7",
+        "path": "p3-c6-k1.drat.xz"
+      }
+    },
+    {
+      "branch": 2,
+      "checker": {
+        "exit_code": 0,
+        "log": "p3-c6-k2-fresh-drat-trim.log",
+        "log_sha256": "853a618107382fe953c8b716ceb153e32a78a9b98790d1a02b44d5232e32deb0",
+        "result": "VERIFIED",
+        "wall_seconds": 5.719299
+      },
+      "cnf": {
+        "bytes": 33375328,
+        "clauses": 910918,
+        "path": "p3-c6-k2.cnf",
+        "sha256": "5543127a0f17e56c05cf9cdcd79935fd44433b6d2777c3d8c314361d4a96679c",
+        "variables": 67709
+      },
+      "proof": {
+        "compressed_bytes": 12893480,
+        "compressed_sha256": "6c570981d5c2c10cc609fa3e720e8a16dafcbc56715af4563a58c7b31f9a9489",
+        "decompressed_bytes": 36964048,
+        "decompressed_sha256": "f5913329124765a8b599829c7186845ae41b5fb60c83937fac8e8682e1b7003d",
+        "path": "p3-c6-k2.drat.xz"
+      }
+    },
+    {
+      "branch": 3,
+      "checker": {
+        "exit_code": 0,
+        "log": "p3-c6-k3-fresh-drat-trim.log",
+        "log_sha256": "3292e4623dde3a49b76b9594ddf27d8dd072e3a20b9b3afd7c83a0f64088242a",
+        "result": "VERIFIED",
+        "wall_seconds": 7.311348
+      },
+      "cnf": {
+        "bytes": 33375327,
+        "clauses": 910918,
+        "path": "p3-c6-k3.cnf",
+        "sha256": "e8a8e8453f45a0242c32a3c8c8cbca5b1743e34ae25f67829211223f79e4e688",
+        "variables": 67709
+      },
+      "proof": {
+        "compressed_bytes": 17303404,
+        "compressed_sha256": "ecc37245286371169abf5f6b5c3703d8ea464a685d253dd92534952a0eaac4c1",
+        "decompressed_bytes": 46135825,
+        "decompressed_sha256": "c1db5e4792117cb5d3018e5cf619e931b5aebd05f3b6dbc05a4bbaf9b439188e",
+        "path": "p3-c6-k3.drat.xz"
+      }
+    }
+  ],
+  "certificate_manifest": {
+    "path": "certificate-manifest.json",
+    "sha256": "3d94e53b661ee4465e4293b347b9ade6493ca30cbbe98df9dd0ee76193f968f7"
+  },
+  "checker": "drat-trim-fresh",
+  "checker_build": {
+    "command": [
+      "cc",
+      "drat-trim.c",
+      "-std=c99",
+      "-O2",
+      "-o",
+      "drat-trim-fresh"
+    ],
+    "compiler": "cc",
+    "compiler_version": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "log": "drat-trim-fresh-build.log",
+    "log_sha256": "71ae3783c93be5fe6f75243f92b357467d70614144775d2e0d824f8e1cc77959",
+    "mode": "fresh-source-build",
+    "source": "drat-trim.c",
+    "source_sha256": "d834b649f437e091597f5347f259b9f681087f89ca0844d0cee250a1a1a0c2ee"
+  },
+  "checker_sha256": "8498f423b22aa168ca822f59160e23b51950648e16c09a80d37a080a5b882b69",
+  "checker_sha256_requirement": null,
+  "checker_source_commit": "2e3b2dc0ecf938addbd779d42877b6ed69d9a985",
+  "claim": "No graph on 43 vertices with clique number and independence number at most 4 has an automorphism of cycle type 3^6 1^25.",
+  "claim_boundary": "This excludes one automorphism cycle type. It does not determine R(5,5), exclude asymmetric graphs, or change 43 <= R(5,5) <= 46.",
+  "expected_branch_count": 4,
+  "proof_family": "four root-adjacency branches",
+  "release_grade_replay": true,
+  "scope": "complete retained certificate replay",
+  "selected_branches_verified": true,
+  "verified_branch_count": 4
+}

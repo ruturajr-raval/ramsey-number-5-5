@@ -45,7 +45,9 @@ written into the original solver log from legacy proofs carrying an explicit
 post-run attestation. The latter label is a limitation of log provenance, not
 a substitute for proof checking. Every retained compact proof passed its
 historical independent verification. Release-grade fresh replay of the
-complete ten-branch package remains the final open proof gate.
+complete four-branch c6 and ten-branch c8 packages also passes. Durable replay
+records, checker binaries, build logs, and branch logs are retained under
+`evidence/replay-c6/` and `evidence/replay-c8/`.
 
 The two direct `t=4` root formulas are retained as audited reduction inputs,
 but the release certificate uses the four strengthened matrix branches.

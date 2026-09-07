@@ -52,12 +52,19 @@ be extended to remaining cycle types.
 - Certificate manifest: `evidence/orbit-p3-c6/certificate-manifest.json`
 - Retained proofs: `evidence/orbit-p3-c6/*.drat.xz`
 - Fresh replay tool: `tools/replay_proofs.py`
+- Retained c6 replay: `evidence/replay-c6/fresh-proof-replay.json`
 - `3^8 1^19` coverage: `evidence/orbit-p3-c8/branch-coverage.json`
 - `3^8 1^19` certificate manifest:
   `evidence/orbit-p3-c8/certificate-manifest.json`
 - `3^8 1^19` retained proof streams:
   `evidence/orbit-p3-c8/*.drat.xz` and `*.drat.xz.part-*`
 - Combined c8 replay tool: `tools/replay_c8_proofs.py`
+- Retained c8 replay: `evidence/replay-c8/fresh-proof-replay.json`
+- Committed inspected report:
+  `paper/ramsey-number-5-5-paper-v0.1.0.pdf`
+- Retained inspected build log:
+  `paper/ramsey-number-5-5-paper-v0.1.0.log`
+- Report binding: `paper/release-pdf.json`
 - Package manifest: `release-manifest.sha256`
 
 ## Claim Boundary And Limitations
@@ -92,16 +99,18 @@ proof-assistant verification have not occurred.
 
 Before release:
 
-1. Generate and verify the final closed-world release manifest.
-2. Complete the final independent package review and hosted candidate replay.
+1. Complete the final independent review of the corrected release snapshot.
+2. Rerun hosted candidate CI after the account billing block is cleared.
 3. Refresh the prior-art search immediately before release.
-4. Prepare and verify the tagged PDF, source, and checksum assets.
-5. Confirm the public claim and dissemination text against the tagged package.
+4. Verify the tag-bound PDF, source, and checksum assets in hosted CI.
+5. Publish only the exact assets uploaded by the successful tag workflow.
+6. Confirm the public claim and dissemination text against the tagged package.
 
 Both certificate manifests are generated and independently reconstructed by
 the certificate-verification targets. The local release-grade replay records
-verify all 14 retained proof branches. The rebuilt nine-page report has been
-inspected page by page and is bound to its source and LaTeX log by SHA-256.
+verify all 14 retained proof branches and are retained with their checker
+binaries and logs. The rebuilt nine-page report has been inspected page by
+page, committed, and bound to its source and build log by SHA-256.
 
 The next order-3 research target is `3^9 1^16`.
 

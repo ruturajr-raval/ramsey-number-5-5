@@ -3,11 +3,13 @@ CC ?= cc
 DRAT_TRIM ?= drat-trim
 DRAT_TRIM_COMMIT := 2e3b2dc0ecf938addbd779d42877b6ed69d9a985
 DRAT_TRIM_SOURCE ?= $(patsubst %/,%,$(dir $(DRAT_TRIM)))
+SOURCE_DATE_EPOCH ?= 1788739200
 
 BUILD := build
 RELEASE_REF ?= HEAD
 RELEASE_TAG ?=
 RELEASE_TAG_OPTION := $(if $(strip $(RELEASE_TAG)),--tag $(RELEASE_TAG),)
+RELEASE_PDF := paper/ramsey-number-5-5-paper-v0.1.0.pdf
 
 C6_CNF_BUILD := $(BUILD)/orbit-p3-c6
 C6_REPLAY_BUILD := $(BUILD)/proof-replay-c6
@@ -268,17 +270,21 @@ verify-proofs: verify-c6-proofs verify-c8-proofs
 verify-release-candidate:
 	$(PYTHON) tools/verify_release_gate.py \
 		--mode candidate \
+		--ref $(RELEASE_REF) \
 		--output $(BUILD)/release-candidate-evidence.json
 
 verify-release-gate: verify-release-manifest verify-release-assets
 	$(PYTHON) tools/verify_release_gate.py \
 		--mode final \
+		--ref $(RELEASE_REF) $(RELEASE_TAG_OPTION) \
 		--output $(BUILD)/release-final-evidence.json
 
 paper:
 	mkdir -p $(BUILD)/paper
-	pdflatex -halt-on-error -output-directory=$(BUILD)/paper paper/main.tex
-	pdflatex -halt-on-error -output-directory=$(BUILD)/paper paper/main.tex
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) \
+		pdflatex -halt-on-error -output-directory=$(BUILD)/paper paper/main.tex
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) \
+		pdflatex -halt-on-error -output-directory=$(BUILD)/paper paper/main.tex
 	$(PYTHON) tools/record_paper_build.py \
 		--source paper/main.tex \
 		--pdf $(BUILD)/paper/main.pdf \
@@ -288,12 +294,14 @@ paper:
 paper-tectonic:
 	test -n "$(TECTONIC)"
 	mkdir -p $(BUILD)/paper
-	$(TECTONIC) --outdir $(BUILD)/paper --keep-logs paper/main.tex
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) \
+		$(TECTONIC) --outdir $(BUILD)/paper --keep-logs paper/main.tex
 	$(PYTHON) tools/record_paper_build.py \
 		--source paper/main.tex \
 		--pdf $(BUILD)/paper/main.pdf \
 		--log $(BUILD)/paper/main.log \
 		--output $(BUILD)/paper/paper-build.json
+	cmp $(BUILD)/paper/main.pdf $(RELEASE_PDF)
 
 release-assets:
 	test -f $(BUILD)/paper/main.pdf

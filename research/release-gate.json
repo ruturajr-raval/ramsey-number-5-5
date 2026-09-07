@@ -16,10 +16,11 @@
     "retained_drat_checks_pass": true,
     "clean_environment_replay_passes": true,
     "paper_build_and_inspection_passes": true,
-    "independent_package_review_passes": false
+    "independent_package_review_passes": false,
+    "hosted_candidate_ci_passes": false
   },
   "decision": "hold",
   "artifact_reproducibility_ready": false,
   "theorem_announcement_ready": false,
-  "reason": "The expanded mathematical result, branch reductions, formula audits, both certificate manifests, fresh local replays of all fourteen retained proofs, and the inspected nine-page report pass. Release remains on hold until final manifest generation, independent snapshot review, hosted candidate replay, immutable asset verification, and archival pass."
+  "reason": "The expanded mathematical result, branch reductions, formula audits, both certificate manifests, fresh local replays of all fourteen retained proofs, the closed-world manifest, and the committed inspected report pass. Release remains on hold until the corrected snapshot receives independent review and hosted candidate CI; run 34155539432 was blocked before execution by the account billing or spending limit."
 }

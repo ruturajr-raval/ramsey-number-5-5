@@ -89,11 +89,15 @@ def blob_bytes(object_id: str) -> bytes:
     return git_output(["cat-file", "blob", object_id])
 
 
-def text_at_ref(reference: str, relative: str) -> str:
+def bytes_at_ref(reference: str, relative: str) -> bytes:
     for entry in tree_entries(reference):
         if entry.path == relative:
-            return blob_bytes(entry.object_id).decode("utf-8")
+            return blob_bytes(entry.object_id)
     raise ValueError(f"{relative} is absent from Git reference {reference}")
+
+
+def text_at_ref(reference: str, relative: str) -> str:
+    return bytes_at_ref(reference, relative).decode("utf-8")
 
 
 def project_version(reference: str = "HEAD") -> str:
@@ -169,6 +173,15 @@ def asset_names(version: str) -> dict[str, str]:
     }
 
 
+def committed_paper_relative(version: str) -> str:
+    return f"paper/{PROJECT}-paper-v{version}.pdf"
+
+
+def verify_pdf_bytes(data: bytes, label: str) -> None:
+    if data[:5] != b"%PDF-":
+        raise ValueError(f"{label} is not a PDF")
+
+
 def verify_pdf(path: Path) -> None:
     if not path.is_file() or path.is_symlink():
         raise ValueError(f"{path} is missing or unsafe")
@@ -223,6 +236,11 @@ def build_assets(reference: str, paper: Path, tag: str | None = None) -> None:
     if tag is not None:
         validate_tag(commit, tag, version)
     verify_pdf(paper)
+    committed_paper = bytes_at_ref(
+        commit,
+        committed_paper_relative(version),
+    )
+    verify_pdf_bytes(committed_paper, "committed release paper")
     names = asset_names(version)
 
     RELEASE_DIR.parent.mkdir(parents=True, exist_ok=True)
@@ -230,7 +248,10 @@ def build_assets(reference: str, paper: Path, tag: str | None = None) -> None:
         tempfile.mkdtemp(prefix="release-assets-", dir=RELEASE_DIR.parent)
     )
     try:
-        replace_file(paper, staging / names["paper"])
+        release_paper = staging / names["paper"]
+        release_paper.write_bytes(committed_paper)
+        release_paper.chmod(0o644)
+        verify_paper_binding(release_paper, paper)
         build_source_archive(staging / names["source"], version, commit)
         write_checksums(staging, names)
         if RELEASE_DIR.is_symlink():
@@ -273,6 +294,8 @@ def verify_source_archive(
             or member.uid != 0
             or member.gid != 0
             or member.mtime != 0
+            or member.uname != "root"
+            or member.gname != "root"
             for member in members
         ):
             raise ValueError("source archive contains an unsafe member")
@@ -296,6 +319,11 @@ def verify_assets(
     version = project_version(commit)
     if tag is not None:
         validate_tag(commit, tag, version)
+    committed_paper = bytes_at_ref(
+        commit,
+        committed_paper_relative(version),
+    )
+    verify_pdf_bytes(committed_paper, "committed release paper")
     names = asset_names(version)
     expected_files = set(names.values()) | {"SHA256SUMS"}
     if not RELEASE_DIR.is_dir() or RELEASE_DIR.is_symlink():
@@ -315,6 +343,8 @@ def verify_assets(
             raise ValueError(f"release asset hash mismatch: {name}")
 
     paper = RELEASE_DIR / names["paper"]
+    if paper.read_bytes() != committed_paper:
+        raise ValueError("release paper does not match the committed paper")
     verify_paper_binding(paper, expected_paper)
     verify_source_archive(
         RELEASE_DIR / names["source"],

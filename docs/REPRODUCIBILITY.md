@@ -21,7 +21,7 @@ and the branch-cover arguments.
 - `python-sat` for the full cardinality tests
 - GNU Make or a compatible `make`
 - `drat-trim` for fresh proof replay
-- `pdflatex` for the report
+- Tectonic 0.17.0 for the release report
 
 Install Python test dependencies:
 
@@ -128,8 +128,26 @@ sets `release_grade_replay` only after all ten unique branches pass. The
 official `make verify-proofs` path first regenerates the formulas and audit
 reports through its certificate-verification dependency.
 
-Fresh logs are written under `build/proof-replay-c6/` and
-`build/proof-replay-c8/`.
+Fresh logs are generated under `build/proof-replay-c6/` and
+`build/proof-replay-c8/`. The reviewed release-grade records, freshly built
+checker binaries, checker-build logs, and branch logs are retained under
+`evidence/replay-c6/` and `evidence/replay-c8/`. The release gate checks the
+hash of every retained log and checker.
+
+## Report Reproduction
+
+The release report was built with Tectonic 0.17.0. Its exact source, PDF,
+engine hashes, retained build log, and page-inspection result are recorded in
+`paper/release-pdf.json`. The build fixes `SOURCE_DATE_EPOCH` at
+`1788739200`, corresponding to 2026-09-07 00:00:00 UTC. Rebuild and compare
+it byte for byte with:
+
+```bash
+make paper-tectonic TECTONIC=/path/to/tectonic
+```
+
+The target fails unless the rebuilt PDF equals
+`paper/ramsey-number-5-5-paper-v0.1.0.pdf`.
 
 ## Resource Profile
 
@@ -165,6 +183,10 @@ and SHA-256 digest of their exact concatenation before decompression.
 | `evidence/orbit-p3-c8/t4-formula-semantics-audit.json` | Independent strengthened formula reconstruction |
 | `evidence/orbit-p3-c8/certificate-manifest.json` | Ten-branch proof and provenance manifest |
 | `evidence/orbit-p3-c8/*.drat.xz` and `*.drat.xz.part-*` | Retained compact binary DRAT proof streams |
+| `evidence/replay-c6/` | Complete four-branch release-grade replay record, checker, and logs |
+| `evidence/replay-c8/` | Complete ten-branch release-grade replay record, checker, and logs |
+| `paper/release-pdf.json` | Hash binding and inspection record for the committed report |
+| `paper/ramsey-number-5-5-paper-v0.1.0.log` | Retained log from the inspected report build |
 
 ## Failure Interpretation
 

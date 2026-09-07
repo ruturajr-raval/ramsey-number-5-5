@@ -43,14 +43,26 @@ jobs:
             PYTHON=python \
             DRAT_TRIM="$PWD/build/drat-trim-src/drat-trim"
 
-      - name: Install TeX
+      - name: Install pinned Tectonic
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            texlive-latex-base texlive-latex-recommended
+          mkdir -p build/tectonic
+          curl -L --fail --silent --show-error \
+            -o build/tectonic/tectonic.tar.gz \
+            https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.17.0/tectonic-0.17.0-x86_64-unknown-linux-musl.tar.gz
+          echo \
+            "8533d07f9ccbd7a65824b9e0459041bca34af1eb33daba48f59215593753a3b7  build/tectonic/tectonic.tar.gz" \
+            | sha256sum -c -
+          tar -xzf build/tectonic/tectonic.tar.gz -C build/tectonic
+          echo \
+            "a98aa59ad5c1df39a6c9e56cbfc5088f2b11d6c179c0130b97998e4bd46a46da  build/tectonic/tectonic" \
+            | sha256sum -c -
+          test "$(build/tectonic/tectonic --version)" = "Tectonic 0.17.0"
 
       - name: Build technical report
-        run: make paper
+        run: |
+          XDG_CACHE_HOME="$PWD/build/tectonic-cache" make paper-tectonic \
+            PYTHON=python \
+            TECTONIC="$PWD/build/tectonic/tectonic"
 
       - name: Verify release candidate evidence
         run: make verify-release-candidate PYTHON=python
@@ -62,8 +74,11 @@ jobs:
           path: |
             build/paper/main.pdf
             build/paper/paper-build.json
+            build/proof-replay-c6
+            build/proof-replay-c8
             build/release-candidate-evidence.json
           if-no-files-found: error
+          compression-level: 0
 
       - name: Verify release manifest
         run: make verify-release-manifest PYTHON=python
@@ -84,6 +99,17 @@ jobs:
           make verify-release-gate \
             PYTHON=python \
             RELEASE_TAG="${GITHUB_REF_NAME}"
+
+      - name: Upload tag-verified release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ramsey-number-5-5-${{ github.ref_name }}-verified-release
+          path: |
+            dist/release
+            build/release-final-evidence.json
+          if-no-files-found: error
+          compression-level: 0
 
       - name: Assert tracked tree unchanged
         if: always()
