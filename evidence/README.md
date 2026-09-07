@@ -47,7 +47,9 @@ a substitute for proof checking. Every retained compact proof passed its
 historical independent verification. Release-grade fresh replay of the
 complete four-branch c6 and ten-branch c8 packages also passes. Durable replay
 records, checker binaries, build logs, and branch logs are retained under
-`evidence/replay-c6/` and `evidence/replay-c8/`.
+`evidence/replay-c6/` and `evidence/replay-c8/`. The retained checker
+executables remain under the upstream MIT license reproduced at
+`third_party/drat-trim/LICENSE`.
 
 The two direct `t=4` root formulas are retained as audited reduction inputs,
 but the release certificate uses the four strengthened matrix branches.

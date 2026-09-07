@@ -132,7 +132,9 @@ Fresh logs are generated under `build/proof-replay-c6/` and
 `build/proof-replay-c8/`. The reviewed release-grade records, freshly built
 checker binaries, checker-build logs, and branch logs are retained under
 `evidence/replay-c6/` and `evidence/replay-c8/`. The release gate checks the
-hash of every retained log and checker.
+hash of every retained log and checker. The retained checker executables are
+covered by the upstream MIT license reproduced at
+`third_party/drat-trim/LICENSE`.
 
 ## Report Reproduction
 
@@ -185,6 +187,7 @@ and SHA-256 digest of their exact concatenation before decompression.
 | `evidence/orbit-p3-c8/*.drat.xz` and `*.drat.xz.part-*` | Retained compact binary DRAT proof streams |
 | `evidence/replay-c6/` | Complete four-branch release-grade replay record, checker, and logs |
 | `evidence/replay-c8/` | Complete ten-branch release-grade replay record, checker, and logs |
+| `third_party/drat-trim/LICENSE` | Upstream license for the retained checker executables |
 | `paper/release-pdf.json` | Hash binding and inspection record for the committed report |
 | `paper/ramsey-number-5-5-paper-v0.1.0.log` | Retained log from the inspected report build |
 

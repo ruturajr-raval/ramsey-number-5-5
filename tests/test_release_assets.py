@@ -134,6 +134,77 @@ class ReleaseAssetTests(unittest.TestCase):
                         "HEAD",
                     )
 
+    def test_source_archive_rejects_unsafe_member_shapes(self) -> None:
+        prefix = "ramsey-number-5-5-v0.1.0/"
+        cases = (
+            "symlink",
+            "hardlink",
+            "traversal",
+            "absolute",
+            "metadata",
+            "mode",
+            "pax",
+        )
+        entries = [
+            release_assets.TreeEntry("payload", 0o644, "payload"),
+        ]
+        with tempfile.TemporaryDirectory() as directory_text:
+            directory = Path(directory_text)
+            for case in cases:
+                with self.subTest(case=case):
+                    path = directory / f"{case}.tar.gz"
+                    name = f"{prefix}payload"
+                    if case == "traversal":
+                        name = f"{prefix}../escape"
+                    elif case == "absolute":
+                        name = "/escape"
+                    info = tarfile.TarInfo(name)
+                    info.mode = 0o600 if case == "mode" else 0o644
+                    info.mtime = 0
+                    info.uid = 1 if case == "metadata" else 0
+                    info.gid = 0
+                    info.uname = "root"
+                    info.gname = "root"
+                    if case == "pax":
+                        info.pax_headers = {"comment": "unexpected"}
+                    data: io.BytesIO | None = io.BytesIO(b"payload\n")
+                    info.size = len(b"payload\n")
+                    if case == "symlink":
+                        info.type = tarfile.SYMTYPE
+                        info.linkname = "payload"
+                        info.size = 0
+                        data = None
+                    elif case == "hardlink":
+                        info.type = tarfile.LNKTYPE
+                        info.linkname = f"{prefix}payload"
+                        info.size = 0
+                        data = None
+                    with tarfile.open(path, mode="w:gz") as archive:
+                        archive.addfile(info, data)
+                    with (
+                        mock.patch.object(
+                            release_assets,
+                            "resolve_ref",
+                            return_value="f" * 40,
+                        ),
+                        mock.patch.object(
+                            release_assets,
+                            "tree_entries",
+                            return_value=entries,
+                        ),
+                        mock.patch.object(
+                            release_assets,
+                            "blob_bytes",
+                            return_value=b"payload\n",
+                        ),
+                    ):
+                        with self.assertRaises(ValueError):
+                            release_assets.verify_source_archive(
+                                path,
+                                "0.1.0",
+                                "HEAD",
+                            )
+
     def test_release_paper_must_match_inspected_build(self) -> None:
         with tempfile.TemporaryDirectory() as directory_text:
             directory = Path(directory_text)

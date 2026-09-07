@@ -489,10 +489,11 @@ ORCID: [0000-0003-4930-8981](https://orcid.org/0000-0003-4930-8981)
 Project-original software, proofs, evidence records, and documentation are
 MIT licensed under the root `LICENSE`.
 
-Third-party solvers, proof checkers, papers, and public coverage records are
-referenced but not relicensed. Their versions, commits, and roles in the
-verification chain are recorded in the reproducibility and evidence
-materials.
+The two retained `drat-trim` checker executables remain under their upstream
+MIT license, reproduced at `third_party/drat-trim/LICENSE`. Other third-party
+solvers, papers, and public coverage records are referenced but not
+relicensed. Their versions, commits, and roles in the verification chain are
+recorded in the reproducibility and evidence materials.
 
 ## References
 

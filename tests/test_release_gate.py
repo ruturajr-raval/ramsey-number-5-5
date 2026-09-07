@@ -9,6 +9,7 @@ import subprocess
 import tarfile
 import tempfile
 import unittest
+from dataclasses import replace
 from pathlib import Path
 
 from record_paper_build import build_record
@@ -19,8 +20,13 @@ from verify_release_gate import (
     EXPECTED_CHECKER_SOURCE_COMMIT,
     GATE_NAMES,
     EvidencePaths,
+    ReferenceEntry,
+    archive_entry_errors,
     file_sha256,
+    hosted_environment_errors,
     release_identity_errors,
+    reference_snapshot_errors,
+    repository_clean_errors,
     validation_errors,
 )
 
@@ -331,6 +337,8 @@ class ReleaseGateTests(unittest.TestCase):
             "CITATION.cff",
             ".zenodo.json",
             "PUBLICATION.md",
+            "THIRD_PARTY_NOTICES.md",
+            "third_party/drat-trim/LICENSE",
             "tools/replay_proofs.py",
             "tools/replay_c8_proofs.py",
             "tools/record_paper_build.py",
@@ -418,7 +426,8 @@ class ReleaseGateTests(unittest.TestCase):
                         data = (self.root / relative).read_bytes()
                         info = tarfile.TarInfo(f"{prefix}/{relative}")
                         info.size = len(data)
-                        info.mode = 0o644
+                        source_mode = (self.root / relative).stat().st_mode
+                        info.mode = 0o755 if source_mode & 0o111 else 0o644
                         info.mtime = 0
                         info.uid = 0
                         info.gid = 0
@@ -520,6 +529,82 @@ class ReleaseGateTests(unittest.TestCase):
                 "checker log hash mismatch" in error
                 for error in errors
             )
+        )
+
+    def test_retained_replay_rejects_traversal_log_path(self) -> None:
+        replay = json.loads(
+            self.paths.retained_c6_replay.read_text(encoding="ascii")
+        )
+        replay["branches"][0]["checker"]["log"] = "../outside.log"
+        self.write_json(self.paths.retained_c6_replay, replay)
+        errors = validation_errors(
+            complete_gate(),
+            self.paths,
+            mode="candidate",
+        )
+        self.assertTrue(
+            any("checker log path is unsafe" in error for error in errors)
+        )
+
+    def test_retained_replay_rejects_traversal_checker_path(self) -> None:
+        replay = json.loads(
+            self.paths.retained_c6_replay.read_text(encoding="ascii")
+        )
+        replay["checker"] = "../outside"
+        self.write_json(self.paths.retained_c6_replay, replay)
+        errors = validation_errors(
+            complete_gate(),
+            self.paths,
+            mode="candidate",
+        )
+        self.assertIn("c6 checker binary path is unsafe", errors)
+
+    def test_retained_replay_rejects_symlinked_log(self) -> None:
+        replay = json.loads(
+            self.paths.retained_c6_replay.read_text(encoding="ascii")
+        )
+        source = (
+            self.paths.retained_c6_replay.parent
+            / "p3-c6-k0-fresh-drat-trim.log"
+        )
+        alias = self.paths.retained_c6_replay.parent / "alias.log"
+        alias.symlink_to(source.name)
+        replay["branches"][0]["checker"]["log"] = alias.name
+        replay["branches"][0]["checker"]["log_sha256"] = file_sha256(source)
+        self.write_json(self.paths.retained_c6_replay, replay)
+        errors = validation_errors(
+            complete_gate(),
+            self.paths,
+            mode="candidate",
+        )
+        self.assertTrue(
+            any(
+                "checker log is missing or unsafe" in error
+                for error in errors
+            )
+        )
+
+    def test_retained_replay_log_requires_manifest_binding(self) -> None:
+        omitted = "evidence/replay-c6/p3-c6-k0-fresh-drat-trim.log"
+        lines = [
+            line
+            for line in self.paths.release_manifest.read_text(
+                encoding="ascii"
+            ).splitlines()
+            if not line.endswith("  " + omitted)
+        ]
+        self.paths.release_manifest.write_text(
+            "\n".join(lines) + "\n",
+            encoding="ascii",
+        )
+        errors = validation_errors(
+            complete_gate(),
+            self.paths,
+            mode="candidate",
+        )
+        self.assertIn(
+            "c6 replay branch 0 checker log is not bound by the release manifest",
+            errors,
         )
 
     def test_stale_paper_is_rejected(self) -> None:
@@ -657,6 +742,16 @@ class ReleaseGateTests(unittest.TestCase):
                 "final",
             ),
         )
+        self.assertEqual(
+            [],
+            release_identity_errors(
+                repository,
+                "HEAD",
+                None,
+                "0.1.0",
+                "candidate",
+            ),
+        )
         payload.write_text("second\n", encoding="ascii")
         subprocess.run(["git", "add", "payload"], cwd=repository, check=True)
         subprocess.run(
@@ -674,6 +769,343 @@ class ReleaseGateTests(unittest.TestCase):
         self.assertTrue(
             any("expected" in error for error in errors)
         )
+        errors = release_identity_errors(
+            repository,
+            "v0.1.0",
+            "v0.1.0",
+            "0.1.0",
+            "final",
+        )
+        self.assertTrue(
+            any("checked-out HEAD" in error for error in errors)
+        )
+
+    def test_release_snapshot_requires_a_clean_checkout(self) -> None:
+        repository = self.root / "clean-repository"
+        repository.mkdir()
+        subprocess.run(
+            ["git", "init", "--quiet"],
+            cwd=repository,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.name", "Release Fixture"],
+            cwd=repository,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.email", "fixture.invalid"],
+            cwd=repository,
+            check=True,
+        )
+        payload = repository / "payload"
+        payload.write_text("clean\n", encoding="ascii")
+        subprocess.run(["git", "add", "payload"], cwd=repository, check=True)
+        subprocess.run(
+            ["git", "commit", "--quiet", "-m", "clean"],
+            cwd=repository,
+            check=True,
+        )
+        self.assertEqual([], repository_clean_errors(repository))
+        payload.write_text("dirty\n", encoding="ascii")
+        self.assertEqual(
+            ["release snapshot has tracked or untracked changes"],
+            repository_clean_errors(repository),
+        )
+
+    def test_hosted_environment_is_bound_to_release_identity(self) -> None:
+        repository = self.root / "hosted-repository"
+        repository.mkdir()
+        subprocess.run(
+            ["git", "init", "--quiet"],
+            cwd=repository,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.name", "Release Fixture"],
+            cwd=repository,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.email", "fixture.invalid"],
+            cwd=repository,
+            check=True,
+        )
+        (repository / "payload").write_text("payload\n", encoding="ascii")
+        subprocess.run(["git", "add", "payload"], cwd=repository, check=True)
+        subprocess.run(
+            ["git", "commit", "--quiet", "-m", "payload"],
+            cwd=repository,
+            check=True,
+        )
+        commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=repository,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        environment = {
+            "GITHUB_ACTIONS": "true",
+            "GITHUB_REPOSITORY": "ruturajr-raval/ramsey-number-5-5",
+            "GITHUB_SHA": commit,
+            "GITHUB_REF_TYPE": "tag",
+            "GITHUB_REF_NAME": "v0.1.0",
+            "GITHUB_RUN_ID": "12345",
+        }
+        self.assertEqual(
+            [],
+            hosted_environment_errors(
+                repository,
+                "HEAD",
+                "v0.1.0",
+                environment,
+            ),
+        )
+        environment["GITHUB_SHA"] = "0" * 40
+        errors = hosted_environment_errors(
+            repository,
+            "HEAD",
+            "v0.1.0",
+            environment,
+        )
+        self.assertIn(
+            "hosted release SHA does not match the release reference",
+            errors,
+        )
+        environment["GITHUB_SHA"] = commit
+        environment["GITHUB_REPOSITORY"] = (
+            "ruturajr-raval/ramsey-number-5-5-research-workbench"
+        )
+        errors = hosted_environment_errors(
+            repository,
+            "HEAD",
+            "v0.1.0",
+            environment,
+        )
+        self.assertIn("hosted release repository is unexpected", errors)
+
+    def test_hosted_environment_requires_github_actions(self) -> None:
+        self.assertEqual(
+            ["final release verification requires GitHub Actions"],
+            hosted_environment_errors(
+                self.root,
+                "HEAD",
+                "v0.1.0",
+                {},
+            ),
+        )
+
+    def test_reference_snapshot_uses_git_tree_not_local_manifest(self) -> None:
+        repository = self.root / "reference-repository"
+        repository.mkdir()
+        subprocess.run(
+            ["git", "init", "--quiet"],
+            cwd=repository,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.name", "Release Fixture"],
+            cwd=repository,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.email", "fixture.invalid"],
+            cwd=repository,
+            check=True,
+        )
+        citation = repository / "CITATION.cff"
+        citation.write_text(
+            "cff-version: 1.2.0\nversion: 0.1.0\n",
+            encoding="ascii",
+        )
+        payload = repository / "payload"
+        payload.write_text("payload\n", encoding="ascii")
+        manifest = repository / "release-manifest.sha256"
+        manifest.write_text(
+            (
+                f"{file_sha256(citation)}  CITATION.cff\n"
+                f"{file_sha256(payload)}  payload\n"
+            ),
+            encoding="ascii",
+        )
+        subprocess.run(["git", "add", "."], cwd=repository, check=True)
+        subprocess.run(
+            ["git", "commit", "--quiet", "-m", "snapshot"],
+            cwd=repository,
+            check=True,
+        )
+        manifest.write_text(
+            (
+                f"{'0' * 64}  CITATION.cff\n"
+                f"{file_sha256(payload)}  payload\n"
+            ),
+            encoding="ascii",
+        )
+        paths = replace(
+            self.paths,
+            root=repository,
+            release_manifest=manifest,
+            release_dir=repository / "dist/release",
+        )
+        errors = reference_snapshot_errors(paths, "HEAD", "0.1.0")
+        self.assertTrue(
+            any(
+                "differs from Git-reference content" in error
+                for error in errors
+            )
+        )
+
+    def test_reference_snapshot_rejects_archive_content_drift(self) -> None:
+        repository = self.root / "archive-reference-repository"
+        repository.mkdir()
+        subprocess.run(
+            ["git", "init", "--quiet"],
+            cwd=repository,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.name", "Release Fixture"],
+            cwd=repository,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.email", "fixture.invalid"],
+            cwd=repository,
+            check=True,
+        )
+        citation = repository / "CITATION.cff"
+        citation.write_text(
+            "cff-version: 1.2.0\nversion: 0.1.0\n",
+            encoding="ascii",
+        )
+        payload = repository / "payload"
+        payload.write_text("payload\n", encoding="ascii")
+        manifest = repository / "release-manifest.sha256"
+        manifest.write_text(
+            (
+                f"{file_sha256(citation)}  CITATION.cff\n"
+                f"{file_sha256(payload)}  payload\n"
+            ),
+            encoding="ascii",
+        )
+        subprocess.run(["git", "add", "."], cwd=repository, check=True)
+        subprocess.run(
+            ["git", "commit", "--quiet", "-m", "snapshot"],
+            cwd=repository,
+            check=True,
+        )
+
+        release_dir = repository / "dist/release"
+        release_dir.mkdir(parents=True)
+        archive_path = (
+            release_dir / "ramsey-number-5-5-source-v0.1.0.tar.gz"
+        )
+        prefix = "ramsey-number-5-5-v0.1.0"
+        with archive_path.open("wb") as raw_stream:
+            with gzip.GzipFile(
+                filename="",
+                mode="wb",
+                fileobj=raw_stream,
+                mtime=0,
+            ) as gzip_stream:
+                with tarfile.open(
+                    fileobj=gzip_stream,
+                    mode="w",
+                    format=tarfile.PAX_FORMAT,
+                ) as archive:
+                    for relative in (
+                        "CITATION.cff",
+                        "payload",
+                        "release-manifest.sha256",
+                    ):
+                        data = (repository / relative).read_bytes()
+                        if relative == "payload":
+                            data = b"changed\n"
+                        info = tarfile.TarInfo(f"{prefix}/{relative}")
+                        info.size = len(data)
+                        info.mode = 0o644
+                        info.mtime = 0
+                        info.uid = 0
+                        info.gid = 0
+                        info.uname = "root"
+                        info.gname = "root"
+                        archive.addfile(info, io.BytesIO(data))
+
+        paths = replace(
+            self.paths,
+            root=repository,
+            release_manifest=manifest,
+            release_dir=release_dir,
+        )
+        errors = reference_snapshot_errors(paths, "HEAD", "0.1.0")
+        self.assertIn(
+            (
+                "release source archive versus Git reference hash mismatch: "
+                "payload"
+            ),
+            errors,
+        )
+
+    def test_final_archive_checker_rejects_unsafe_member_shapes(self) -> None:
+        prefix = "ramsey-number-5-5-v0.1.0/"
+        expected = {
+            "payload": ReferenceEntry(
+                hashlib.sha256(b"payload\n").hexdigest(),
+                0o644,
+            )
+        }
+        cases = (
+            "symlink",
+            "hardlink",
+            "traversal",
+            "absolute",
+            "metadata",
+            "mode",
+            "pax",
+        )
+        for case in cases:
+            with self.subTest(case=case):
+                archive_path = self.root / f"final-{case}.tar.gz"
+                name = f"{prefix}payload"
+                if case == "traversal":
+                    name = f"{prefix}../escape"
+                elif case == "absolute":
+                    name = "/escape"
+                info = tarfile.TarInfo(name)
+                info.mode = 0o600 if case == "mode" else 0o644
+                info.mtime = 0
+                info.uid = 1 if case == "metadata" else 0
+                info.gid = 0
+                info.uname = "root"
+                info.gname = "root"
+                if case == "pax":
+                    info.pax_headers = {"GNU.sparse.map": "0,8"}
+                data: io.BytesIO | None = io.BytesIO(b"payload\n")
+                info.size = len(b"payload\n")
+                if case == "symlink":
+                    info.type = tarfile.SYMTYPE
+                    info.linkname = "payload"
+                    info.size = 0
+                    data = None
+                elif case == "hardlink":
+                    info.type = tarfile.LNKTYPE
+                    info.linkname = f"{prefix}payload"
+                    info.size = 0
+                    data = None
+                with tarfile.open(
+                    archive_path,
+                    mode="w:gz",
+                    format=tarfile.PAX_FORMAT,
+                ) as archive:
+                    archive.addfile(info, data)
+                errors = archive_entry_errors(
+                    archive_path,
+                    prefix,
+                    expected,
+                    "final archive",
+                )
+                self.assertTrue(errors)
 
 
 if __name__ == "__main__":

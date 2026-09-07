@@ -85,6 +85,8 @@ class PackageBoundaryTests(unittest.TestCase):
             paths,
         )
         self.assertIn("paper/release-pdf.json", paths)
+        self.assertIn("THIRD_PARTY_NOTICES.md", paths)
+        self.assertIn("third_party/drat-trim/LICENSE", paths)
         self.assertIn("src/check_small_support.py", paths)
         self.assertIn("src/orbit_cnf.py", paths)
         self.assertIn("tools/build_release_assets.py", paths)

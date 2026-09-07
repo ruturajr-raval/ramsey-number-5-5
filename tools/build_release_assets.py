@@ -291,6 +291,8 @@ def verify_source_archive(
             or not member.name.startswith(prefix)
             or Path(member.name).is_absolute()
             or ".." in Path(member.name).parts
+            or bool(member.pax_headers)
+            or getattr(member, "sparse", None) is not None
             or member.uid != 0
             or member.gid != 0
             or member.mtime != 0

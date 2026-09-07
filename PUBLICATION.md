@@ -78,9 +78,11 @@ hardware. The encoder is extensively tested but not formally verified.
 ## Provenance And Licensing
 
 Project-original code, proofs, evidence records, and documentation are MIT
-licensed. Referenced papers, Kissat, `drat-trim`, and external public
-coverage records retain their own rights. No third-party source code or
-Ramsey graph catalog is redistributed in this package.
+licensed. The two retained `drat-trim` checker executables remain under the
+upstream MIT license reproduced at `third_party/drat-trim/LICENSE`.
+Referenced papers, Kissat, and external public coverage records retain their
+own rights. No third-party source code or Ramsey graph catalog is
+redistributed in this package.
 
 ## Review Status
 

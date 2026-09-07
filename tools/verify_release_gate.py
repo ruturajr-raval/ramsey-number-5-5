@@ -6,14 +6,19 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 import tarfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import BinaryIO
+from typing import BinaryIO, Mapping
 
 from record_paper_build import build_record
+from release_manifest import (
+    EXCLUDED_NAMES as PACKAGE_EXCLUDED_NAMES,
+    EXCLUDED_PARTS as PACKAGE_EXCLUDED_PARTS,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -76,6 +81,7 @@ VERSION_RE = re.compile(
     r"^version:\s*[\"']?([^\"' \n]+)",
     re.MULTILINE,
 )
+FINAL_RELEASE_REPOSITORY = "ruturajr-raval/ramsey-number-5-5"
 
 
 @dataclass(frozen=True)
@@ -96,6 +102,12 @@ class EvidencePaths:
     release_pdf_record: Path
     release_manifest: Path
     release_dir: Path
+
+
+@dataclass(frozen=True)
+class ReferenceEntry:
+    sha256: str
+    mode: int
 
 
 def default_evidence_paths(root: Path = ROOT) -> EvidencePaths:
@@ -154,6 +166,68 @@ def valid_sha256(value: object) -> bool:
     )
 
 
+def bind_release_artifact(
+    path: Path,
+    digest: str,
+    label: str,
+    root: Path | None,
+    release_entries: dict[str, str] | None,
+    errors: list[str],
+) -> None:
+    if root is None or release_entries is None:
+        return
+    try:
+        relative = path.relative_to(root).as_posix()
+    except ValueError:
+        errors.append(f"{label} escapes the release root")
+        return
+    if release_entries.get(relative) != digest:
+        errors.append(f"{label} is not bound by the release manifest")
+
+
+def checked_replay_artifact(
+    replay_path: Path,
+    name: object,
+    digest: object,
+    label: str,
+    errors: list[str],
+    root: Path | None = None,
+    release_entries: dict[str, str] | None = None,
+) -> Path | None:
+    if (
+        not isinstance(name, str)
+        or not name
+        or Path(name).name != name
+        or name in {".", ".."}
+    ):
+        errors.append(f"{label} path is unsafe")
+        return None
+    if not valid_sha256(digest):
+        errors.append(f"{label} hash is invalid")
+        return None
+    path = replay_path.parent / name
+    try:
+        confined = path.resolve().parent == replay_path.parent.resolve()
+    except OSError:
+        confined = False
+    if not confined or path.is_symlink() or not path.is_file():
+        errors.append(f"{label} is missing or unsafe")
+        return None
+    observed = file_sha256(path)
+    if observed != digest:
+        errors.append(f"{label} hash mismatch")
+        return None
+    bind_release_artifact(
+        path,
+        observed,
+        label,
+        root,
+        release_entries,
+        errors,
+    )
+    return path
+
+
 def declaration_errors(record: object, mode: str) -> list[str]:
     if not isinstance(record, dict):
         return ["release gate must be a JSON object"]
@@ -205,12 +279,25 @@ def replay_manifest_errors(
     replay_path: Path,
     manifest_path: Path,
     family: str,
+    root: Path | None = None,
+    release_entries: dict[str, str] | None = None,
 ) -> list[str]:
     errors: list[str] = []
     replay = load_json(replay_path, f"{family} replay", errors)
     manifest = load_json(manifest_path, f"{family} manifest", errors)
     if replay is None or manifest is None:
         return errors
+    if replay_path.is_symlink():
+        errors.append(f"{family} replay record is unsafe")
+    else:
+        bind_release_artifact(
+            replay_path,
+            file_sha256(replay_path),
+            f"{family} replay record",
+            root,
+            release_entries,
+            errors,
+        )
 
     expected_count = 4 if family == "c6" else 10
     expected_claim = C6_CLAIM if family == "c6" else C8_CLAIM
@@ -236,29 +323,25 @@ def replay_manifest_errors(
     else:
         if not valid_sha256(checker_build.get("source_sha256")):
             errors.append(f"{family} checker source hash is invalid")
-        build_log = checker_build.get("log")
-        build_log_sha256 = checker_build.get("log_sha256")
-        if not isinstance(build_log, str) or not valid_sha256(build_log_sha256):
-            errors.append(f"{family} checker build log record is invalid")
-        else:
-            build_log_path = replay_path.parent / build_log
-            if (
-                not build_log_path.is_file()
-                or file_sha256(build_log_path) != build_log_sha256
-            ):
-                errors.append(f"{family} checker build log hash mismatch")
+        checked_replay_artifact(
+            replay_path,
+            checker_build.get("log"),
+            checker_build.get("log_sha256"),
+            f"{family} checker build log",
+            errors,
+            root,
+            release_entries,
+        )
 
-    checker = replay.get("checker")
-    checker_sha256 = replay.get("checker_sha256")
-    if not isinstance(checker, str) or not valid_sha256(checker_sha256):
-        errors.append(f"{family} checker record is invalid")
-    else:
-        checker_path = replay_path.parent / checker
-        if (
-            not checker_path.is_file()
-            or file_sha256(checker_path) != checker_sha256
-        ):
-            errors.append(f"{family} checker binary hash mismatch")
+    checked_replay_artifact(
+        replay_path,
+        replay.get("checker"),
+        replay.get("checker_sha256"),
+        f"{family} checker binary",
+        errors,
+        root,
+        release_entries,
+    )
 
     manifest_binding = replay.get("certificate_manifest")
     manifest_sha256 = file_sha256(manifest_path)
@@ -299,24 +382,15 @@ def replay_manifest_errors(
             errors.append(
                 f"{family} replay branch {index} checker exit code changed"
             )
-        branch_log = branch_checker.get("log")
-        branch_log_sha256 = branch_checker.get("log_sha256")
-        if (
-            not isinstance(branch_log, str)
-            or not valid_sha256(branch_log_sha256)
-        ):
-            errors.append(
-                f"{family} replay branch {index} checker log record is invalid"
-            )
-            continue
-        branch_log_path = replay_path.parent / branch_log
-        if (
-            not branch_log_path.is_file()
-            or file_sha256(branch_log_path) != branch_log_sha256
-        ):
-            errors.append(
-                f"{family} replay branch {index} checker log hash mismatch"
-            )
+        checked_replay_artifact(
+            replay_path,
+            branch_checker.get("log"),
+            branch_checker.get("log_sha256"),
+            f"{family} replay branch {index} checker log",
+            errors,
+            root,
+            release_entries,
+        )
 
     if family == "c6":
         replay_by_key = {
@@ -505,13 +579,15 @@ def read_manifest_entries(
     errors: list[str],
 ) -> dict[str, str]:
     entries: dict[str, str] = {}
-    if not path.is_file():
-        errors.append(f"release manifest is missing: {path}")
+    if not path.is_file() or path.is_symlink():
+        errors.append(f"release manifest is missing or unsafe: {path}")
         return entries
-    for line_number, line in enumerate(
-        path.read_text(encoding="ascii").splitlines(),
-        start=1,
-    ):
+    try:
+        lines = path.read_text(encoding="ascii").splitlines()
+    except (OSError, UnicodeDecodeError) as error:
+        errors.append(f"release manifest cannot be read: {error}")
+        return entries
+    for line_number, line in enumerate(lines, start=1):
         match = MANIFEST_LINE_RE.fullmatch(line)
         if match is None:
             errors.append(f"invalid release manifest line {line_number}")
@@ -521,6 +597,166 @@ def read_manifest_entries(
             errors.append(f"duplicate release manifest path: {relative}")
         entries[relative] = digest
     return entries
+
+
+def resolve_commit(
+    root: Path,
+    reference: str,
+    label: str,
+    errors: list[str],
+) -> str | None:
+    try:
+        commit = subprocess.run(
+            ["git", "rev-parse", "--verify", f"{reference}^{{commit}}"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        errors.append(f"{label} does not resolve")
+        return None
+    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+        errors.append(f"{label} resolved to an invalid commit")
+        return None
+    return commit
+
+
+def git_reference_entries(
+    root: Path,
+    reference: str,
+    errors: list[str],
+) -> dict[str, ReferenceEntry]:
+    commit = resolve_commit(root, reference, "release reference", errors)
+    if commit is None:
+        return {}
+    try:
+        tree = subprocess.run(
+            ["git", "ls-tree", "-r", "-z", commit],
+            cwd=root,
+            check=True,
+            capture_output=True,
+        ).stdout
+    except (OSError, subprocess.CalledProcessError):
+        errors.append("release reference tree cannot be read")
+        return {}
+
+    entries: dict[str, ReferenceEntry] = {}
+    for record in tree.split(b"\0"):
+        if not record:
+            continue
+        try:
+            metadata, raw_path = record.split(b"\t", 1)
+            mode_text, object_type, object_id = (
+                metadata.decode("ascii").split()
+            )
+            relative = raw_path.decode("utf-8")
+        except (UnicodeDecodeError, ValueError):
+            errors.append("release reference contains an invalid tree entry")
+            continue
+        path = Path(relative)
+        if (
+            object_type != "blob"
+            or mode_text not in {"100644", "100755"}
+            or path.is_absolute()
+            or ".." in path.parts
+            or relative in entries
+        ):
+            errors.append(
+                f"release reference contains an unsafe tree entry: {relative}"
+            )
+            continue
+        try:
+            data = subprocess.run(
+                ["git", "cat-file", "blob", object_id],
+                cwd=root,
+                check=True,
+                stdout=subprocess.PIPE,
+            ).stdout
+        except (OSError, subprocess.CalledProcessError):
+            errors.append(f"release reference blob cannot be read: {relative}")
+            continue
+        entries[relative] = ReferenceEntry(
+            hashlib.sha256(data).hexdigest(),
+            0o755 if mode_text == "100755" else 0o644,
+        )
+    return entries
+
+
+def packaged_reference_entries(
+    entries: dict[str, ReferenceEntry],
+) -> dict[str, ReferenceEntry]:
+    return {
+        relative: entry
+        for relative, entry in entries.items()
+        if not any(
+            part in PACKAGE_EXCLUDED_PARTS
+            for part in Path(relative).parts
+        )
+        and Path(relative).name not in PACKAGE_EXCLUDED_NAMES
+    }
+
+
+def reference_snapshot_errors(
+    paths: EvidencePaths,
+    reference: str,
+    version: str,
+) -> list[str]:
+    errors: list[str] = []
+    reference_entries = git_reference_entries(
+        paths.root,
+        reference,
+        errors,
+    )
+    if not reference_entries:
+        return errors
+    manifest_errors: list[str] = []
+    manifest_entries = read_manifest_entries(
+        paths.release_manifest,
+        manifest_errors,
+    )
+    errors.extend(manifest_errors)
+    expected_manifest = packaged_reference_entries(reference_entries)
+    expected_digests = {
+        relative: entry.sha256
+        for relative, entry in expected_manifest.items()
+    }
+    if manifest_entries != expected_digests:
+        missing = sorted(set(expected_digests) - set(manifest_entries))
+        stale = sorted(set(manifest_entries) - set(expected_digests))
+        changed = sorted(
+            relative
+            for relative in set(manifest_entries) & set(expected_digests)
+            if manifest_entries[relative] != expected_digests[relative]
+        )
+        if missing:
+            errors.append(
+                "release manifest omits Git-reference paths: "
+                + ", ".join(missing)
+            )
+        if stale:
+            errors.append(
+                "release manifest has non-reference paths: "
+                + ", ".join(stale)
+            )
+        if changed:
+            errors.append(
+                "release manifest differs from Git-reference content: "
+                + ", ".join(changed)
+            )
+
+    archive_path = (
+        paths.release_dir / f"{PROJECT}-source-v{version}.tar.gz"
+    )
+    errors.extend(
+        archive_entry_errors(
+            archive_path,
+            f"{PROJECT}-v{version}/",
+            reference_entries,
+            "release source archive versus Git reference",
+        )
+    )
+    return errors
 
 
 def release_manifest_errors(paths: EvidencePaths) -> list[str]:
@@ -546,6 +782,8 @@ def release_manifest_errors(paths: EvidencePaths) -> list[str]:
         paths.root / "CITATION.cff",
         paths.root / ".zenodo.json",
         paths.root / "PUBLICATION.md",
+        paths.root / "THIRD_PARTY_NOTICES.md",
+        paths.root / "third_party/drat-trim/LICENSE",
         paths.root / "research/release-gate.json",
         paths.c6_manifest,
         paths.c8_manifest,
@@ -583,6 +821,57 @@ def stream_sha256(stream: BinaryIO) -> str:
     return digest.hexdigest()
 
 
+def archive_entry_errors(
+    archive_path: Path,
+    prefix: str,
+    expected: dict[str, ReferenceEntry],
+    label: str,
+) -> list[str]:
+    errors: list[str] = []
+    if not archive_path.is_file() or archive_path.is_symlink():
+        return [f"{label} is missing or unsafe"]
+    try:
+        with tarfile.open(archive_path, mode="r:gz") as archive:
+            members = archive.getmembers()
+            names = [member.name for member in members]
+            if len(names) != len(set(names)):
+                errors.append(f"{label} has duplicate members")
+            observed: dict[str, tarfile.TarInfo] = {}
+            for member in members:
+                path = Path(member.name)
+                if (
+                    not member.isfile()
+                    or not member.name.startswith(prefix)
+                    or path.is_absolute()
+                    or ".." in path.parts
+                    or bool(member.pax_headers)
+                    or getattr(member, "sparse", None) is not None
+                    or member.uid != 0
+                    or member.gid != 0
+                    or member.mtime != 0
+                    or member.uname != "root"
+                    or member.gname != "root"
+                    or member.mode not in {0o644, 0o755}
+                ):
+                    errors.append(f"{label} contains an unsafe member")
+                    continue
+                relative = member.name[len(prefix) :]
+                observed[relative] = member
+            if set(observed) != set(expected):
+                errors.append(f"{label} does not match the expected file set")
+            for relative in sorted(set(observed) & set(expected)):
+                member = observed[relative]
+                entry = expected[relative]
+                if member.mode != entry.mode:
+                    errors.append(f"{label} mode mismatch: {relative}")
+                stream = archive.extractfile(member)
+                if stream is None or stream_sha256(stream) != entry.sha256:
+                    errors.append(f"{label} hash mismatch: {relative}")
+    except (OSError, tarfile.TarError) as error:
+        errors.append(f"{label} is invalid: {error}")
+    return errors
+
+
 def source_archive_errors(
     paths: EvidencePaths,
     version: str,
@@ -592,52 +881,37 @@ def source_archive_errors(
     archive_path = (
         paths.release_dir / f"{PROJECT}-source-v{version}.tar.gz"
     )
-    if not archive_path.is_file() or archive_path.is_symlink():
-        return ["release source archive is missing or unsafe"]
-    expected = dict(manifest_entries)
-    expected[paths.release_manifest.name] = file_sha256(
-        paths.release_manifest
+    expected: dict[str, ReferenceEntry] = {}
+    for relative, digest in manifest_entries.items():
+        path = paths.root / relative
+        if not path.is_file() or path.is_symlink():
+            errors.append(
+                f"release source input is missing or unsafe: {relative}"
+            )
+            continue
+        mode = 0o755 if path.stat().st_mode & 0o111 else 0o644
+        expected[relative] = ReferenceEntry(digest, mode)
+    if (
+        not paths.release_manifest.is_file()
+        or paths.release_manifest.is_symlink()
+    ):
+        return errors + ["release manifest is missing or unsafe"]
+    manifest_mode = (
+        0o755 if paths.release_manifest.stat().st_mode & 0o111 else 0o644
+    )
+    expected[paths.release_manifest.name] = ReferenceEntry(
+        file_sha256(paths.release_manifest),
+        manifest_mode,
     )
     prefix = f"{PROJECT}-v{version}/"
-    try:
-        with tarfile.open(archive_path, mode="r:gz") as archive:
-            members = archive.getmembers()
-            names = [member.name for member in members]
-            if len(names) != len(set(names)):
-                errors.append("release source archive has duplicate members")
-            observed: dict[str, tarfile.TarInfo] = {}
-            for member in members:
-                path = Path(member.name)
-                if (
-                    not member.isfile()
-                    or not member.name.startswith(prefix)
-                    or path.is_absolute()
-                    or ".." in path.parts
-                    or member.uid != 0
-                    or member.gid != 0
-                    or member.mtime != 0
-                    or member.uname != "root"
-                    or member.gname != "root"
-                    or member.mode not in {0o644, 0o755}
-                ):
-                    errors.append(
-                        "release source archive contains an unsafe member"
-                    )
-                    continue
-                relative = member.name[len(prefix) :]
-                observed[relative] = member
-            if set(observed) != set(expected):
-                errors.append(
-                    "release source archive does not match the manifest set"
-                )
-            for relative in sorted(set(observed) & set(expected)):
-                stream = archive.extractfile(observed[relative])
-                if stream is None or stream_sha256(stream) != expected[relative]:
-                    errors.append(
-                        f"release source archive hash mismatch: {relative}"
-                    )
-    except (OSError, tarfile.TarError) as error:
-        errors.append(f"release source archive is invalid: {error}")
+    errors.extend(
+        archive_entry_errors(
+            archive_path,
+            prefix,
+            expected,
+            "release source archive",
+        )
+    )
     return errors
 
 
@@ -743,7 +1017,7 @@ def repository_clean_errors(root: Path) -> list[str]:
         text=True,
     )
     if completed.stdout.strip():
-        return ["final release snapshot has tracked or untracked changes"]
+        return ["release snapshot has tracked or untracked changes"]
     return []
 
 
@@ -754,44 +1028,61 @@ def release_identity_errors(
     version: str,
     mode: str,
 ) -> list[str]:
-    if mode != "final" and tag is None:
-        return []
     if not (root / ".git").is_dir():
         return ["release identity requires a Git checkout"]
-    if tag is None:
-        return ["final release verification requires --tag"]
     errors: list[str] = []
+    commit = resolve_commit(root, reference, "release reference", errors)
+    head_commit = resolve_commit(root, "HEAD", "checked-out HEAD", errors)
+    if commit is None or head_commit is None:
+        return errors
+    if head_commit != commit:
+        errors.append(
+            f"checked-out HEAD resolves to {head_commit}, expected {commit}"
+        )
+    if mode != "final" and tag is None:
+        return errors
+    if tag is None:
+        errors.append("final release verification requires --tag")
+        return errors
     if tag != f"v{version}":
         errors.append(
             f"release tag {tag!r} does not match version {version}"
         )
-    try:
-        commit = subprocess.run(
-            ["git", "rev-parse", "--verify", f"{reference}^{{commit}}"],
-            cwd=root,
-            check=True,
-            capture_output=True,
-            text=True,
-        ).stdout.strip()
-        tag_commit = subprocess.run(
-            [
-                "git",
-                "rev-parse",
-                "--verify",
-                f"refs/tags/{tag}^{{commit}}",
-            ],
-            cwd=root,
-            check=True,
-            capture_output=True,
-            text=True,
-        ).stdout.strip()
-    except subprocess.CalledProcessError:
-        errors.append("release reference or tag does not resolve")
-        return errors
-    if commit != tag_commit:
+    tag_commit = resolve_commit(
+        root,
+        f"refs/tags/{tag}",
+        "release tag",
+        errors,
+    )
+    if tag_commit is not None and commit != tag_commit:
         errors.append(
             f"release tag {tag} resolves to {tag_commit}, expected {commit}"
         )
+    return errors
+
+
+def hosted_environment_errors(
+    root: Path,
+    reference: str,
+    tag: str | None,
+    environment: Mapping[str, str] | None = None,
+) -> list[str]:
+    values = os.environ if environment is None else environment
+    errors: list[str] = []
+    if values.get("GITHUB_ACTIONS") != "true":
+        return ["final release verification requires GitHub Actions"]
+    if values.get("GITHUB_REPOSITORY") != FINAL_RELEASE_REPOSITORY:
+        errors.append("hosted release repository is unexpected")
+    commit = resolve_commit(root, reference, "release reference", errors)
+    if commit is not None and values.get("GITHUB_SHA") != commit:
+        errors.append("hosted release SHA does not match the release reference")
+    if values.get("GITHUB_REF_TYPE") != "tag":
+        errors.append("hosted release ref is not a tag")
+    if tag is None or values.get("GITHUB_REF_NAME") != tag:
+        errors.append("hosted release tag does not match --tag")
+    run_id = values.get("GITHUB_RUN_ID", "")
+    if not run_id.isdigit() or int(run_id) <= 0:
+        errors.append("hosted release run ID is invalid")
     return errors
 
 
@@ -804,6 +1095,14 @@ def validation_errors(
         raise ValueError(f"unexpected release-gate mode: {mode}")
     paths = evidence if evidence is not None else default_evidence_paths()
     errors = declaration_errors(record, mode)
+    manifest_binding_errors: list[str] = []
+    parsed_release_entries = read_manifest_entries(
+        paths.release_manifest,
+        manifest_binding_errors,
+    )
+    release_entries = (
+        None if manifest_binding_errors else parsed_release_entries
+    )
     errors.extend(
         replay_manifest_errors(
             paths.c6_replay,
@@ -823,6 +1122,8 @@ def validation_errors(
             paths.retained_c6_replay,
             paths.c6_manifest,
             "c6",
+            paths.root,
+            release_entries,
         )
     )
     errors.extend(
@@ -830,13 +1131,15 @@ def validation_errors(
             paths.retained_c8_replay,
             paths.c8_manifest,
             "c8",
+            paths.root,
+            release_entries,
         )
     )
     errors.extend(paper_errors(paths))
     errors.extend(release_manifest_errors(paths))
+    errors.extend(repository_clean_errors(paths.root))
     if mode == "final":
         errors.extend(release_asset_errors(paths))
-        errors.extend(repository_clean_errors(paths.root))
     return errors
 
 
@@ -906,6 +1209,13 @@ def evidence_record(
             for path in sorted(paths.release_dir.iterdir())
             if path.is_file() and not path.is_symlink()
         }
+        record["hosted_verification"] = {
+            "repository": os.environ.get("GITHUB_REPOSITORY"),
+            "run_id": os.environ.get("GITHUB_RUN_ID"),
+            "sha": os.environ.get("GITHUB_SHA"),
+            "ref_name": os.environ.get("GITHUB_REF_NAME"),
+            "ref_type": os.environ.get("GITHUB_REF_TYPE"),
+        }
     return record
 
 
@@ -941,15 +1251,31 @@ def main() -> int:
         if version_match is None:
             errors.append("CITATION.cff has no release version")
         else:
+            version = version_match.group(1).removeprefix("v")
             errors.extend(
                 release_identity_errors(
                     paths.root,
                     args.ref,
                     args.tag,
-                    version_match.group(1).removeprefix("v"),
+                    version,
                     args.mode,
                 )
             )
+            if args.mode == "final":
+                errors.extend(
+                    reference_snapshot_errors(
+                        paths,
+                        args.ref,
+                        version,
+                    )
+                )
+                errors.extend(
+                    hosted_environment_errors(
+                        paths.root,
+                        args.ref,
+                        args.tag,
+                    )
+                )
     if errors:
         for error in errors:
             print("error: " + error)
