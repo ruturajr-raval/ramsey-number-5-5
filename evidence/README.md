@@ -3,8 +3,9 @@
 ## Elementary Result
 
 `small-support.json` is the deterministic output of
-`src/check_small_support.py`. It lists all 15 elementary cycle-type
-exclusions and checks the equality boundary cases.
+`src/check_small_support.py`. It lists all 16 elementary cycle-type
+exclusions, checks the equality boundary cases, and records the incidence
+contradiction for `3^7 1^22`.
 
 ## Certified `3^6 1^25` Result
 
@@ -26,7 +27,8 @@ metadata, size, and SHA-256 agreement.
 
 ```text
 No graph on 43 vertices with clique number and independence number at most 4
-has an automorphism of cycle type 3^6 1^25.
+has an automorphism of any of the 13 project-original cycle types recorded in
+`research/claim.json`.
 ```
 
 ## Nonclaims

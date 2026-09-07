@@ -2,15 +2,16 @@
 
 ## Current Milestone
 
-The elementary small-support theorem and the certified `3^6 1^25` exclusion
-are complete. The package remains prerelease until clean replay and package
-review pass.
+The 16-type elementary theorem, including `3^7 1^22`, and the certified
+`3^6 1^25` exclusion are complete. The package remains prerelease under the
+recorded release gate.
 
 ## Ranked Next Targets
 
 ### 1. Additional order-3 types
 
-Attempt `3^7 1^22` and then increase `c` while retaining the same proof
+Attempt `3^8 1^19` and then increase `c`, preferring elementary reductions
+when available. Computational exclusions retain the following proof
 contract:
 
 - complete branch coverage;
@@ -54,10 +55,13 @@ addressed by the current automorphism route.
 A new cycle type is accepted only when:
 
 1. the public novelty audit is refreshed;
-2. every symmetry branch is enumerated and justified;
-3. each CNF is deterministic and independently audited;
-4. every UNSAT result has a retained proof;
-5. every proof passes an independent checker; and
+2. the mathematical reduction and all assumptions are explicit;
+3. an elementary proof has a deterministic arithmetic audit and focused
+   regression tests, or every computational symmetry branch is enumerated
+   and justified;
+4. each computational CNF is deterministic and independently audited;
+5. every computational UNSAT result has a retained proof that passes an
+   independent checker; and
 6. the exact nonclaim boundary is documented.
 
 ## Kill Criteria

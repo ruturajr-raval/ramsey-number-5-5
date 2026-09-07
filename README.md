@@ -11,7 +11,7 @@
 | ORCID | [0000-0003-4930-8981](https://orcid.org/0000-0003-4930-8981) |
 | Field | Ramsey theory, graph automorphisms, and proof-logged SAT |
 | Problem | Restrict prime-order automorphisms of hypothetical Ramsey `(5,5,43)` graphs |
-| Current result | Twelve previously uncovered automorphism cycle types are excluded: eleven by an elementary theorem and `3^6 1^25` by four checked DRAT certificates |
+| Current result | Thirteen previously uncovered or unfinished automorphism cycle types are excluded: twelve by elementary arguments and `3^6 1^25` by four checked DRAT certificates |
 | Result type | Scoped structural theorem and certified finite exclusion |
 | Release | not yet released |
 | Version DOI | not yet assigned |
@@ -38,23 +38,32 @@ vertices have while avoiding both a clique and an independent set of size 5?
 
 ### Work And Verified Outcome
 
-An elementary fixed-point and degree argument excludes 15 prime-order cycle
-types. Four of those cases had already been covered by later computational
-campaigns, while the following 11 were still uncovered in the audited public
-coverage:
+Elementary fixed-point, degree, and incidence arguments exclude 16
+prime-order cycle types. Four of those cases had already been covered by
+later computational campaigns, while the following 12 were still uncovered
+or unfinished in the audited public coverage:
 
 ```text
 2^c 1^(43-2c), 1 <= c <= 3
 3^c 1^(43-3c), 1 <= c <= 5
+3^7 1^22
 5^c 1^(43-5c), 1 <= c <= 3
 ```
 
-The next order-3 type, `3^6 1^25`, is closed by an independent orbit-CNF
-encoder. Relabeling the six moved cycles and complementing the graph reduce
-all 64 fixed-root adjacency patterns to four branches. Kissat reported each
-branch UNSAT, and `drat-trim` independently verified every retained binary
-DRAT proof. The combined original result excludes 12 cycle types that the
-dated public audits left unresolved.
+For `3^7 1^22`, degree sums first force all seven moved cycles to have the
+same internal type. After complementation they may be taken independent.
+Every pair is then joined by exactly one invariant matching, and each moved
+cycle has exactly four fixed nonneighbors. There are therefore 28
+fixed-cycle nonneighbor incidences. On the other hand, fixed vertices missing
+at most one moved cycle are pairwise nonadjacent and hence number at most
+four, forcing at least 36 incidences. This contradiction is elementary.
+
+The intervening order-3 type, `3^6 1^25`, is closed by an independent
+orbit-CNF encoder. Relabeling the six moved cycles and complementing the
+graph reduce all 64 fixed-root adjacency patterns to four branches. Kissat
+reported each branch UNSAT, and `drat-trim` independently verified every
+retained binary DRAT proof. The combined original result excludes 13 cycle
+types that the dated public audits left unresolved.
 
 ### Claim Boundary
 
@@ -114,17 +123,17 @@ These reductions can shrink symmetry-aware searches and clarify which
 automorphism groups still deserve computational effort.
 
 The main limitation is scope: an asymmetric graph is untouched, and the
-global interval remains unchanged. The strongest next route is to close more
-order-3 types, followed by the remaining order-2 and order-5 branches. A
+global interval remains unchanged. The strongest next route is
+`3^8 1^19`, followed by the remaining order-2 and order-5 branches. A
 public release requires a complete package review, fresh certificate replay
 on a clean environment, a built and inspected paper, and a refreshed
 prior-art audit.
 
 ### Release, Citation, And Author
 
-This package is not yet released or archived. The research workbench is
-maintained at
-[`ruturajr-raval/ramsey-number-5-5-research-workbench`](https://github.com/ruturajr-raval/ramsey-number-5-5-research-workbench).
+This package is not yet released or archived. Its permanent public repository
+is planned as
+[`ruturajr-raval/ramsey-number-5-5`](https://github.com/ruturajr-raval/ramsey-number-5-5).
 Citation metadata is prepared in `CITATION.cff`, and archive metadata is
 prepared in `.zenodo.json`.
 
@@ -196,6 +205,61 @@ The arithmetic and equality cases are checked by:
 python3 src/check_small_support.py
 ```
 
+### Elementary `3^7 1^22` Exclusion
+
+Let the moved cycles be `C_1,...,C_7`. Between distinct cycles `C_i` and
+`C_j`, invariance partitions the nine possible edges into three perfect
+matchings. Write `w_ij` for the number of those matchings present and
+`q_i = sum_(j != i) w_ij`.
+
+If `C_i` is a triangle, at most four fixed vertices are complete to it, so
+the degree lower bound gives `q_i >= 12`. Two triangle cycles have
+`w_ij <= 2`, since complete linkage creates a clique of size at least 5. If
+`C_i` is independent, at least 18 fixed vertices are complete to it, so the
+degree upper bound gives `q_i <= 6`. Two independent cycles have
+`w_ij >= 1`, since empty linkage creates an independent set of size 6.
+
+Suppose `t` moved cycles are triangles and `s=7-t` are independent. Summing
+`q_i` over the triangle cycles gives a lower bound `12t`.
+Triangle-triangle links contribute at most `4*C(t,2)` to this sum. Each
+independent cycle uses at least `s-1` of its total weight on the other
+independent cycles, so its total weight to triangle cycles is at most
+`6-(s-1)=t`. Consequently,
+
+```text
+12t <= 4*C(t,2) + st = t(t+5).
+```
+
+This is impossible for `1 <= t <= 6`. All seven cycles therefore have the
+same type. Complementing if necessary, take them all independent. Each of
+the six intercycle weights at a moved cycle is at least 1 and their sum is at
+most 6, so every weight is exactly 1. The degree upper bound then forces each
+moved cycle to have exactly 18 fixed neighbors and four fixed nonneighbors.
+
+For a fixed vertex `x`, let `Z_x` be the moved cycles anticomplete to `x`.
+Counting by moved cycle gives:
+
+```text
+sum_x |Z_x| = 7 * 4 = 28.
+```
+
+If fixed vertices `x` and `y` are adjacent, their common neighborhood
+contains neither a triangle nor an independent 5-set, and hence has at most
+13 vertices by `R(3,5)=14`. Every moved cycle outside
+`Z_x union Z_y` contributes all three vertices to that common neighborhood.
+Thus `3(7-|Z_x union Z_y|) <= 13`, so
+`|Z_x union Z_y| >= 3`.
+
+Fixed vertices with `|Z_x| <= 1` are therefore pairwise nonadjacent and
+number at most four. Every other fixed vertex has `|Z_x| >= 2`, which would
+force:
+
+```text
+sum_x |Z_x| >= 2 * (22-4) = 36.
+```
+
+This contradicts the exact total 28 and excludes `3^7 1^22`.
+
 ### Certified `3^6 1^25` Exclusion
 
 The encoder assigns one Boolean variable to each edge orbit under a fixed
@@ -230,16 +294,18 @@ tools/      independent audits, proof replay, and release tooling
 
 ### References
 
-1. Geoffrey Exoo, "A lower bound for R(5,5)," Journal of Graph Theory 13(1),
+1. R. E. Greenwood and A. M. Gleason, "Combinatorial relations and
+   chromatic graphs," Canadian Journal of Mathematics 7, 1-7, 1955.
+2. Geoffrey Exoo, "A lower bound for R(5,5)," Journal of Graph Theory 13(1),
    97-98, 1989.
-2. Brendan D. McKay and Stanislaw P. Radziszowski, "R(4,5)=25," Journal of
+3. Brendan D. McKay and Stanislaw P. Radziszowski, "R(4,5)=25," Journal of
    Graph Theory 19(3), 309-322, 1995.
-3. Brendan D. McKay and Stanislaw P. Radziszowski, "Subgraph counting
+4. Brendan D. McKay and Stanislaw P. Radziszowski, "Subgraph counting
    identities and Ramsey numbers," Journal of Combinatorial Theory, Series B
    69(2), 193-209, 1997.
-4. Vigleik Angeltveit and Brendan D. McKay, "R(5,5) <= 48," Journal of Graph
+5. Vigleik Angeltveit and Brendan D. McKay, "R(5,5) <= 48," Journal of Graph
    Theory 89(1), 5-13, 2018.
-5. Vigleik Angeltveit and Brendan D. McKay, "R(5,5) <= 46,"
+6. Vigleik Angeltveit and Brendan D. McKay, "R(5,5) <= 46,"
    [arXiv:2409.15709](https://arxiv.org/abs/2409.15709), version 2, 2025.
-6. Current public prescribed-automorphism audit:
+7. Current public prescribed-automorphism audit:
    [wustep/maths](https://github.com/wustep/maths/tree/main/problems/ramsey-r55).

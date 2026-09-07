@@ -3,7 +3,7 @@
     18,
     24
   ],
-  "excluded_count": 15,
+  "excluded_count": 16,
   "excluded_cycle_types": [
     {
       "cycles": 1,
@@ -38,6 +38,10 @@
       "prime": 3
     },
     {
+      "cycles": 7,
+      "prime": 3
+    },
+    {
       "cycles": 1,
       "prime": 5
     },
@@ -67,5 +71,73 @@
     }
   ],
   "order": 43,
+  "order_three_seven_cycle_audit": {
+    "cycles": 7,
+    "excluded": true,
+    "fixed_signature_counting": {
+      "maximum_vertices_missing_at_most_one_cycle": 4,
+      "minimum_nonneighbor_incidences": 36,
+      "minimum_signature_union_for_fixed_edge": 3,
+      "total_nonneighbor_incidences": 28
+    },
+    "fixed_vertices": 22,
+    "independent_normal_form": {
+      "fixed_neighbors_forced": true,
+      "fixed_neighbors_per_cycle": 18,
+      "fixed_nonneighbors_per_cycle": 4,
+      "intercycle_weight_per_cycle": 6,
+      "intercycle_weight_per_pair": 1,
+      "maximum_fixed_neighbors_per_cycle": 18,
+      "maximum_intercycle_weight_per_cycle": 6,
+      "minimum_fixed_neighbors_per_cycle": 18,
+      "minimum_intercycle_weight_per_cycle": 6,
+      "minimum_intercycle_weight_per_pair": 1,
+      "pair_weights_forced_one": true
+    },
+    "mixed_cases": [
+      {
+        "excluded": true,
+        "independent_cycles": 6,
+        "triangle_cycles": 1,
+        "triangle_degree_sum_lower": 12,
+        "triangle_degree_sum_upper": 6
+      },
+      {
+        "excluded": true,
+        "independent_cycles": 5,
+        "triangle_cycles": 2,
+        "triangle_degree_sum_lower": 24,
+        "triangle_degree_sum_upper": 14
+      },
+      {
+        "excluded": true,
+        "independent_cycles": 4,
+        "triangle_cycles": 3,
+        "triangle_degree_sum_lower": 36,
+        "triangle_degree_sum_upper": 24
+      },
+      {
+        "excluded": true,
+        "independent_cycles": 3,
+        "triangle_cycles": 4,
+        "triangle_degree_sum_lower": 48,
+        "triangle_degree_sum_upper": 36
+      },
+      {
+        "excluded": true,
+        "independent_cycles": 2,
+        "triangle_cycles": 5,
+        "triangle_degree_sum_lower": 60,
+        "triangle_degree_sum_upper": 50
+      },
+      {
+        "excluded": true,
+        "independent_cycles": 1,
+        "triangle_cycles": 6,
+        "triangle_degree_sum_lower": 72,
+        "triangle_degree_sum_upper": 66
+      }
+    ]
+  },
   "r_3_5_minus_one": 13
 }

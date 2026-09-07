@@ -80,7 +80,122 @@ def exclude_order_three(cycles: int) -> bool:
             and independent_forces_empty_crossing
         )
         return mixed_status_impossible and equality_boundary_is_impossible(cycles)
+    if cycles == 7:
+        return bool(order_three_seven_cycle_audit()["excluded"])
     return False
+
+
+def order_three_seven_cycle_audit() -> dict[str, object]:
+    """Audit the counting contradiction for cycle type 3^7 1^22."""
+    cycles = 7
+    fixed = ORDER - 3 * cycles
+    maximum_fixed_nonneighbors = 4
+    minimum_fixed_neighbors = fixed - maximum_fixed_nonneighbors
+    minimum_independent_pair_weight = 1
+    minimum_intercycle_weight = (
+        (cycles - 1) * minimum_independent_pair_weight
+    )
+    maximum_intercycle_weight = MAX_DEGREE - minimum_fixed_neighbors
+
+    mixed_cases = []
+    for triangle_cycles in range(1, cycles):
+        independent_cycles = cycles - triangle_cycles
+        triangle_degree_sum_lower = 12 * triangle_cycles
+        triangle_degree_sum_upper = (
+            4 * (triangle_cycles * (triangle_cycles - 1) // 2)
+            + independent_cycles * triangle_cycles
+        )
+        mixed_cases.append(
+            {
+                "triangle_cycles": triangle_cycles,
+                "independent_cycles": independent_cycles,
+                "triangle_degree_sum_lower": triangle_degree_sum_lower,
+                "triangle_degree_sum_upper": triangle_degree_sum_upper,
+                "excluded": (
+                    triangle_degree_sum_upper < triangle_degree_sum_lower
+                ),
+            }
+        )
+
+    # Equality of the lower and upper intercycle bounds forces every pair
+    # weight to be one. The same degree bound then forces 18 fixed neighbors.
+    pair_weights_forced_one = (
+        minimum_intercycle_weight == maximum_intercycle_weight
+    )
+    intercycle_weight = minimum_intercycle_weight
+    maximum_fixed_neighbors = MAX_DEGREE - intercycle_weight
+    fixed_neighbors_forced = (
+        minimum_fixed_neighbors == maximum_fixed_neighbors
+    )
+    fixed_neighbors = minimum_fixed_neighbors
+    fixed_nonneighbors_per_cycle = fixed - fixed_neighbors
+    total_fixed_cycle_nonneighbor_incidences = (
+        cycles * fixed_nonneighbors_per_cycle
+    )
+
+    # Adjacent fixed vertices have at most 13 common neighbors. If their
+    # missed-cycle signatures have union size u, then 3(7-u) <= 13.
+    maximum_fully_common_cycles = R35_MINUS_ONE // 3
+    minimum_signature_union_for_fixed_edge = (
+        cycles - maximum_fully_common_cycles
+    )
+
+    # Fixed vertices missing at most one cycle form an independent set, so
+    # there are at most four. Every other fixed vertex misses at least two.
+    maximum_low_signature_vertices = 4
+    minimum_incidence_total = (
+        2 * (fixed - maximum_low_signature_vertices)
+    )
+
+    excluded = (
+        all(case["excluded"] for case in mixed_cases)
+        and pair_weights_forced_one
+        and fixed_neighbors_forced
+        and intercycle_weight == 6
+        and fixed_neighbors == 18
+        and fixed_nonneighbors_per_cycle == 4
+        and minimum_signature_union_for_fixed_edge == 3
+        and total_fixed_cycle_nonneighbor_incidences
+        < minimum_incidence_total
+    )
+
+    return {
+        "cycles": cycles,
+        "fixed_vertices": fixed,
+        "mixed_cases": mixed_cases,
+        "independent_normal_form": {
+            "minimum_fixed_neighbors_per_cycle": minimum_fixed_neighbors,
+            "minimum_intercycle_weight_per_pair": (
+                minimum_independent_pair_weight
+            ),
+            "minimum_intercycle_weight_per_cycle": (
+                minimum_intercycle_weight
+            ),
+            "maximum_intercycle_weight_per_cycle": (
+                maximum_intercycle_weight
+            ),
+            "pair_weights_forced_one": pair_weights_forced_one,
+            "intercycle_weight_per_pair": 1,
+            "intercycle_weight_per_cycle": intercycle_weight,
+            "maximum_fixed_neighbors_per_cycle": maximum_fixed_neighbors,
+            "fixed_neighbors_forced": fixed_neighbors_forced,
+            "fixed_neighbors_per_cycle": fixed_neighbors,
+            "fixed_nonneighbors_per_cycle": fixed_nonneighbors_per_cycle,
+        },
+        "fixed_signature_counting": {
+            "total_nonneighbor_incidences": (
+                total_fixed_cycle_nonneighbor_incidences
+            ),
+            "minimum_signature_union_for_fixed_edge": (
+                minimum_signature_union_for_fixed_edge
+            ),
+            "maximum_vertices_missing_at_most_one_cycle": (
+                maximum_low_signature_vertices
+            ),
+            "minimum_nonneighbor_incidences": minimum_incidence_total,
+        },
+        "excluded": excluded,
+    }
 
 
 def exclude_prime_at_least_five(prime: int, cycles: int) -> bool:
@@ -95,7 +210,7 @@ def main() -> None:
         if exclude_order_two(cycles):
             excluded.append({"prime": 2, "cycles": cycles})
 
-    for cycles in range(1, 6):
+    for cycles in range(1, 8):
         if exclude_order_three(cycles):
             excluded.append({"prime": 3, "cycles": cycles})
 
@@ -113,6 +228,7 @@ def main() -> None:
         (3, 3),
         (3, 4),
         (3, 5),
+        (3, 7),
         (5, 1),
         (5, 2),
         (5, 3),
@@ -136,6 +252,9 @@ def main() -> None:
                 "r_3_5_minus_one": R35_MINUS_ONE,
                 "excluded_cycle_types": excluded,
                 "excluded_count": len(excluded),
+                "order_three_seven_cycle_audit": (
+                    order_three_seven_cycle_audit()
+                ),
             },
             indent=2,
             sort_keys=True,

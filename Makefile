@@ -26,6 +26,7 @@ verify-text:
 verify-elementary:
 	mkdir -p $(BUILD)
 	$(PYTHON) src/check_small_support.py > $(BUILD)/small-support.json
+	cmp $(BUILD)/small-support.json evidence/small-support.json
 	$(PYTHON) tools/verify_branch_coverage.py \
 		--cycles 6 \
 		--output $(BUILD)/branch-coverage.json \

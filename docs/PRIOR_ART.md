@@ -31,14 +31,17 @@ commit date: 2026-09-06
 ```
 
 Its q7 case list contains four representatives for `3^6 1^25`, named
-`p3_c6_k1`, `p3_c6_k2`, `p3_c6_k3`, and `p3_c6_k6`. Their expected CNF
-hashes are null, and the attack record states that order-3 cycle types remain
-unfinished.
+`p3_c6_k1`, `p3_c6_k2`, `p3_c6_k3`, and `p3_c6_k6`. It also partitions
+`3^7 1^22` into four representatives with fixed-cycle parameters `[0,7]`,
+`[1,6]`, `[2,5]`, and `[3,4]`. The expected CNF hashes are null, the four
+`3^7 1^22` records are pending, and the campaign record states that the
+remaining order-3 cycle types are unfinished.
 
 The earlier coverage audit at
 [`AlecKriebel/Math`](https://github.com/AlecKriebel/Math/tree/main/ramsey55)
-lists `3^6 1^25` among 54 uncovered prime-order types. The audited main
-commit was `137ffa9f1a340f621651395ad0236cf1bdadb51c`.
+lists both `3^6 1^25` and `3^7 1^22` among 54 uncovered prime-order types.
+The audited main commit was
+`137ffa9f1a340f621651395ad0236cf1bdadb51c`.
 
 The repository
 [`techno-optimist/r55-rigidity-certificates`](https://github.com/techno-optimist/r55-rigidity-certificates)
@@ -54,10 +57,15 @@ Public code search was performed for:
 "3^{6}1^{25}"
 p3_c6 ramsey
 p3-c6 ramsey
+"3^7 1^22"
+"3^{7}1^{22}"
+p3_c7 ramsey
+p3-c7 ramsey
 ```
 
-The exact cycle-type search returned only case listings in the repositories
-above. No completed proof or certificate for this type was found.
+The exact cycle-type searches returned only case listings in the repositories
+above. No public construction, completed exclusion, or independently
+checkable certificate for either type was found.
 
 Targeted searches also examined the fixed-point threshold `26`, the degree
 expressions `3c+3`, `39-3c`, `2c+12`, and `30-2c`, and the complete
@@ -67,17 +75,21 @@ Negative search evidence cannot establish absolute priority. The safe
 novelty statement is:
 
 > To the best of the targeted search of public literature and repositories
-> available through 2026-09-07, no previous source states or proves the 11
-> small-support elementary exclusions or supplies a completed certificate
+> available through 2026-09-07, no previous source states or proves the 12
+> project-original elementary exclusions or supplies a completed certificate
 > for `3^6 1^25`.
+
+The `3^7 1^22` case had been explicitly prepared as a finite computational
+case before this project. The novelty claim is therefore resolution, not
+first attempt.
 
 ## Methodological Ancestry
 
 Orbit-based Ramsey search, automorphism restrictions, SAT encodings, and DRAT
 proofs are established methods and are not claimed as new. The original
 contribution is the applied elementary theorem, its exact cycle-type
-consequences, and the completed proof-logged exclusion of the next order-3
-type.
+consequences including `3^7 1^22`, and the completed proof-logged exclusion
+of `3^6 1^25`.
 
 ## Primary References
 

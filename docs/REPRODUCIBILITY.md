@@ -36,8 +36,9 @@ make verify-text
 make verify-elementary
 ```
 
-`verify-elementary` checks the 15 elementary exclusions and confirms that the
-stored branch-coverage record accounts for all 64 root patterns.
+`verify-elementary` checks the 16 elementary exclusions, including the
+`3^7 1^22` incidence contradiction, and confirms that the stored
+branch-coverage record accounts for all 64 certificate root patterns.
 
 ## Formula Regeneration
 

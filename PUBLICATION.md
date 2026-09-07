@@ -16,10 +16,11 @@ Package status: not yet released.
 
 ## Claim-Safe Public Summary
 
-The package excludes 12 prime-order automorphism cycle types that dated
-public coverage left unresolved. Eleven small-support types follow from an
-elementary fixed-point theorem. The additional type `3^6 1^25` follows from
-four retained UNSAT certificates checked by `drat-trim`.
+The package excludes 13 prime-order automorphism cycle types that dated
+public coverage left unresolved or unfinished. Twelve types follow from
+elementary fixed-point, degree, and incidence arguments. The remaining type
+`3^6 1^25` follows from four retained UNSAT certificates checked by
+`drat-trim`.
 
 ## Supported Result And Delta
 
@@ -28,17 +29,17 @@ not change that interval. Its original delta is structural:
 
 ```text
 2^c 1^(43-2c), 1 <= c <= 3
-3^c 1^(43-3c), 1 <= c <= 6
+3^c 1^(43-3c), 1 <= c <= 7
 5^c 1^(43-5c), 1 <= c <= 3
 ```
 
-These 12 cycle types were listed as uncovered or unfinished in the public
+These 13 cycle types were listed as uncovered or unfinished in the public
 artifacts audited through 2026-09-07.
 
 ## Significance And Reuse
 
 The result removes finite symmetry classes from future searches for a
-43-vertex Ramsey graph. The fixed-point argument can be reused for related
+43-vertex Ramsey graph. The elementary arguments can be reused for related
 Ramsey automorphism problems, and the orbit-CNF plus proof-replay pipeline can
 be extended to remaining cycle types.
 
@@ -73,8 +74,9 @@ Ramsey graph catalog is redistributed in this package.
 The elementary proof and novelty scope received a separate adversarial
 consistency review within the project. Formula structure, branch coverage,
 artifact hashes, and DRAT proofs have independent executable checks. A
-separate package reproducibility audit completed with no remaining findings.
-External journal review and proof-assistant verification have not occurred.
+separate prerelease package reproducibility audit completed with no remaining
+findings. The final release snapshot still requires its own audit. External
+journal review and proof-assistant verification have not occurred.
 
 ## Remaining Work And Release Gate
 
@@ -84,6 +86,8 @@ Before release:
 2. Refresh the prior-art search immediately before release.
 3. Prepare the tagged release and archive assets.
 4. Confirm the public claim and dissemination text against the tagged package.
+
+The next research target is `3^8 1^19`.
 
 ## Citation
 

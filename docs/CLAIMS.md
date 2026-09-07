@@ -13,12 +13,13 @@ Basis: `R(4,5)=R(5,4)=25`.
 
 ### C2 - Elementary fixed-point theorem
 
-No such graph has a prime-order automorphism with any of these 15 cycle
+No such graph has a prime-order automorphism with any of these 16 cycle
 types:
 
 ```text
 2^c 1^(43-2c), 1 <= c <= 3
 3^c 1^(43-3c), 1 <= c <= 5
+3^7 1^22
 5^c 1^(43-5c), 1 <= c <= 3
 7^c 1^(43-7c), 1 <= c <= 2
 11^1 1^32
@@ -29,16 +30,17 @@ Evidence:
 
 - proof in `paper/main.tex`;
 - executable arithmetic audit in `src/check_small_support.py`; and
-- boundary-case tests in `tests/test_orbit_cnf.py`.
+- focused regression tests in `tests/test_small_support.py`.
 
 ### C3 - Original elementary delta
 
-The targeted public audit through 2026-09-07 found the following 11 cycle
+The targeted public audit through 2026-09-07 found the following 12 cycle
 types still uncovered before this work:
 
 ```text
 2^c 1^(43-2c), 1 <= c <= 3
 3^c 1^(43-3c), 1 <= c <= 5
+3^7 1^22
 5^c 1^(43-5c), 1 <= c <= 3
 ```
 
@@ -60,14 +62,29 @@ Evidence:
 The central record is
 `evidence/orbit-p3-c6/certificate-manifest.json`.
 
-### C5 - Combined original result
+### C5 - Elementary `3^7 1^22` exclusion
 
-The project excludes 12 cycle types that the dated public audits listed as
+No such graph has an automorphism of cycle type `3^7 1^22`.
+
+Evidence:
+
+- mixed triangle and independent moved cycles violate the degree sums;
+- after complementation, every pair of moved cycles has one matching and
+  every moved cycle has exactly four fixed nonneighbors;
+- fixed vertices missing at most one moved cycle are pairwise nonadjacent;
+- at most four such vertices can exist, forcing at least 36 fixed-cycle
+  nonneighbor incidences although the exact total is 28; and
+- the deterministic arithmetic consistency audit is in
+  `src/check_small_support.py`.
+
+### C6 - Combined original result
+
+The project excludes 13 cycle types that the dated public audits listed as
 uncovered or unfinished:
 
 ```text
 2^c 1^(43-2c), 1 <= c <= 3
-3^c 1^(43-3c), 1 <= c <= 6
+3^c 1^(43-3c), 1 <= c <= 7
 5^c 1^(43-5c), 1 <= c <= 3
 ```
 

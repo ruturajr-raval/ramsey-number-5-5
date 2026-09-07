@@ -23,14 +23,15 @@ ORCID: 0000-0003-4930-8981}
 
 \begin{abstract}
 Let $\Rcal(5,5;43)$ denote the graphs on 43 vertices with clique number and
-independence number at most four. We give an elementary fixed-point argument
-excluding 15 prime-order automorphism cycle types. A dated public-source
-audit found 11 of those small-support types previously uncovered. We then
-exclude the next order-3 type, $3^6 1^{25}$, using four orbit-CNF branches
-whose compressed binary DRAT proofs are retained and independently checked.
-The combined original result closes 12 cycle types that the audited public
-records listed as uncovered or unfinished. The result does not determine
-$R(5,5)$ or change the interval $43 \le R(5,5) \le 46$.
+independence number at most four. Elementary fixed-point, degree, and
+incidence arguments exclude 16 prime-order automorphism cycle types. A dated
+public-source audit found 12 of those types previously uncovered or
+unfinished. We also exclude the intervening order-3 type, $3^6 1^{25}$,
+using four orbit-CNF branches whose compressed binary DRAT proofs are
+retained and independently checked. The combined original result closes 13
+cycle types that the audited public records listed as uncovered or
+unfinished. The result does not determine $R(5,5)$ or change the interval
+$43 \le R(5,5) \le 46$.
 \end{abstract}
 
 \section{Context}
@@ -95,11 +96,12 @@ fixed vertices is at most $|S|+|T|\le26$.
 \begin{theorem}[Elementary cycle-type exclusions]
 \label{thm:elementary}
 No graph in $\Rcal(5,5;43)$ admits a prime-order automorphism of any of the
-following 15 cycle types:
+following 16 cycle types:
 \[
 \begin{aligned}
 &2^c1^{43-2c} &&(1\le c\le3),\\
 &3^c1^{43-3c} &&(1\le c\le5),\\
+&3^7 1^{22},\\
 &5^c1^{43-5c} &&(1\le c\le3),\\
 &7^c1^{43-7c} &&(1\le c\le2),\\
 &11^1 1^{32},\qquad 13^1 1^{30}.&
@@ -135,6 +137,62 @@ cycles. A triangle cycle and an independent cycle cannot coexist. If all
 five cycles are triangles, the 15 moved vertices form a clique. If all five
 are independent, they form an independent set. Both cases are impossible.
 
+It remains to treat seven moved 3-cycles. For distinct moved cycles $C_i$
+and $C_j$, the nine possible cross edges split into three invariant perfect
+matchings. Let $w_{ij}\in\{0,1,2,3\}$ be the number present and set
+\[
+q_i=\sum_{j\ne i}w_{ij}.
+\]
+If $C_i$ is a triangle, at most four fixed vertices are complete to it, so
+the degree lower bound gives $q_i\ge12$. Two triangle cycles satisfy
+$w_{ij}\le2$, since complete linkage creates a clique of size at least five.
+If $C_i$ is independent, at least 18 fixed vertices are complete to it, so
+the degree upper bound gives $q_i\le6$. Two independent cycles satisfy
+$w_{ij}\ge1$, since empty linkage creates an independent set of size six.
+
+Suppose $t$ moved cycles are triangles and $s=7-t$ are independent. Summing
+$q_i$ over the triangle cycles gives
+\[
+12t\le \sum_{i:\,C_i\text{ triangle}}q_i.
+\]
+Triangle-triangle links contribute at most $4\binom{t}{2}$. Each independent
+cycle uses at least $s-1$ of its total weight on the other independent
+cycles, and therefore contributes at most $6-(s-1)=t$ to triangle cycles.
+Hence
+\[
+12t\le4\binom{t}{2}+st=t(t+5),
+\]
+which is impossible for $1\le t\le6$. All seven cycles have the same type.
+After complementation, assume they are all independent.
+
+Each of the six intercycle weights at a moved cycle is at least one, while
+$q_i\le6$. Thus every intercycle weight is one and $q_i=6$. The degree upper
+bound and the 18-fixed-neighbor lower bound then force each moved cycle to
+have exactly 18 fixed neighbors and four fixed nonneighbors.
+
+For a fixed vertex $x$, let $Z_x$ be the set of moved cycles anticomplete to
+$x$. Counting fixed-cycle nonneighbor incidences by moved cycle gives
+\[
+\sum_{x\text{ fixed}}|Z_x|=7\cdot4=28. \tag{1}
+\]
+If fixed vertices $x$ and $y$ are adjacent, their common neighborhood
+contains neither a triangle nor an independent set of size five. Therefore
+$R(3,5)=14$ gives $|N(x)\cap N(y)|\le13$. Every moved cycle outside
+$Z_x\cup Z_y$ contributes all three vertices to that common neighborhood,
+so
+\[
+3(7-|Z_x\cup Z_y|)\le13,
+\]
+and hence $|Z_x\cup Z_y|\ge3$.
+
+The fixed vertices with $|Z_x|\le1$ are consequently pairwise nonadjacent
+and number at most four. Every other fixed vertex has $|Z_x|\ge2$, which
+would force
+\[
+\sum_{x\text{ fixed}}|Z_x|\ge2(22-4)=36.
+\]
+This contradicts (1), so the type $3^7 1^{22}$ is impossible.
+
 Finally let $p=2$. A moved pair is an edge or a nonedge. For an edge pair,
 the fixed common-neighbor graph is triangle-free and independent-5-free, so
 it has at most 13 vertices. A vertex in the pair has degree at most
@@ -154,7 +212,8 @@ gives a clique on six vertices, while uniform nonedge status gives an
 independent set on six vertices.
 \end{proof}
 
-\section{The cycle type $3^6 1^{25}$}
+\section{\texorpdfstring{The cycle type $3^6 1^{25}$}
+{The cycle type 3\string^6 1\string^25}}
 
 \subsection{Orbit-CNF encoding}
 
@@ -224,11 +283,12 @@ branches. Every branch is UNSAT by a checked DRAT proof.
 \section{Novelty boundary and limitations}
 
 A targeted audit of public literature and repositories through September 7,
-2026 found the following 11 types uncovered before
+2026 found the following 12 types uncovered or unfinished before
 Theorem~\ref{thm:elementary}:
 \[
 2^c1^{43-2c}\ (1\le c\le3),\qquad
 3^c1^{43-3c}\ (1\le c\le5),\qquad
+3^7 1^{22},\qquad
 5^c1^{43-5c}\ (1\le c\le3).
 \]
 The same audit found $3^6 1^{25}$ listed as uncovered or unfinished in the
@@ -237,7 +297,11 @@ The order-7, order-11, and order-13 consequences of
 Theorem~\ref{thm:elementary} are elementary reproofs of cases already covered
 computationally.
 
-The combined original result therefore excludes 12 previously uncovered or
+The $3^7 1^{22}$ case had been prepared as a pending finite computation in
+the closest public campaign, so the contribution is its resolution rather
+than its first attempted formulation.
+
+The combined original result therefore excludes 13 previously uncovered or
 unfinished cycle types. This is a structural restriction, not a new Ramsey
 bound. It does not address graphs with trivial automorphism group and does
 not imply that a hypothetical graph is asymmetric.
@@ -256,6 +320,8 @@ make verify-proofs DRAT_TRIM=/path/to/drat-trim
 Generated CNFs are not committed. They are rebuilt deterministically and
 must match the retained sizes and SHA-256 values before proof replay.
 
+\small
+\raggedright
 \begin{thebibliography}{10}
 
 \bibitem{GreenwoodGleason1955}
@@ -287,19 +353,26 @@ Vigleik Angeltveit and Brendan D. McKay.
 \bibitem{AngeltveitMcKay2025}
 Vigleik Angeltveit and Brendan D. McKay.
 \newblock $R(5,5)\le46$.
-\newblock \url{https://arxiv.org/abs/2409.15709}, version 2, 2025.
+\newblock \href{https://arxiv.org/abs/2409.15709}{arXiv:2409.15709},
+version 2, 2025.
 
 \bibitem{Wustep2026}
 Wustep.
 \newblock Ramsey $R(5,5)$ research record.
-\newblock \url{https://github.com/wustep/maths/tree/main/problems/ramsey-r55},
-audited commit \texttt{4b7b8275d41682a98add180ee05540be84037100}, 2026.
+\newblock
+\href{https://github.com/wustep/maths/tree/4b7b8275d41682a98add180ee05540be84037100/problems/ramsey-r55}
+{wustep/maths, problems/ramsey-r55},
+audited commit \texttt{4b7b8275d41682a98add180ee05540be84037100},
+2026.
 
 \bibitem{Kriebel2026}
 Alec Kriebel.
 \newblock Prescribed-automorphism cycle-type coverage audit.
-\newblock \url{https://github.com/AlecKriebel/Math/tree/main/ramsey55},
-audited commit \texttt{137ffa9f1a340f621651395ad0236cf1bdadb51c}, 2026.
+\newblock
+\href{https://github.com/AlecKriebel/Math/tree/137ffa9f1a340f621651395ad0236cf1bdadb51c/ramsey55}
+{AlecKriebel/Math, ramsey55},
+audited commit \texttt{137ffa9f1a340f621651395ad0236cf1bdadb51c},
+2026.
 
 \end{thebibliography}
 

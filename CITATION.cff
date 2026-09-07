@@ -7,12 +7,13 @@ authors:
     given-names: Ruturaj R
     affiliation: Independent Researcher
     orcid: "https://orcid.org/0000-0003-4930-8981"
-repository-code: "https://github.com/ruturajr-raval/ramsey-number-5-5-research-workbench"
+repository-code: "https://github.com/ruturajr-raval/ramsey-number-5-5"
 version: 0.1.0
 license: MIT
 abstract: >-
-  Elementary and proof-logged exclusions of prime-order automorphism cycle
-  types for hypothetical Ramsey (5,5,43) graphs.
+  Elementary and proof-logged exclusions of thirteen prime-order automorphism
+  cycle types listed as uncovered or unfinished in dated public audits of
+  hypothetical Ramsey (5,5,43) graphs.
 keywords:
   - Ramsey theory
   - graph automorphisms
