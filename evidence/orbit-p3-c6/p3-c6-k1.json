@@ -1,0 +1,19 @@
+{
+  "base_signatures": 356721,
+  "bytes": 33375329,
+  "clauses": 910918,
+  "cycles": 6,
+  "degree_bounds": [
+    18,
+    24
+  ],
+  "edge_orbit_variables": 501,
+  "extra_clauses": 197476,
+  "fixed": 25,
+  "homogeneous_size": 5,
+  "order": 43,
+  "prime": 3,
+  "root_adjacent_cycles": 1,
+  "sha256": "2a92ff17114fbd30a0d6c152011c1cab1386839b7462b70c5ea95252c3b56089",
+  "variables": 67709
+}

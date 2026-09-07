@@ -1,0 +1,159 @@
+{
+  "branches": [
+    {
+      "branch": 0,
+      "checker": {
+        "exit_code": 0,
+        "log": "p3-c6-k0-drat-trim.log",
+        "log_sha256": "7f988382725a0819ff6789c6b2d6e0ca357723c8962c4d4696466f5d6a5b72d8",
+        "result": "VERIFIED",
+        "wall_seconds": 6.043
+      },
+      "cnf": {
+        "bytes": 33375330,
+        "clauses": 910918,
+        "path": "p3-c6-k0.cnf",
+        "sha256": "ac56dd4e6633f8aac9efea957799059bf98f5cf71507e800036c4ef9235821fc",
+        "variables": 67709
+      },
+      "proof": {
+        "compressed_bytes": 10198768,
+        "compressed_sha256": "c4365b7394386c4ac8a0669982d9afe7f0ee48aa312d641092d14e50ae831d60",
+        "decompressed_bytes": 30784923,
+        "decompressed_sha256": "ebd06221f353493012775fab75d35d62b5e3b5a8ed72ff4156bf96d3f5a8e8ce",
+        "path": "p3-c6-k0.drat.xz"
+      },
+      "solver": {
+        "exit_code": 20,
+        "log": "p3-c6-k0-proof.log",
+        "log_sha256": "162d34af6f325bfd3898ffa0ee2fb0a460608b8b3b2a2d82020dfbea9f9fbd71",
+        "result": "UNSATISFIABLE",
+        "wall_seconds": 44.56
+      }
+    },
+    {
+      "branch": 1,
+      "checker": {
+        "exit_code": 0,
+        "log": "p3-c6-k1-drat-trim.log",
+        "log_sha256": "c846a3f3219f8697eda51eed8f855026c765193418d9572dbd7db896b36f2050",
+        "result": "VERIFIED",
+        "wall_seconds": 6.59
+      },
+      "cnf": {
+        "bytes": 33375329,
+        "clauses": 910918,
+        "path": "p3-c6-k1.cnf",
+        "sha256": "2a92ff17114fbd30a0d6c152011c1cab1386839b7462b70c5ea95252c3b56089",
+        "variables": 67709
+      },
+      "proof": {
+        "compressed_bytes": 16489040,
+        "compressed_sha256": "e23f985a7dca17ecab5169dbdeba0d8e5f856e8c4ab89b8b0619dc368137f4bf",
+        "decompressed_bytes": 45131183,
+        "decompressed_sha256": "44ae0a1c13d970335856d1fc6a38a401855ccc88769f272a2cb4b36bec7256a7",
+        "path": "p3-c6-k1.drat.xz"
+      },
+      "solver": {
+        "exit_code": 20,
+        "log": "p3-c6-k1-proof.log",
+        "log_sha256": "4d3a364984a5565c39edd13ab8830dc85e4c0ce18a94dd02dff1a396ab017dc6",
+        "result": "UNSATISFIABLE",
+        "wall_seconds": 66.52
+      }
+    },
+    {
+      "branch": 2,
+      "checker": {
+        "exit_code": 0,
+        "log": "p3-c6-k2-drat-trim.log",
+        "log_sha256": "47a43e4cbb55f9e47f9259b6d126b9d170625da33381c5460dbc989fafae224e",
+        "result": "VERIFIED",
+        "wall_seconds": 6.298
+      },
+      "cnf": {
+        "bytes": 33375328,
+        "clauses": 910918,
+        "path": "p3-c6-k2.cnf",
+        "sha256": "5543127a0f17e56c05cf9cdcd79935fd44433b6d2777c3d8c314361d4a96679c",
+        "variables": 67709
+      },
+      "proof": {
+        "compressed_bytes": 12893480,
+        "compressed_sha256": "6c570981d5c2c10cc609fa3e720e8a16dafcbc56715af4563a58c7b31f9a9489",
+        "decompressed_bytes": 36964048,
+        "decompressed_sha256": "f5913329124765a8b599829c7186845ae41b5fb60c83937fac8e8682e1b7003d",
+        "path": "p3-c6-k2.drat.xz"
+      },
+      "solver": {
+        "exit_code": 20,
+        "log": "p3-c6-k2-proof.log",
+        "log_sha256": "3d3ad0c833107b467f61813e154ad37b0875cc5b60fb6a812b160f94ae8f2b00",
+        "result": "UNSATISFIABLE",
+        "wall_seconds": 54.74
+      }
+    },
+    {
+      "branch": 3,
+      "checker": {
+        "exit_code": 0,
+        "log": "p3-c6-k3-drat-trim.log",
+        "log_sha256": "fc5fb72a6ec2b2a9ff71535a35aeee0dc9954db61ab4ba10053b93c891264ee6",
+        "result": "VERIFIED",
+        "wall_seconds": 7.596
+      },
+      "cnf": {
+        "bytes": 33375327,
+        "clauses": 910918,
+        "path": "p3-c6-k3.cnf",
+        "sha256": "e8a8e8453f45a0242c32a3c8c8cbca5b1743e34ae25f67829211223f79e4e688",
+        "variables": 67709
+      },
+      "proof": {
+        "compressed_bytes": 17303404,
+        "compressed_sha256": "ecc37245286371169abf5f6b5c3703d8ea464a685d253dd92534952a0eaac4c1",
+        "decompressed_bytes": 46135825,
+        "decompressed_sha256": "c1db5e4792117cb5d3018e5cf619e931b5aebd05f3b6dbc05a4bbaf9b439188e",
+        "path": "p3-c6-k3.drat.xz"
+      },
+      "solver": {
+        "exit_code": 20,
+        "log": "p3-c6-k3-proof.log",
+        "log_sha256": "d75fbdcdf9ac225e7a6368c397ae8b2ec93a84eb99c13bd663adcce04da004b8",
+        "result": "UNSATISFIABLE",
+        "wall_seconds": 67.23
+      }
+    }
+  ],
+  "claim": "No graph on 43 vertices with clique number and independence number at most 4 has an automorphism of cycle type 3^6 1^25.",
+  "claim_boundary": "This excludes one automorphism cycle type. It does not determine R(5,5), exclude asymmetric graphs, or change 43 <= R(5,5) <= 46.",
+  "cnf_audit": {
+    "artifact": "cnf-audit.json",
+    "common_body_sha256": "97e0522201ed535dc878972f3d2bd046b1e3f7264546c678cbd3c30faeb6219f",
+    "root_cycle_variables": [
+      17,
+      55,
+      90,
+      122,
+      151,
+      177
+    ],
+    "sha256": "8cbc20bc6df2d308a07894afc1989af817db3a74710f32064c7f632b76df292a"
+  },
+  "coverage": {
+    "artifact": "branch-coverage.json",
+    "patterns_checked": 64,
+    "sha256": "5191fbd995c3b6ae72e77d3fef7f645ee1106cb1cf1bd6c970af060f03cf96ec",
+    "solved_branches": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "tools": {
+    "drat_trim_sha256": "f58f63b0f76945d4c4c9ff6e87afaf870f579e67c0f7cca589492df8fc7ebd47",
+    "kissat_sha256": "84411b3707b6c8f3f360e8fea1c3bfbcac0385bb87de22736257405a0be72932"
+  },
+  "verification_passed": true
+}

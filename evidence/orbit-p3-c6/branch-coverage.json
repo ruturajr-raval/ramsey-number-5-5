@@ -1,0 +1,403 @@
+{
+  "branch_counts": {
+    "0": 2,
+    "1": 12,
+    "2": 30,
+    "3": 20
+  },
+  "coverage_complete": true,
+  "cycles": 6,
+  "patterns_checked": 64,
+  "rows": [
+    {
+      "adjacent_cycles": 0,
+      "complemented": false,
+      "pattern": "000000",
+      "representative_branch": 0
+    },
+    {
+      "adjacent_cycles": 1,
+      "complemented": false,
+      "pattern": "000001",
+      "representative_branch": 1
+    },
+    {
+      "adjacent_cycles": 1,
+      "complemented": false,
+      "pattern": "000010",
+      "representative_branch": 1
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "000011",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 1,
+      "complemented": false,
+      "pattern": "000100",
+      "representative_branch": 1
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "000101",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "000110",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "000111",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 1,
+      "complemented": false,
+      "pattern": "001000",
+      "representative_branch": 1
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "001001",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "001010",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "001011",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "001100",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "001101",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "001110",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "001111",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 1,
+      "complemented": false,
+      "pattern": "010000",
+      "representative_branch": 1
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "010001",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "010010",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "010011",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "010100",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "010101",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "010110",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "010111",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "011000",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "011001",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "011010",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "011011",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "011100",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "011101",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "011110",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 5,
+      "complemented": true,
+      "pattern": "011111",
+      "representative_branch": 1
+    },
+    {
+      "adjacent_cycles": 1,
+      "complemented": false,
+      "pattern": "100000",
+      "representative_branch": 1
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "100001",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "100010",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "100011",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "100100",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "100101",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "100110",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "100111",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "101000",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "101001",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "101010",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "101011",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "101100",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "101101",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "101110",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 5,
+      "complemented": true,
+      "pattern": "101111",
+      "representative_branch": 1
+    },
+    {
+      "adjacent_cycles": 2,
+      "complemented": false,
+      "pattern": "110000",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "110001",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "110010",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "110011",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "110100",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "110101",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "110110",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 5,
+      "complemented": true,
+      "pattern": "110111",
+      "representative_branch": 1
+    },
+    {
+      "adjacent_cycles": 3,
+      "complemented": false,
+      "pattern": "111000",
+      "representative_branch": 3
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "111001",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "111010",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 5,
+      "complemented": true,
+      "pattern": "111011",
+      "representative_branch": 1
+    },
+    {
+      "adjacent_cycles": 4,
+      "complemented": true,
+      "pattern": "111100",
+      "representative_branch": 2
+    },
+    {
+      "adjacent_cycles": 5,
+      "complemented": true,
+      "pattern": "111101",
+      "representative_branch": 1
+    },
+    {
+      "adjacent_cycles": 5,
+      "complemented": true,
+      "pattern": "111110",
+      "representative_branch": 1
+    },
+    {
+      "adjacent_cycles": 6,
+      "complemented": true,
+      "pattern": "111111",
+      "representative_branch": 0
+    }
+  ],
+  "solved_branches": [
+    0,
+    1,
+    2,
+    3
+  ]
+}

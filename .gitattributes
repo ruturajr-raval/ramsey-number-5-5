@@ -1,0 +1,9 @@
+* text=auto
+*.cff text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.py text eol=lf
+*.tex text eol=lf
+Makefile text eol=lf
+evidence/orbit-p3-c6/*.log binary
+evidence/orbit-p3-c6/*.drat.xz binary

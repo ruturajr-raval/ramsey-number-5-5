@@ -1,0 +1,86 @@
+{
+  "audit_passed": true,
+  "branches": [
+    {
+      "branch": 0,
+      "bytes": 33375330,
+      "clauses": 910918,
+      "common_body_sha256": "97e0522201ed535dc878972f3d2bd046b1e3f7264546c678cbd3c30faeb6219f",
+      "maximum_literal_variable": 67709,
+      "root_unit_clauses": [
+        -17,
+        -55,
+        -90,
+        -122,
+        -151,
+        -177
+      ],
+      "sha256": "ac56dd4e6633f8aac9efea957799059bf98f5cf71507e800036c4ef9235821fc",
+      "variables": 67709
+    },
+    {
+      "branch": 1,
+      "bytes": 33375329,
+      "clauses": 910918,
+      "common_body_sha256": "97e0522201ed535dc878972f3d2bd046b1e3f7264546c678cbd3c30faeb6219f",
+      "maximum_literal_variable": 67709,
+      "root_unit_clauses": [
+        17,
+        -55,
+        -90,
+        -122,
+        -151,
+        -177
+      ],
+      "sha256": "2a92ff17114fbd30a0d6c152011c1cab1386839b7462b70c5ea95252c3b56089",
+      "variables": 67709
+    },
+    {
+      "branch": 2,
+      "bytes": 33375328,
+      "clauses": 910918,
+      "common_body_sha256": "97e0522201ed535dc878972f3d2bd046b1e3f7264546c678cbd3c30faeb6219f",
+      "maximum_literal_variable": 67709,
+      "root_unit_clauses": [
+        17,
+        55,
+        -90,
+        -122,
+        -151,
+        -177
+      ],
+      "sha256": "5543127a0f17e56c05cf9cdcd79935fd44433b6d2777c3d8c314361d4a96679c",
+      "variables": 67709
+    },
+    {
+      "branch": 3,
+      "bytes": 33375327,
+      "clauses": 910918,
+      "common_body_sha256": "97e0522201ed535dc878972f3d2bd046b1e3f7264546c678cbd3c30faeb6219f",
+      "maximum_literal_variable": 67709,
+      "root_unit_clauses": [
+        17,
+        55,
+        90,
+        -122,
+        -151,
+        -177
+      ],
+      "sha256": "e8a8e8453f45a0242c32a3c8c8cbca5b1743e34ae25f67829211223f79e4e688",
+      "variables": 67709
+    }
+  ],
+  "common_body_sha256": "97e0522201ed535dc878972f3d2bd046b1e3f7264546c678cbd3c30faeb6219f",
+  "cycles": 6,
+  "order": 43,
+  "prime": 3,
+  "root_cycle_variables": [
+    17,
+    55,
+    90,
+    122,
+    151,
+    177
+  ],
+  "root_vertex": 18
+}

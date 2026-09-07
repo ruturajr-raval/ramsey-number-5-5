@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it using the metadata below."
+title: "Prime-Order Automorphism Exclusions for Ramsey (5,5,43) Graphs"
+type: software
+authors:
+  - family-names: Raval
+    given-names: Ruturaj R
+    affiliation: Independent Researcher
+    orcid: "https://orcid.org/0000-0003-4930-8981"
+repository-code: "https://github.com/ruturajr-raval/ramsey-number-5-5-research-workbench"
+version: 0.1.0
+license: MIT
+abstract: >-
+  Elementary and proof-logged exclusions of prime-order automorphism cycle
+  types for hypothetical Ramsey (5,5,43) graphs.
+keywords:
+  - Ramsey theory
+  - graph automorphisms
+  - SAT
+  - DRAT
+  - computational combinatorics

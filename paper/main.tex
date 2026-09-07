@@ -1,0 +1,306 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Rcal}{\mathcal{R}}
+
+\title{Prime-Order Automorphism Exclusions for Ramsey $(5,5;43)$ Graphs}
+\author{Ruturaj R Raval\\Independent Researcher\\
+ORCID: 0000-0003-4930-8981}
+\date{September 7, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $\Rcal(5,5;43)$ denote the graphs on 43 vertices with clique number and
+independence number at most four. We give an elementary fixed-point argument
+excluding 15 prime-order automorphism cycle types. A dated public-source
+audit found 11 of those small-support types previously uncovered. We then
+exclude the next order-3 type, $3^6 1^{25}$, using four orbit-CNF branches
+whose compressed binary DRAT proofs are retained and independently checked.
+The combined original result closes 12 cycle types that the audited public
+records listed as uncovered or unfinished. The result does not determine
+$R(5,5)$ or change the interval $43 \le R(5,5) \le 46$.
+\end{abstract}
+
+\section{Context}
+
+The diagonal Ramsey number $R(5,5)$ is the least $n$ such that every graph on
+$n$ vertices contains a clique or an independent set of size five. Exoo
+proved $R(5,5)\ge 43$ in 1989 \cite{Exoo1989}. McKay and Radziszowski proved
+$R(5,5)\le49$ in 1997 \cite{McKayRadziszowski1997}. Angeltveit and McKay
+improved the upper bound to 48 in 2018 \cite{AngeltveitMcKay2018} and to 46
+in 2025 \cite{AngeltveitMcKay2025}. Thus the current interval is
+\[
+43 \le R(5,5) \le 46.
+\]
+
+This paper studies a finite structural subproblem. If a graph in
+$\Rcal(5,5;43)$ exists, which prime-order automorphisms can it admit? For a
+prime $p$, an automorphism with $c$ moved $p$-cycles and $43-pc$ fixed
+vertices has cycle type
+\[
+p^c 1^{43-pc}.
+\]
+
+\section{Elementary exclusions}
+
+\begin{lemma}[Degree interval]
+\label{lem:degree}
+Every vertex of a graph $G\in\Rcal(5,5;43)$ has degree between 18 and 24.
+\end{lemma}
+
+\begin{proof}
+For a vertex $v$, the graph induced by $N(v)$ contains neither a clique of
+size four nor an independent set of size five. Since $R(4,5)=25$
+\cite{McKayRadziszowski1995}, we have $d(v)\le24$. The nonneighbors of $v$
+contain neither a clique of size five nor an independent set of size four.
+Again using $R(5,4)=25$, we obtain $42-d(v)\le24$, hence $d(v)\ge18$.
+\end{proof}
+
+\begin{lemma}[Fixed-point bound]
+\label{lem:fixed}
+Let $G\in\Rcal(5,5;43)$ admit an automorphism of prime order $p\ge5$ with a
+moved orbit. Then the automorphism has at most 26 fixed vertices.
+\end{lemma}
+
+\begin{proof}
+Let $C$ be a moved $p$-cycle. The induced graph $G[C]$ is neither complete
+nor empty, since either alternative contains a homogeneous set of size five.
+Thus $G[C]$ contains an edge and a nonedge.
+
+Every fixed vertex is adjacent to all or none of $C$. Let $S$ be the fixed
+vertices complete to $C$, and let $T$ be the fixed vertices anticomplete to
+$C$. If $S$ contained a triangle, that triangle together with an edge of
+$C$ would form a clique of size five. The graph $G[S]$ is therefore
+triangle-free and has no independent set of size five. Since $R(3,5)=14$
+\cite{GreenwoodGleason1955}, $|S|\le13$.
+
+If $T$ contained an independent triple, that triple together with a nonedge
+of $C$ would form an independent set of size five. The graph $G[T]$ has no
+clique of size five, so $R(5,3)=14$ gives $|T|\le13$. Hence the number of
+fixed vertices is at most $|S|+|T|\le26$.
+\end{proof}
+
+\begin{theorem}[Elementary cycle-type exclusions]
+\label{thm:elementary}
+No graph in $\Rcal(5,5;43)$ admits a prime-order automorphism of any of the
+following 15 cycle types:
+\[
+\begin{aligned}
+&2^c1^{43-2c} &&(1\le c\le3),\\
+&3^c1^{43-3c} &&(1\le c\le5),\\
+&5^c1^{43-5c} &&(1\le c\le3),\\
+&7^c1^{43-7c} &&(1\le c\le2),\\
+&11^1 1^{32},\qquad 13^1 1^{30}.&
+\end{aligned}
+\]
+\end{theorem}
+
+\begin{proof}
+For $p\ge5$, Lemma~\ref{lem:fixed} excludes every listed type because it has
+more than 26 fixed vertices.
+
+Now let $p=3$. Each moved 3-cycle induces either a triangle or an independent
+triple. Suppose first that a moved cycle is a triangle. Its fixed common
+neighbors form an independent set and therefore have size at most four. A
+vertex on the cycle has degree at most
+\[
+2+3(c-1)+4=3c+3.
+\]
+This contradicts Lemma~\ref{lem:degree} when $c\le4$.
+
+If a moved cycle is an independent triple, its fixed common nonneighbors form
+a clique and therefore have size at most four. A vertex on the cycle has at
+least
+\[
+(43-3c)-4=39-3c
+\]
+fixed neighbors. This exceeds 24 when $c\le4$.
+
+At $c=5$, both bounds meet the degree interval exactly. Equality for a
+triangle cycle forces it to be complete to all other moved cycles. Equality
+for an independent cycle forces it to be anticomplete to all other moved
+cycles. A triangle cycle and an independent cycle cannot coexist. If all
+five cycles are triangles, the 15 moved vertices form a clique. If all five
+are independent, they form an independent set. Both cases are impossible.
+
+Finally let $p=2$. A moved pair is an edge or a nonedge. For an edge pair,
+the fixed common-neighbor graph is triangle-free and independent-5-free, so
+it has at most 13 vertices. A vertex in the pair has degree at most
+\[
+1+2(c-1)+13=2c+12.
+\]
+For a nonedge pair, the fixed common-nonneighbor graph is clique-5-free and
+independent-triple-free, so it has at most 13 vertices. A vertex in the pair
+has degree at least
+\[
+(43-2c)-13=30-2c.
+\]
+These bounds exclude $c=1,2$. At $c=3$, equality forces every edge pair to
+be complete to the other moved vertices and every nonedge pair to be
+anticomplete to them. Mixed status is inconsistent. Uniform edge status
+gives a clique on six vertices, while uniform nonedge status gives an
+independent set on six vertices.
+\end{proof}
+
+\section{The cycle type $3^6 1^{25}$}
+
+\subsection{Orbit-CNF encoding}
+
+Fix the permutation
+\[
+(0\,1\,2)(3\,4\,5)\cdots(15\,16\,17)
+\]
+with vertices 18 through 42 fixed. One Boolean variable represents each
+orbit of unordered vertex pairs. There are 501 edge-orbit variables.
+
+For every 5-subset $X$, the encoding adds one clause forbidding all edges of
+$X$ and one clause forbidding all nonedges of $X$. Duplicate orbit variables
+within a clause are removed. Exact sequential counters impose
+$18\le d(v)\le24$ on one representative of each moved vertex orbit and on
+every fixed vertex. Repeated literals in a degree sum retain edge-orbit
+multiplicity.
+
+\subsection{Complete branch cover}
+
+Choose fixed vertex 18 as a root. Its adjacency to each moved 3-cycle is
+constant. Permuting the six moved cycles maps every root pattern to one in
+which the adjacent cycles form a prefix of length $k$. Complementation maps
+$k$ to $6-k$ and preserves membership in $\Rcal(5,5;43)$. It is therefore
+enough to solve $k=0,1,2,3$. An executable audit enumerates all $2^6=64$
+patterns and confirms this reduction.
+
+Each branch has 67,709 variables and 910,918 clauses. An independent artifact
+auditor checks the DIMACS header, clause count, literal range, file digest,
+common formula body, independently reconstructed root variables, and the six
+branch-defining unit clauses.
+
+\subsection{Checked certificates}
+
+Kissat reported UNSAT for all four branches. The proof files are compressed
+binary DRAT traces. Each was decompressed and independently checked with
+\texttt{drat-trim}. Table~\ref{tab:certificates} gives digest prefixes; the
+repository manifest records every full SHA-256 value.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rrrrrr}
+\toprule
+$k$ & Variables & Clauses & CNF SHA prefix & Proof SHA prefix & Check s\\
+\midrule
+0 & 67709 & 910918 & \texttt{ac56dd4e6633} & \texttt{c4365b739438} & 6.043\\
+1 & 67709 & 910918 & \texttt{2a92ff17114f} & \texttt{e23f985a7dca} & 6.590\\
+2 & 67709 & 910918 & \texttt{5543127a0f17} & \texttt{6c570981d5c2} & 6.298\\
+3 & 67709 & 910918 & \texttt{e8a8e8453f45} & \texttt{ecc372452863} & 7.596\\
+\bottomrule
+\end{tabular}
+\caption{Retained certificates for the four root branches.}
+\label{tab:certificates}
+\end{table}
+
+\begin{theorem}[Certified order-3 exclusion]
+\label{thm:c6}
+No graph in $\Rcal(5,5;43)$ admits an automorphism of cycle type
+$3^6 1^{25}$.
+\end{theorem}
+
+\begin{proof}
+Any such graph satisfies the orbit-CNF for exactly one root pattern. Cycle
+relabeling and complementation map that pattern to one of the four encoded
+branches. Every branch is UNSAT by a checked DRAT proof.
+\end{proof}
+
+\section{Novelty boundary and limitations}
+
+A targeted audit of public literature and repositories through September 7,
+2026 found the following 11 types uncovered before
+Theorem~\ref{thm:elementary}:
+\[
+2^c1^{43-2c}\ (1\le c\le3),\qquad
+3^c1^{43-3c}\ (1\le c\le5),\qquad
+5^c1^{43-5c}\ (1\le c\le3).
+\]
+The same audit found $3^6 1^{25}$ listed as uncovered or unfinished in the
+closest public prescribed-automorphism records \cite{Wustep2026,Kriebel2026}.
+The order-7, order-11, and order-13 consequences of
+Theorem~\ref{thm:elementary} are elementary reproofs of cases already covered
+computationally.
+
+The combined original result therefore excludes 12 previously uncovered or
+unfinished cycle types. This is a structural restriction, not a new Ramsey
+bound. It does not address graphs with trivial automorphism group and does
+not imply that a hypothetical graph is asymmetric.
+
+\section{Reproducibility}
+
+The repository contains the encoder, elementary checker, exhaustive branch
+audit, formula auditor, compressed proofs, original logs, fresh replay tool,
+and a machine-readable certificate manifest. The principal commands are:
+\begin{verbatim}
+make test
+make verify-certificates
+make verify-proofs DRAT_TRIM=/path/to/drat-trim
+\end{verbatim}
+
+Generated CNFs are not committed. They are rebuilt deterministically and
+must match the retained sizes and SHA-256 values before proof replay.
+
+\begin{thebibliography}{10}
+
+\bibitem{GreenwoodGleason1955}
+R. E. Greenwood and A. M. Gleason.
+\newblock Combinatorial relations and chromatic graphs.
+\newblock {\em Canadian Journal of Mathematics}, 7:1--7, 1955.
+
+\bibitem{Exoo1989}
+Geoffrey Exoo.
+\newblock A lower bound for $R(5,5)$.
+\newblock {\em Journal of Graph Theory}, 13(1):97--98, 1989.
+
+\bibitem{McKayRadziszowski1995}
+Brendan D. McKay and Stanislaw P. Radziszowski.
+\newblock $R(4,5)=25$.
+\newblock {\em Journal of Graph Theory}, 19(3):309--322, 1995.
+
+\bibitem{McKayRadziszowski1997}
+Brendan D. McKay and Stanislaw P. Radziszowski.
+\newblock Subgraph counting identities and Ramsey numbers.
+\newblock {\em Journal of Combinatorial Theory, Series B},
+69(2):193--209, 1997.
+
+\bibitem{AngeltveitMcKay2018}
+Vigleik Angeltveit and Brendan D. McKay.
+\newblock $R(5,5)\le48$.
+\newblock {\em Journal of Graph Theory}, 89(1):5--13, 2018.
+
+\bibitem{AngeltveitMcKay2025}
+Vigleik Angeltveit and Brendan D. McKay.
+\newblock $R(5,5)\le46$.
+\newblock \url{https://arxiv.org/abs/2409.15709}, version 2, 2025.
+
+\bibitem{Wustep2026}
+Wustep.
+\newblock Ramsey $R(5,5)$ research record.
+\newblock \url{https://github.com/wustep/maths/tree/main/problems/ramsey-r55},
+audited commit \texttt{4b7b8275d41682a98add180ee05540be84037100}, 2026.
+
+\bibitem{Kriebel2026}
+Alec Kriebel.
+\newblock Prescribed-automorphism cycle-type coverage audit.
+\newblock \url{https://github.com/AlecKriebel/Math/tree/main/ramsey55},
+audited commit \texttt{137ffa9f1a340f621651395ad0236cf1bdadb51c}, 2026.
+
+\end{thebibliography}
+
+\end{document}

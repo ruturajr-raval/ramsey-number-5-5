@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
+.pytest_cache/
+*.tmp
+build/
+dist/
+target/
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.pdf
