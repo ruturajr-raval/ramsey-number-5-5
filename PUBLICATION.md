@@ -93,20 +93,20 @@ separate prerelease package reproducibility audit identified and corrected
 release-gate enforcement, closed-world manifest checking, source-proof
 provenance validation, multipart inventory checks, and candidate-versus-final
 CI separation. Complete fresh local replays now verify all four c6 and all ten
-c8 branches. The final committed release snapshot still requires its own
-independent audit and hosted replay. External journal review and
-proof-assistant verification have not occurred.
+c8 branches. The corrected committed snapshot passed separate read-only
+mathematical and release-integrity reviews with no remaining findings. Hosted
+replay, external journal review, and proof-assistant verification have not
+occurred.
 
 ## Remaining Work And Release Gate
 
 Before release:
 
-1. Complete the final independent review of the corrected release snapshot.
-2. Rerun hosted candidate CI after the account billing block is cleared.
-3. Refresh the prior-art search immediately before release.
-4. Verify the tag-bound PDF, source, and checksum assets in hosted CI.
-5. Publish only the exact assets uploaded by the successful tag workflow.
-6. Confirm the public claim and dissemination text against the tagged package.
+1. Rerun hosted candidate CI.
+2. Refresh the prior-art search immediately before release.
+3. Verify the tag-bound PDF, source, and checksum assets in hosted CI.
+4. Publish only the exact assets uploaded by the successful tag workflow.
+5. Confirm the public claim and dissemination text against the tagged package.
 
 Both certificate manifests are generated and independently reconstructed by
 the certificate-verification targets. The local release-grade replay records

@@ -21,8 +21,9 @@ exclusions for prime-order automorphisms of a hypothetical graph on 43
 vertices with neither a clique nor an independent set of size 5.
 
 All 14 retained proof packages exist. The complete c6 and c8 certificate
-manifests and both local release-grade replays pass. Final snapshot review,
-hosted CI, public release, and DOI remain pending.
+manifests, both local release-grade replays, and separate mathematical and
+release-integrity reviews pass. Hosted CI, public release, and DOI remain
+pending.
 
 ## Problem And Background
 
@@ -346,8 +347,8 @@ The c8 replay covers 557,888,932 compressed bytes and 2,730,397,896
 decompressed bytes; its record SHA-256 is
 `0de9d8c9c66901ed326a13d6b2e54255b19556321f26c8d03e8ec13999611ddf`.
 The inspected PDF is committed, hash-bound, and reproducible byte for byte
-under the recorded source-date epoch. Final corrected-snapshot review and
-hosted CI are still pending.
+under the recorded source-date epoch. The corrected snapshot passed separate
+mathematical and release-integrity reviews. Hosted CI is still pending.
 
 The c8 evidence records distinguish original solver output from retained
 proof cores and disclose whether exact artifact hashes came from the original
@@ -439,7 +440,6 @@ problems.
 
 Before public release, the project still requires:
 
-- final independent snapshot review;
 - hosted replay and candidate CI on the committed release snapshot;
 - tag-bound source and checksum asset verification;
 - public repository release; and

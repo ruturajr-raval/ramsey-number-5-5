@@ -6,7 +6,7 @@
   "gates": {
     "significant_original_result": true,
     "prior_art_refreshed": true,
-    "final_release_snapshot_audit_passes": false,
+    "final_release_snapshot_audit_passes": true,
     "claim_scope_audited": true,
     "limitations_documented": true,
     "elementary_proof_check_passes": true,
@@ -16,11 +16,11 @@
     "retained_drat_checks_pass": true,
     "clean_environment_replay_passes": true,
     "paper_build_and_inspection_passes": true,
-    "independent_package_review_passes": false,
+    "independent_package_review_passes": true,
     "hosted_candidate_ci_passes": false
   },
   "decision": "hold",
   "artifact_reproducibility_ready": false,
   "theorem_announcement_ready": false,
-  "reason": "The expanded mathematical result, branch reductions, formula audits, both certificate manifests, fresh local replays of all fourteen retained proofs, the closed-world manifest, and the committed inspected report pass. Release remains on hold until the corrected snapshot receives independent review and hosted candidate CI. Hosted execution is currently blocked by the account billing or spending limit."
+  "reason": "The expanded mathematical result, branch reductions, formula audits, both certificate manifests, fresh local replays of all fourteen retained proofs, the closed-world manifest, the committed inspected report, the final snapshot audit, and separate mathematical and release-integrity reviews pass. Release remains on hold until hosted candidate CI and tag-bound final verification pass."
 }
