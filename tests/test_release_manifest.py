@@ -85,6 +85,15 @@ class PackageBoundaryTests(unittest.TestCase):
             paths,
         )
         self.assertIn("paper/release-pdf.json", paths)
+        self.assertIn("research/github-release-api-snapshot.json", paths)
+        self.assertIn("research/github-ruleset-api-snapshot.json", paths)
+        self.assertIn("research/publication-record.json", paths)
+        self.assertIn("research/tag-recovery-final-evidence.json", paths)
+        self.assertIn(
+            "research/tag-release-publication-audit.json",
+            paths,
+        )
+        self.assertIn("research/zenodo-record-api-snapshot.json", paths)
         self.assertIn("THIRD_PARTY_NOTICES.md", paths)
         self.assertIn("third_party/drat-trim/LICENSE", paths)
         self.assertIn("src/check_small_support.py", paths)
@@ -97,6 +106,7 @@ class PackageBoundaryTests(unittest.TestCase):
         self.assertIn("tools/verify_certificates.py", paths)
         self.assertIn("tools/verify_release_gate.py", paths)
         self.assertIn("tools/release_manifest.py", paths)
+        self.assertIn("tests/test_publication_record.py", paths)
 
     def test_manifest_contains_only_tracked_files(self) -> None:
         tracked = set(

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-09-08T20:32:33Z",
+  "source": "https://api.github.com/repos/ruturajr-raval/ramsey-number-5-5/rulesets/22507956",
+  "ruleset": {
+    "id": 22507956,
+    "name": "Protect version tags",
+    "target": "tag",
+    "source_type": "Repository",
+    "source": "ruturajr-raval/ramsey-number-5-5",
+    "enforcement": "active",
+    "bypass_actors": [],
+    "current_user_can_bypass": "never",
+    "conditions": {
+      "ref_name": {
+        "exclude": [],
+        "include": [
+          "refs/tags/v*"
+        ]
+      }
+    },
+    "rules": [
+      {
+        "type": "update"
+      },
+      {
+        "type": "deletion"
+      }
+    ]
+  }
+}

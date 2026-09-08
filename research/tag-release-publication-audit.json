@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "project": "ramsey-number-5-5",
+  "audited_at": "2026-09-08T19:23:01Z",
+  "purpose": "Second owner-authenticated audit after successful protected-tag recovery and before GitHub release creation.",
+  "result": "pass",
+  "publication_authorization": "github_release_authorized",
+  "recovery_workflow": {
+    "run_id": 34267807536,
+    "head_sha": "af86174b506a25ecaa048452e7151be49c4e1ee1",
+    "conclusion": "success",
+    "artifact_id": 10072577897,
+    "artifact_digest": "sha256:caeb71178df84ed4124f280e90fe82e99806421ef95efa34aa2a4a2ff5dfe8d3"
+  },
+  "release": {
+    "tag": "v0.1.0",
+    "tag_object_sha": "8663083baca77bad70f9e850741a79aa02b51d5f",
+    "commit_sha": "efbd19f319e9131fd550ec149bd1e5b72a82efee",
+    "tag_message": "Release v0.1.0",
+    "tagger_name": "Ruturaj R Raval",
+    "tagger_date": "2026-09-08T16:41:27Z"
+  },
+  "ruleset": {
+    "id": 22507956,
+    "name": "Protect version tags",
+    "target": "tag",
+    "source_type": "Repository",
+    "source": "ruturajr-raval/ramsey-number-5-5",
+    "enforcement": "active",
+    "bypass_actors": [],
+    "current_user_can_bypass": "never",
+    "conditions": {
+      "ref_name": {
+        "exclude": [],
+        "include": [
+          "refs/tags/v*"
+        ]
+      }
+    },
+    "rules": [
+      {
+        "type": "update"
+      },
+      {
+        "type": "deletion"
+      }
+    ]
+  }
+}

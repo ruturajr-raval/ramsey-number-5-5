@@ -59,6 +59,62 @@ class ReleaseAssetTests(unittest.TestCase):
     def test_project_version_matches_candidate_metadata(self) -> None:
         self.assertEqual("0.1.0", release_assets.project_version("HEAD"))
 
+    def test_published_version_requires_protected_tag(self) -> None:
+        published = {
+            "status": "published",
+            "github_release": {
+                "tag": "v0.1.0",
+                "immutable": True,
+            },
+        }
+        with mock.patch.object(
+            release_assets,
+            "publication_record_at_ref",
+            return_value=published,
+        ):
+            self.assertTrue(
+                release_assets.current_version_is_published(
+                    "HEAD",
+                    "0.1.0",
+                )
+            )
+            with self.assertRaisesRegex(ValueError, "already published"):
+                release_assets.validate_release_lifecycle(
+                    "HEAD",
+                    "0.1.0",
+                    None,
+                )
+            release_assets.validate_release_lifecycle(
+                "HEAD",
+                "0.1.0",
+                "v0.1.0",
+            )
+
+    def test_new_version_remains_release_candidate_eligible(self) -> None:
+        published = {
+            "status": "published",
+            "github_release": {
+                "tag": "v0.1.0",
+                "immutable": True,
+            },
+        }
+        with mock.patch.object(
+            release_assets,
+            "publication_record_at_ref",
+            return_value=published,
+        ):
+            self.assertFalse(
+                release_assets.current_version_is_published(
+                    "HEAD",
+                    "0.2.0",
+                )
+            )
+            release_assets.validate_release_lifecycle(
+                "HEAD",
+                "0.2.0",
+                None,
+            )
+
     def test_source_archive_is_deterministic_and_ref_bound(self) -> None:
         entries = [
             release_assets.TreeEntry("README.md", 0o644, "readme"),

@@ -1,0 +1,82 @@
+{
+  "candidate_artifact_digest": "sha256:a9aafbff8cbacbf48d7ffa404c9df6a23631393e37e0cdf79bfe864d09aa2190",
+  "candidate_artifact_expires_at": "2026-09-11T18:13:45Z",
+  "candidate_artifact_id": 10070157214,
+  "candidate_evidence_sha256": "012be8884e4e171c00d17b5b1bc0ddf5e44296752f46fc5d251eb4a7f88e6a73",
+  "failed_tag_job_id": 102150449870,
+  "failed_tag_run_id": 34252608262,
+  "paper_log_reconstruction": {
+    "sha256": "2e327291539053cc70fbb6b451d9475d37a36e10de7632fd005b7b53b2f1dd4c",
+    "source": "paper/ramsey-number-5-5-paper-v0.1.0.log",
+    "target": "build/paper/main.log"
+  },
+  "phase": "final",
+  "preflight_evidence_sha256": "ed2881674b28937da3b3299fecff8d174ea4de19d487945a516805ba25327302",
+  "project": "ramsey-number-5-5",
+  "publication_authorization": {
+    "required_action": "Run and retain a second owner-authenticated ruleset audit after the recovery workflow succeeds and before creating the GitHub release.",
+    "status": "pending_second_owner_ruleset_audit"
+  },
+  "recovery_record_sha256": "3e8221e43a5d43b6c8d69afdc7dd9b5cf91b9f2a08736264a3acfc5d16cc54b9",
+  "recovery_workflow": {
+    "event": "workflow_dispatch",
+    "ref": "refs/heads/main",
+    "ref_name": "main",
+    "ref_type": "branch",
+    "repository": "ruturajr-raval/ramsey-number-5-5",
+    "run_attempt": "1",
+    "run_id": "34267807536",
+    "sha": "af86174b506a25ecaa048452e7151be49c4e1ee1",
+    "workflow": "tag-release-recovery",
+    "workflow_ref": "ruturajr-raval/ramsey-number-5-5/.github/workflows/tag-release-recovery.yml@refs/heads/main"
+  },
+  "release_assets": {
+    "SHA256SUMS": "73eb9e627f04dc0312233837e3ba4b718453274b0fbc04c8ba001883084b3082",
+    "ramsey-number-5-5-paper-v0.1.0.pdf": "391228329992b56fdad739404940d2fa31a6beb21bb9faee098481b59c5cb512",
+    "ramsey-number-5-5-source-v0.1.0.tar.gz": "32fbc675072083c7689e821835bc3d202d2fbc12602e602016a85d72fc18ae0d"
+  },
+  "release_commit": "efbd19f319e9131fd550ec149bd1e5b72a82efee",
+  "release_tag": "v0.1.0",
+  "release_tag_object_sha": "8663083baca77bad70f9e850741a79aa02b51d5f",
+  "result": "verified",
+  "ruleset_id": 22507956,
+  "ruleset_owner_audit_valid_until": "2026-09-09T18:42:34Z",
+  "ruleset_owner_audited_at": "2026-09-08T18:42:34Z",
+  "ruleset_security_field_sources": {
+    "bypass_actors": "owner_audit_only",
+    "current_user_can_bypass": "live"
+  },
+  "schema_version": 1,
+  "semantic_release_gate": {
+    "evaluated_at": "2026-09-08",
+    "evidence": {
+      "c6_manifest_sha256": "3d94e53b661ee4465e4293b347b9ade6493ca30cbbe98df9dd0ee76193f968f7",
+      "c6_replay_sha256": "7c823ed8b3623c100ba60b2f57737acc6dbbc02cc512c01f6bb587a320d2bb9d",
+      "c8_manifest_sha256": "eca89cddc3a319402fccd12f385c6d31b2bfc9ace73d2cbc4a2720345f71258e",
+      "c8_replay_sha256": "e99e6c3dc286861b631f5776881d6c5a56a0bdcc3773c7b3a5fc7f2900cc8269",
+      "committed_paper_log_sha256": "2e327291539053cc70fbb6b451d9475d37a36e10de7632fd005b7b53b2f1dd4c",
+      "committed_paper_record_sha256": "98e647b56b64eeba040a615c3a8cfb360e4cfc3861fb3b20d5de95b91cb7670d",
+      "committed_paper_sha256": "391228329992b56fdad739404940d2fa31a6beb21bb9faee098481b59c5cb512",
+      "paper_build_record_sha256": "559e59b6d98b6c94183a22929cb7e51686ae1c52d7f2ede668ab80b0207fde2b",
+      "paper_pdf_sha256": "391228329992b56fdad739404940d2fa31a6beb21bb9faee098481b59c5cb512",
+      "paper_source_sha256": "c3a36c86ae2cf52ee1f0ce795c9727d4092057c5b75e9f073d6119d245181dff",
+      "release_assets": {
+        "SHA256SUMS": "73eb9e627f04dc0312233837e3ba4b718453274b0fbc04c8ba001883084b3082",
+        "ramsey-number-5-5-paper-v0.1.0.pdf": "391228329992b56fdad739404940d2fa31a6beb21bb9faee098481b59c5cb512",
+        "ramsey-number-5-5-source-v0.1.0.tar.gz": "32fbc675072083c7689e821835bc3d202d2fbc12602e602016a85d72fc18ae0d"
+      },
+      "release_manifest_sha256": "76e60847abab01adb2646e50e000e850849f7b9f24d8f3622daac10853fea692",
+      "retained_c6_replay_sha256": "6815224208794b686c633b0d601bccbcfbd8d580dcaee991b4e8f2ec5af3d934",
+      "retained_c8_replay_sha256": "0de9d8c9c66901ed326a13d6b2e54255b19556321f26c8d03e8ec13999611ddf"
+    },
+    "git_commit": "efbd19f319e9131fd550ec149bd1e5b72a82efee",
+    "mode": "final",
+    "project": "ramsey-number-5-5",
+    "release_reference": "refs/tags/v0.1.0",
+    "release_tag": "v0.1.0",
+    "result": "verified",
+    "schema_version": 1,
+    "verification_mode": "protected-tag-recovery",
+    "working_tree_dirty": false
+  }
+}

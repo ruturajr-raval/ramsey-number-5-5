@@ -4,14 +4,22 @@
   "author": "Ruturaj R Raval",
   "affiliation": "Independent Researcher",
   "orcid": "0000-0003-4930-8981",
-  "status": "release-authorized scoped theorem",
+  "status": "published scoped theorem",
   "release": {
     "version": "0.1.0",
     "tag": "v0.1.0",
     "date": "2026-09-08",
     "version_doi": "10.5281/zenodo.22653273",
     "concept_doi": "10.5281/zenodo.22653272",
-    "audited_candidate_commit": "27ea32178dfe9169f8d787d424013921050a1d3d"
+    "audited_candidate_commit": "27ea32178dfe9169f8d787d424013921050a1d3d",
+    "protected_release_commit": "efbd19f319e9131fd550ec149bd1e5b72a82efee",
+    "tag_object_sha": "8663083baca77bad70f9e850741a79aa02b51d5f",
+    "github_release_id": 385004910,
+    "github_release_url": "https://github.com/ruturajr-raval/ramsey-number-5-5/releases/tag/v0.1.0",
+    "github_published_at": "2026-09-08T19:25:14Z",
+    "zenodo_record_id": 22653273,
+    "zenodo_published_at": "2026-09-08T20:17:53Z",
+    "publication_record": "research/publication-record.json"
   },
   "target": {
     "type": "scoped theorem and certified exclusion",
@@ -30,7 +38,7 @@
     "previously_uncovered_elementary_exclusions": 12,
     "total_exclusions_demonstrated": 18,
     "original_audited_delta": 14,
-    "new_elementary_cycle_type": "3^7 1^22",
+    "elementary_cycle_type_with_standalone_counting_proof": "3^7 1^22",
     "certified_additional_cycle_types": [
       "3^6 1^25",
       "3^8 1^19"
@@ -39,7 +47,9 @@
     "certificate_manifests": [
       "evidence/orbit-p3-c6/certificate-manifest.json",
       "evidence/orbit-p3-c8/certificate-manifest.json"
-    ]
+    ],
+    "protected_tag_recovery_run_id": 34267807536,
+    "public_assets_download_verified": true
   },
   "limitations": [
     "The result does not determine R(5,5) or change its global interval.",

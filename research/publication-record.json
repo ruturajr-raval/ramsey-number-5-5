@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "project": "ramsey-number-5-5",
+  "recorded_at": "2026-09-08T20:32:33Z",
+  "status": "published",
+  "author": {
+    "name": "Ruturaj R Raval",
+    "affiliation": "Independent Researcher",
+    "orcid": "0000-0003-4930-8981"
+  },
+  "claim": {
+    "type": "scoped structural theorem and certified finite exclusion",
+    "global_interval_changed": false,
+    "original_audited_cycle_type_delta": 14,
+    "total_cycle_type_exclusions_demonstrated": 18
+  },
+  "github_release": {
+    "repository": "ruturajr-raval/ramsey-number-5-5",
+    "release_id": 385004910,
+    "tag": "v0.1.0",
+    "tag_object_sha": "8663083baca77bad70f9e850741a79aa02b51d5f",
+    "commit_sha": "efbd19f319e9131fd550ec149bd1e5b72a82efee",
+    "published_at": "2026-09-08T19:25:14Z",
+    "url": "https://github.com/ruturajr-raval/ramsey-number-5-5/releases/tag/v0.1.0",
+    "immutable": true,
+    "draft": false,
+    "prerelease": false,
+    "assets": [
+      {
+        "id": 551150727,
+        "name": "SHA256SUMS",
+        "size": 206,
+        "sha256": "73eb9e627f04dc0312233837e3ba4b718453274b0fbc04c8ba001883084b3082"
+      },
+      {
+        "id": 551150725,
+        "name": "ramsey-number-5-5-paper-v0.1.0.pdf",
+        "size": 108470,
+        "sha256": "391228329992b56fdad739404940d2fa31a6beb21bb9faee098481b59c5cb512"
+      },
+      {
+        "id": 551150733,
+        "name": "ramsey-number-5-5-source-v0.1.0.tar.gz",
+        "size": 615560458,
+        "sha256": "32fbc675072083c7689e821835bc3d202d2fbc12602e602016a85d72fc18ae0d"
+      }
+    ]
+  },
+  "protected_tag_verification": {
+    "workflow": "tag-release-recovery",
+    "run_id": 34267807536,
+    "job_id": 102201511627,
+    "event": "workflow_dispatch",
+    "controller_commit": "af86174b506a25ecaa048452e7151be49c4e1ee1",
+    "conclusion": "success",
+    "started_at": "2026-09-08T19:14:41Z",
+    "completed_at": "2026-09-08T19:15:54Z",
+    "artifact_id": 10072577897,
+    "artifact_name": "ramsey-number-5-5-v0.1.0-verified-release",
+    "artifact_size": 615692996,
+    "artifact_digest": "sha256:caeb71178df84ed4124f280e90fe82e99806421ef95efa34aa2a4a2ff5dfe8d3",
+    "final_evidence": "research/tag-recovery-final-evidence.json",
+    "final_evidence_sha256": "0a4412d608d93e32922b7509e64d3b5f2d57184c26ed72e2c7d2cff61fe35d0d"
+  },
+  "publication_audit": {
+    "path": "research/tag-release-publication-audit.json",
+    "sha256": "5cc811a949acc3a94f1de68b78dcc4cb3085fd00b4c25721f52787f749b0c4e6",
+    "audited_at": "2026-09-08T19:23:01Z",
+    "result": "pass",
+    "ruleset_id": 22507956,
+    "bypass_actor_count": 0,
+    "current_user_can_bypass": "never"
+  },
+  "zenodo": {
+    "record_id": 22653273,
+    "concept_record_id": 22653272,
+    "version_doi": "10.5281/zenodo.22653273",
+    "concept_doi": "10.5281/zenodo.22653272",
+    "published_at": "2026-09-08T20:17:53Z",
+    "publication_date": "2026-09-08",
+    "version": "0.1.0",
+    "status": "published",
+    "url": "https://zenodo.org/records/22653273",
+    "resource_type": "software",
+    "license": "MIT",
+    "related_release": "https://github.com/ruturajr-raval/ramsey-number-5-5/tree/v0.1.0",
+    "files": [
+      {
+        "id": "e2688ac5-e672-4668-a081-3fa126b2b5d3",
+        "name": "SHA256SUMS",
+        "size": 206,
+        "md5": "d5f0c5fadfa22ca94b4a3bee92bb4fdc",
+        "sha256": "73eb9e627f04dc0312233837e3ba4b718453274b0fbc04c8ba001883084b3082"
+      },
+      {
+        "id": "cf9f0223-ecd1-4040-a1ab-f1d4b5d44969",
+        "name": "ramsey-number-5-5-paper-v0.1.0.pdf",
+        "size": 108470,
+        "md5": "68b0f68fa13cd8a90cf1208e90700c79",
+        "sha256": "391228329992b56fdad739404940d2fa31a6beb21bb9faee098481b59c5cb512"
+      },
+      {
+        "id": "577fa9ee-1cde-415a-abdb-e68bef7df483",
+        "name": "ramsey-number-5-5-source-v0.1.0.tar.gz",
+        "size": 615560458,
+        "md5": "f94b8fdd04cffd0a888cb1c229bd467f",
+        "sha256": "32fbc675072083c7689e821835bc3d202d2fbc12602e602016a85d72fc18ae0d"
+      }
+    ]
+  },
+  "independent_public_verification": {
+    "verified_at": "2026-09-08T20:32:33Z",
+    "doi_resolves_to_record": true,
+    "github_release_api_snapshot": {
+      "path": "research/github-release-api-snapshot.json",
+      "sha256": "feb18bda78c01d7b9de58c58b3b80d9c5c2f3a482e639359cb6c896a6e252008"
+    },
+    "github_ruleset_api_snapshot": {
+      "path": "research/github-ruleset-api-snapshot.json",
+      "sha256": "446a0a4204b9b17ceb8992da532479825c6f569071d5d53d33d62194bd8fab01"
+    },
+    "zenodo_public_api_snapshot": {
+      "path": "research/zenodo-record-api-snapshot.json",
+      "sha256": "2989c4acff2e6a51673fa6c49ca29df868bb8f70ff766e183e419c37b5de1014"
+    },
+    "github_assets_download_verified": true,
+    "zenodo_assets_download_verified": true,
+    "github_and_zenodo_assets_byte_identical": true
+  },
+  "historical_records": {
+    "candidate_release_gate": "research/release-gate.json",
+    "tag_recovery_controller": "research/tag-release-recovery.json"
+  }
+}

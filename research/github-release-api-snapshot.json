@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-09-08T20:32:33Z",
+  "source": "https://api.github.com/repos/ruturajr-raval/ramsey-number-5-5/releases/385004910",
+  "release": {
+    "id": 385004910,
+    "tag_name": "v0.1.0",
+    "target_commitish": "main",
+    "name": "v0.1.0 - Prime-Order Automorphism Exclusions for Ramsey (5,5;43) Graphs",
+    "draft": false,
+    "prerelease": false,
+    "immutable": true,
+    "created_at": "2026-09-08T16:41:27Z",
+    "published_at": "2026-09-08T19:25:14Z",
+    "assets": [
+      {
+        "id": 551150725,
+        "name": "ramsey-number-5-5-paper-v0.1.0.pdf",
+        "size": 108470,
+        "digest": "sha256:391228329992b56fdad739404940d2fa31a6beb21bb9faee098481b59c5cb512",
+        "content_type": "application/pdf",
+        "created_at": "2026-09-08T19:24:33Z",
+        "updated_at": "2026-09-08T19:24:33Z"
+      },
+      {
+        "id": 551150733,
+        "name": "ramsey-number-5-5-source-v0.1.0.tar.gz",
+        "size": 615560458,
+        "digest": "sha256:32fbc675072083c7689e821835bc3d202d2fbc12602e602016a85d72fc18ae0d",
+        "content_type": "application/x-gtar",
+        "created_at": "2026-09-08T19:24:33Z",
+        "updated_at": "2026-09-08T19:25:13Z"
+      },
+      {
+        "id": 551150727,
+        "name": "SHA256SUMS",
+        "size": 206,
+        "digest": "sha256:73eb9e627f04dc0312233837e3ba4b718453274b0fbc04c8ba001883084b3082",
+        "content_type": "application/octet-stream",
+        "created_at": "2026-09-08T19:24:33Z",
+        "updated_at": "2026-09-08T19:24:33Z"
+      }
+    ]
+  }
+}

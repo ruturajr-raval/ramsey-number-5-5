@@ -13,7 +13,7 @@
 | Problem | Restrict prime-order automorphisms of hypothetical Ramsey `(5,5,43)` graphs |
 | Current result | The package demonstrates 18 prime-order cycle-type exclusions in total. Fourteen form the original dated public-record delta: twelve by elementary arguments, `3^6 1^25` by four checked DRAT certificates, and `3^8 1^19` by ten checked DRAT certificates after elementary and structural reductions |
 | Result type | Scoped structural theorem and certified finite exclusion |
-| Release | [`v0.1.0`](https://github.com/ruturajr-raval/ramsey-number-5-5/tree/v0.1.0), September 8, 2026 |
+| Release | [`v0.1.0`](https://github.com/ruturajr-raval/ramsey-number-5-5/releases/tag/v0.1.0), September 8, 2026 |
 | Version DOI | [`10.5281/zenodo.22653273`](https://doi.org/10.5281/zenodo.22653273) |
 | Concept DOI | [`10.5281/zenodo.22653272`](https://doi.org/10.5281/zenodo.22653272) |
 | License | MIT |
@@ -24,10 +24,11 @@ vertices with neither a clique nor an independent set of size 5.
 
 All 14 retained proof branches exist. The complete c6 and c8 certificate
 manifests, local release-grade replays, exact-SHA hosted candidate CI, and
-separate mathematical and release-integrity reviews pass. Publication policy
-requires an annotated protected tag and successful tag-bound verification;
-only the resulting paper, deterministic source archive, and checksums may be
-distributed.
+separate mathematical and release-integrity reviews pass. The annotated
+protected tag passed the tag-bound recovery workflow, the resulting GitHub
+release is immutable, and the same paper, deterministic source archive, and
+checksums are publicly archived under the version DOI. Independent public
+downloads from GitHub and Zenodo match the recorded SHA-256 values.
 
 ## Problem And Background
 
@@ -360,8 +361,9 @@ decompressed bytes; its record SHA-256 is
 The inspected PDF is committed, hash-bound, and reproducible byte for byte
 with the pinned Tectonic 0.17.0 toolchain and recorded source-date epoch. The
 release snapshot passed separate mathematical and release-integrity reviews
-and exact-SHA hosted candidate CI. Protected tag-bound verification is the
-final publication gate.
+and exact-SHA hosted candidate CI. Protected tag-bound verification passed in
+recovery workflow run `34267807536`, followed by a second owner-authenticated
+no-bypass ruleset audit before release creation.
 
 The c8 evidence records distinguish original solver output from retained
 proof cores and disclose whether exact artifact hashes came from the original
@@ -372,9 +374,14 @@ sizes, hashes, and recorded runtimes are retained under
 records, fresh checker binaries, checker-build logs, and per-branch logs are
 retained under `evidence/replay-c6/` and `evidence/replay-c8/`.
 
-The verified release manifest binds the source, documentation, formulas,
-proof packages, retained replay records and logs, audits, and committed report
-to the `v0.1.0` release snapshot.
+The tag-bound manifest archived in `v0.1.0`, with SHA-256
+`76e60847abab01adb2646e50e000e850849f7b9f24d8f3622daac10853fea692`,
+binds the source, documentation, formulas, proof packages, retained replay
+records and logs, audits, and committed report to the release snapshot. The
+root `release-manifest.sha256` on `main` instead binds the current branch,
+including post-publication records. The publication identity, asset IDs,
+checksums, DOI metadata, retained API snapshots, and public-download
+verification are recorded in `research/publication-record.json`.
 
 ## Reproduction
 
@@ -460,8 +467,8 @@ problems.
 
 The `v0.1.0` theorem package closes the scoped 14-type gap identified by the
 dated public audit. It does not close the global Ramsey problem or the full
-automorphism classification. Release publication is conditioned on protected
-tag verification and exact-asset archival.
+automorphism classification. The protected release and exact-asset archival
+are complete.
 
 The strongest next mathematical order-3 route is `3^9 1^16`, followed by the
 remaining order-2 and order-5 branches. Longer-term work includes reducing
@@ -474,7 +481,7 @@ reconstructing the elementary and certificate arguments in a proof assistant.
 docs/       claims, prior art, reproducibility, and next research steps
 evidence/   retained proofs, logs, metadata, hashes, and audits
 paper/      technical report source and submission metadata
-research/   machine-readable claim and release-gate records
+research/   machine-readable claim, release, audit, and publication records
 src/        elementary checker and orbit-CNF generator
 tests/      semantic, regression, and package-boundary tests
 tools/      independent audits, proof replay, and release tooling
@@ -485,17 +492,18 @@ tools/      independent audits, proof replay, and release tooling
 The permanent public repository is
 [`ruturajr-raval/ramsey-number-5-5`](https://github.com/ruturajr-raval/ramsey-number-5-5).
 The designated immutable release is
-[`v0.1.0`](https://github.com/ruturajr-raval/ramsey-number-5-5/tree/v0.1.0).
-Its reserved version DOI is
+[`v0.1.0`](https://github.com/ruturajr-raval/ramsey-number-5-5/releases/tag/v0.1.0).
+Its archived version DOI is
 [`10.5281/zenodo.22653273`](https://doi.org/10.5281/zenodo.22653273), and its
 concept DOI is
 [`10.5281/zenodo.22653272`](https://doi.org/10.5281/zenodo.22653272).
 
-The archival payload is defined as the inspected paper, deterministic source
-archive, and `SHA256SUMS` produced by the protected tag workflow. Citation
-metadata is in `CITATION.cff`, archive metadata is in `.zenodo.json`,
-technical report source and submission metadata are in `paper/`, and the
-release dossier is in `PUBLICATION.md`.
+The archival payload is the inspected paper, deterministic source archive,
+and `SHA256SUMS` produced by the protected tag workflow. The immutable GitHub
+release and Zenodo record contain byte-identical copies of all three files.
+Citation metadata is in `CITATION.cff`, archive metadata is in
+`.zenodo.json`, technical report source and submission metadata are in
+`paper/`, and the release dossier is in `PUBLICATION.md`.
 
 ## Authorship
 

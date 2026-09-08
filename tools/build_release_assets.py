@@ -7,6 +7,7 @@ import argparse
 import gzip
 import hashlib
 import io
+import json
 import os
 import re
 import shutil
@@ -23,6 +24,7 @@ PROJECT = "ramsey-number-5-5"
 VERSION_RE = re.compile(r"^version:\s*[\"']?([^\"' \n]+)", re.MULTILINE)
 CHECKSUM_RE = re.compile(r"^([0-9a-f]{64})  ([A-Za-z0-9_.-]+)$")
 COMMIT_RE = re.compile(r"^[0-9a-f]{40}$")
+PUBLICATION_RECORD_RELATIVE = "research/publication-record.json"
 
 
 @dataclass(frozen=True)
@@ -177,6 +179,46 @@ def committed_paper_relative(version: str) -> str:
     return f"paper/{PROJECT}-paper-v{version}.pdf"
 
 
+def publication_record_at_ref(reference: str) -> dict[str, object] | None:
+    if not any(
+        entry.path == PUBLICATION_RECORD_RELATIVE
+        for entry in tree_entries(reference)
+    ):
+        return None
+    value = json.loads(text_at_ref(reference, PUBLICATION_RECORD_RELATIVE))
+    if not isinstance(value, dict):
+        raise ValueError("publication record must be a JSON object")
+    return value
+
+
+def current_version_is_published(
+    reference: str = "HEAD",
+    version: str | None = None,
+) -> bool:
+    release_version = version or project_version(reference)
+    record = publication_record_at_ref(reference)
+    if record is None or record.get("status") != "published":
+        return False
+    release = record.get("github_release")
+    return (
+        isinstance(release, dict)
+        and release.get("tag") == f"v{release_version}"
+        and release.get("immutable") is True
+    )
+
+
+def validate_release_lifecycle(
+    reference: str,
+    version: str,
+    tag: str | None,
+) -> None:
+    if tag is None and current_version_is_published(reference, version):
+        raise ValueError(
+            f"version {version} is already published; rebuild it only from "
+            f"its protected tag with --tag v{version}"
+        )
+
+
 def verify_pdf_bytes(data: bytes, label: str) -> None:
     if data[:5] != b"%PDF-":
         raise ValueError(f"{label} is not a PDF")
@@ -233,6 +275,7 @@ def read_checksums(path: Path) -> dict[str, str]:
 def build_assets(reference: str, paper: Path, tag: str | None = None) -> None:
     commit = resolve_ref(reference)
     version = project_version(commit)
+    validate_release_lifecycle(commit, version, tag)
     if tag is not None:
         validate_tag(commit, tag, version)
     verify_pdf(paper)
@@ -319,6 +362,7 @@ def verify_assets(
 ) -> None:
     commit = resolve_ref(reference)
     version = project_version(commit)
+    validate_release_lifecycle(commit, version, tag)
     if tag is not None:
         validate_tag(commit, tag, version)
     committed_paper = bytes_at_ref(
@@ -364,6 +408,11 @@ def main() -> int:
         help="verify existing assets instead of rebuilding them",
     )
     parser.add_argument(
+        "--current-version-published",
+        action="store_true",
+        help="print whether the current version has an immutable publication",
+    )
+    parser.add_argument(
         "--ref",
         default="HEAD",
         help="Git commit or ref used for the source archive",
@@ -375,6 +424,9 @@ def main() -> int:
         default=ROOT / "build" / "paper" / "main.pdf",
     )
     args = parser.parse_args()
+    if args.current_version_published:
+        print("true" if current_version_is_published(args.ref) else "false")
+        return 0
     paper = args.paper if args.paper.is_absolute() else ROOT / args.paper
 
     if args.check:

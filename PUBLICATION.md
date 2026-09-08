@@ -11,15 +11,19 @@
 | Release | `v0.1.0` |
 | Release date | 2026-09-08 |
 | Audited candidate commit | `27ea32178dfe9169f8d787d424013921050a1d3d` |
+| Protected release commit | `efbd19f319e9131fd550ec149bd1e5b72a82efee` |
+| GitHub release | [`v0.1.0`](https://github.com/ruturajr-raval/ramsey-number-5-5/releases/tag/v0.1.0) |
 | Version DOI | `10.5281/zenodo.22653273` |
 | Concept DOI | `10.5281/zenodo.22653272` |
 | License | MIT |
-| Package status | release authorized; publication requires protected tag verification and exact archival |
+| Package status | published and independently download-verified |
 
 The protected release tag is a descendant of the audited candidate commit.
 The descendant changes publication metadata, release validation, and the
 paper availability statement; it does not change the mathematical formulas,
-proof certificates, or supported theorem.
+proof certificates, or supported theorem. GitHub release `385004910` was
+published at `2026-09-08T19:25:14Z` and is marked immutable. Zenodo record
+`22653273` was published at `2026-09-08T20:17:53Z`.
 
 ## Claim-Safe Public Summary
 
@@ -76,7 +80,7 @@ be extended to remaining cycle types.
 - Retained inspected build log:
   `paper/ramsey-number-5-5-paper-v0.1.0.log`
 - Report binding: `paper/release-pdf.json`
-- Package manifest: `release-manifest.sha256`
+- Current branch package manifest: `release-manifest.sha256`
 
 ## Claim Boundary And Limitations
 
@@ -108,25 +112,52 @@ c8 branches. The corrected candidate passed separate read-only mathematical
 and release-integrity reviews. The final publication metadata, paper
 availability statement, and release validators then received another
 exact-snapshot review. Exact-SHA hosted candidate replay passes. Protected
-tag-bound verification and exact-asset archival are mandatory publication
-steps. External journal review and proof-assistant verification have not
-occurred.
+tag-bound recovery run `34267807536` passed, and a second
+owner-authenticated ruleset audit confirmed no bypass actors before the
+GitHub release was created. All public GitHub and Zenodo assets were
+independently downloaded and matched the release SHA-256 values. External
+journal review and proof-assistant verification have not occurred.
 
-## Release Gate And Publication Policy
+## Release Verification And Archive
 
-Release `v0.1.0` is authorized by the recorded candidate gate:
+Release `v0.1.0` passed the recorded publication sequence:
 
 1. Exact-SHA hosted candidate CI passed on the audited candidate.
 2. The successful hosted run ID and SHA are bound into the release gate.
-3. The annotated tag is protected against update and deletion without bypass.
-4. The tag workflow must verify the PDF, source, and checksum assets.
-5. The GitHub release and Zenodo record must use only that verified asset set.
+3. The annotated tag was protected against update and deletion without
+   bypass.
+4. The protected-tag recovery workflow verified the PDF, source, checksum
+   file, release commit, tag object, and ruleset.
+5. A second owner-authenticated ruleset audit passed before release creation.
+6. The immutable GitHub release and Zenodo record received the same three
+   verified assets.
+7. Independent public downloads from both services matched the recorded
+   SHA-256 values.
 
 Both certificate manifests are independently reconstructed by the
 certificate-verification targets. The local and candidate-hosted
 release-grade replay records verify all 14 retained proof branches. The
 nine-page report was inspected page by page, committed, and bound to its
 source and build log by SHA-256.
+
+The manifest archived in the immutable `v0.1.0` source package has SHA-256
+`76e60847abab01adb2646e50e000e850849f7b9f24d8f3622daac10853fea692`.
+The root manifest on `main` is intentionally a separate current-branch
+integrity record that includes the post-publication evidence.
+
+The release gate deliberately freezes the `v0.1.0` paper path, DOI, tag, and
+audited identity. A later version must explicitly update those versioned
+constants, citation records, and release metadata before candidate or tag CI
+can authorize it. The lifecycle guard prevents mutable `main` from rebuilding
+an already published version under the same asset names.
+
+The complete publication facts are recorded in
+`research/publication-record.json`. The protected-tag workflow evidence is
+retained in `research/tag-recovery-final-evidence.json`, and the second
+owner-authenticated audit is retained in
+`research/tag-release-publication-audit.json`. The original
+`research/release-gate.json` remains the historical prerelease authorization
+record.
 
 The next order-3 research target is `3^9 1^16`.
 

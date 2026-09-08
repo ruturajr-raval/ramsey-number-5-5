@@ -64,10 +64,19 @@ jobs:
             PYTHON=python \
             TECTONIC="$PWD/build/tectonic/tectonic"
 
+      - name: Detect release lifecycle
+        id: release-lifecycle
+        run: |
+          echo "current_version_published=$(python \
+            tools/build_release_assets.py \
+            --current-version-published)" >> "$GITHUB_OUTPUT"
+
       - name: Verify release candidate evidence
+        if: steps.release-lifecycle.outputs.current_version_published != 'true'
         run: make verify-release-candidate PYTHON=python
 
       - name: Upload candidate evidence
+        if: steps.release-lifecycle.outputs.current_version_published != 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: release-candidate-evidence
@@ -90,9 +99,23 @@ jobs:
           git diff --exit-code -- release-manifest.sha256
 
       - name: Build and verify deterministic release assets
+        if: >-
+          steps.release-lifecycle.outputs.current_version_published != 'true'
+          || startsWith(github.ref, 'refs/tags/v')
         run: |
-          make release-assets PYTHON=python
-          make verify-release-assets PYTHON=python
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            make release-assets \
+              PYTHON=python \
+              RELEASE_REF="$GITHUB_REF" \
+              RELEASE_TAG="$GITHUB_REF_NAME"
+            make verify-release-assets \
+              PYTHON=python \
+              RELEASE_REF="$GITHUB_REF" \
+              RELEASE_TAG="$GITHUB_REF_NAME"
+          else
+            make release-assets PYTHON=python RELEASE_REF="$GITHUB_SHA"
+            make verify-release-assets PYTHON=python RELEASE_REF="$GITHUB_SHA"
+          fi
 
       - name: Verify final release gate
         if: startsWith(github.ref, 'refs/tags/v')
