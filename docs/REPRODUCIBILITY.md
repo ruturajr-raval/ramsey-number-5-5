@@ -141,7 +141,7 @@ covered by the upstream MIT license reproduced at
 The release report was built with Tectonic 0.17.0. Its exact source, PDF,
 engine hashes, retained build log, and page-inspection result are recorded in
 `paper/release-pdf.json`. The build fixes `SOURCE_DATE_EPOCH` at
-`1788739200`, corresponding to 2026-09-07 00:00:00 UTC. Rebuild and compare
+`1788825600`, corresponding to 2026-09-08 00:00:00 UTC. Rebuild and compare
 it byte for byte with:
 
 ```bash

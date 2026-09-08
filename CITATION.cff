@@ -12,8 +12,9 @@ version: 0.1.0
 license: MIT
 abstract: >-
   Elementary and proof-logged exclusions of fourteen prime-order automorphism
-  cycle types listed as uncovered or unfinished in dated public audits of
-  hypothetical Ramsey (5,5,43) graphs.
+  cycle types marked pending, uncovered, or unfinished in public case lists
+  and coverage ledgers audited through 2026-09-08 for hypothetical Ramsey
+  (5,5,43) graphs.
 keywords:
   - Ramsey theory
   - graph automorphisms

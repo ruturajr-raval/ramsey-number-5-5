@@ -10,11 +10,11 @@
     "object": "prime-order automorphism cycle types of hypothetical Ramsey (5,5,43) graphs"
   },
   "current_supported_claim": {
-    "statement": "Fourteen cycle types left uncovered or unfinished in the dated public audits are excluded: 2^c 1^(43-2c) for 1 <= c <= 3, 3^c 1^(43-3c) for 1 <= c <= 8, and 5^c 1^(43-5c) for 1 <= c <= 3."
+    "statement": "As of 2026-09-08, fourteen cycle types marked pending, uncovered, or unfinished in audited public case lists and coverage ledgers are excluded: 2^c 1^(43-2c) for 1 <= c <= 3, 3^c 1^(43-3c) for 1 <= c <= 8, and 5^c 1^(43-5c) for 1 <= c <= 3."
   },
   "problem": {
     "global_frontier": "43 <= R(5,5) <= 46",
-    "frontier_date": "2026-09-07",
+    "frontier_date": "2026-09-08",
     "structural_question": "Which prime-order automorphisms can a hypothetical Ramsey (5,5,43) graph admit?"
   },
   "evidence": {

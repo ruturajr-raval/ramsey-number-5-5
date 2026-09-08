@@ -23,6 +23,7 @@ from verify_release_gate import (
     ReferenceEntry,
     archive_entry_errors,
     file_sha256,
+    hosted_candidate_commit_errors,
     hosted_environment_errors,
     release_identity_errors,
     reference_snapshot_errors,
@@ -36,11 +37,34 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def complete_gate() -> dict[str, object]:
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "project": "ramsey-number-5-5",
-        "evaluated_at": "2026-09-07",
+        "evaluated_at": "2026-09-08",
         "candidate_claim": EXPECTED_CANDIDATE_CLAIM,
         "gates": {name: True for name in GATE_NAMES},
+        "hosted_candidate_ci": {
+            "repository": "ruturajr-raval/ramsey-number-5-5",
+            "workflow": "ci",
+            "run_id": 12345,
+            "head_sha": "1" * 40,
+            "head_branch": "main",
+            "event": "push",
+            "conclusion": "success",
+            "url": (
+                "https://github.com/ruturajr-raval/"
+                "ramsey-number-5-5/actions/runs/12345"
+            ),
+        },
+        "tag_protection": {
+            "repository": "ruturajr-raval/ramsey-number-5-5",
+            "ruleset_id": 22507956,
+            "name": "Protect version tags",
+            "target": "tag",
+            "enforcement": "active",
+            "include": ["refs/tags/v*"],
+            "bypass_actor_count": 0,
+            "rules": ["deletion", "update"],
+        },
         "decision": "release",
         "artifact_reproducibility_ready": True,
         "theorem_announcement_ready": True,
@@ -727,7 +751,7 @@ class ReleaseGateTests(unittest.TestCase):
             check=True,
         )
         subprocess.run(
-            ["git", "tag", "v0.1.0"],
+            ["git", "tag", "-a", "v0.1.0", "-m", "Release v0.1.0"],
             cwd=repository,
             check=True,
         )
@@ -778,6 +802,95 @@ class ReleaseGateTests(unittest.TestCase):
         )
         self.assertTrue(
             any("checked-out HEAD" in error for error in errors)
+        )
+
+    def test_final_release_rejects_lightweight_tag(self) -> None:
+        repository = self.root / "lightweight-tag-repository"
+        repository.mkdir()
+        subprocess.run(["git", "init", "--quiet"], cwd=repository, check=True)
+        subprocess.run(
+            ["git", "config", "user.name", "Release Fixture"],
+            cwd=repository,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.email", "fixture.invalid"],
+            cwd=repository,
+            check=True,
+        )
+        (repository / "payload").write_text("payload\n", encoding="ascii")
+        subprocess.run(["git", "add", "payload"], cwd=repository, check=True)
+        subprocess.run(
+            ["git", "commit", "--quiet", "-m", "payload"],
+            cwd=repository,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "tag", "v0.1.0"],
+            cwd=repository,
+            check=True,
+        )
+        errors = release_identity_errors(
+            repository,
+            "HEAD",
+            "v0.1.0",
+            "0.1.0",
+            "final",
+        )
+        self.assertIn("release tag must be an annotated tag object", errors)
+
+    def test_hosted_candidate_record_must_report_success(self) -> None:
+        gate = complete_gate()
+        gate["hosted_candidate_ci"]["conclusion"] = "failure"
+        errors = validation_errors(gate, self.paths, mode="final")
+        self.assertIn("hosted candidate CI did not pass", errors)
+
+    def test_hosted_candidate_sha_must_ancestor_release(self) -> None:
+        repository = self.root / "candidate-ancestor-repository"
+        repository.mkdir()
+        subprocess.run(["git", "init", "--quiet"], cwd=repository, check=True)
+        subprocess.run(
+            ["git", "config", "user.name", "Release Fixture"],
+            cwd=repository,
+            check=True,
+        )
+        subprocess.run(
+            ["git", "config", "user.email", "fixture.invalid"],
+            cwd=repository,
+            check=True,
+        )
+        payload = repository / "payload"
+        payload.write_text("candidate\n", encoding="ascii")
+        subprocess.run(["git", "add", "payload"], cwd=repository, check=True)
+        subprocess.run(
+            ["git", "commit", "--quiet", "-m", "candidate"],
+            cwd=repository,
+            check=True,
+        )
+        candidate = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=repository,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        payload.write_text("release\n", encoding="ascii")
+        subprocess.run(["git", "add", "payload"], cwd=repository, check=True)
+        subprocess.run(
+            ["git", "commit", "--quiet", "-m", "release"],
+            cwd=repository,
+            check=True,
+        )
+        gate = complete_gate()
+        gate["hosted_candidate_ci"]["head_sha"] = candidate
+        self.assertEqual(
+            [],
+            hosted_candidate_commit_errors(
+                gate,
+                repository,
+                "HEAD",
+                "final",
+            ),
         )
 
     def test_release_snapshot_requires_a_clean_checkout(self) -> None:

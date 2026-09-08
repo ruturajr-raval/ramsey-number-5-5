@@ -1,8 +1,8 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "project": "ramsey-number-5-5",
-  "evaluated_at": "2026-09-07",
-  "candidate_claim": "Fourteen previously uncovered or unfinished prime-order automorphism cycle types are excluded for hypothetical Ramsey (5,5,43) graphs.",
+  "evaluated_at": "2026-09-08",
+  "candidate_claim": "As of 2026-09-08, fourteen cycle types marked pending, uncovered, or unfinished in audited public case lists and coverage ledgers are excluded for hypothetical Ramsey (5,5,43) graphs.",
   "gates": {
     "significant_original_result": true,
     "prior_art_refreshed": true,
@@ -19,8 +19,23 @@
     "independent_package_review_passes": true,
     "hosted_candidate_ci_passes": false
   },
+  "tag_protection": {
+    "repository": "ruturajr-raval/ramsey-number-5-5",
+    "ruleset_id": 22507956,
+    "name": "Protect version tags",
+    "target": "tag",
+    "enforcement": "active",
+    "include": [
+      "refs/tags/v*"
+    ],
+    "bypass_actor_count": 0,
+    "rules": [
+      "deletion",
+      "update"
+    ]
+  },
   "decision": "hold",
   "artifact_reproducibility_ready": false,
   "theorem_announcement_ready": false,
-  "reason": "The expanded mathematical result, branch reductions, formula audits, both certificate manifests, fresh local replays of all fourteen retained proofs, the closed-world manifest, the committed inspected report, the final snapshot audit, and separate mathematical and release-integrity reviews pass. Release remains on hold until hosted candidate CI and tag-bound final verification pass."
+  "reason": "The expanded mathematical result, branch reductions, formula audits, both certificate manifests, fresh local replays of all fourteen retained proofs, the closed-world manifest, the committed inspected report, the final snapshot audit, refreshed prior-art review, active no-bypass version-tag ruleset, and separate mathematical and release-integrity reviews pass. Release remains on hold until exact-SHA hosted candidate CI and tag-bound final verification pass."
 }

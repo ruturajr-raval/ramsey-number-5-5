@@ -16,11 +16,12 @@ Package status: not yet released.
 
 ## Claim-Safe Public Summary
 
-The package excludes 14 prime-order automorphism cycle types that dated
-public coverage left unresolved or unfinished. Twelve types follow from
-elementary fixed-point, degree, and incidence arguments. The types
-`3^6 1^25` and `3^8 1^19` follow from 14 retained UNSAT certificates checked
-by `drat-trim`.
+As of 2026-09-08, the package excludes 14 prime-order automorphism cycle
+types that audited public case lists and coverage ledgers still marked
+pending, uncovered, or unfinished. Twelve types follow from elementary
+fixed-point, degree, and incidence arguments. The types `3^6 1^25` and
+`3^8 1^19` follow from 14 retained UNSAT certificates checked by
+`drat-trim`.
 
 ## Supported Result And Delta
 
@@ -33,8 +34,11 @@ not change that interval. Its original delta is structural:
 5^c 1^(43-5c), 1 <= c <= 3
 ```
 
-These 14 cycle types were listed as uncovered or unfinished in the public
-artifacts audited through 2026-09-07.
+These 14 cycle types were marked pending, uncovered, or unfinished in the
+public artifacts audited through 2026-09-08. A targeted public search found
+no earlier completed exclusion or independently checkable certificate. This
+is a dated public-record resolution claim, not an absolute-priority or
+first-attempt claim.
 
 ## Significance And Reuse
 
@@ -102,8 +106,8 @@ occurred.
 
 Before release:
 
-1. Rerun hosted candidate CI.
-2. Refresh the prior-art search immediately before release.
+1. Complete hosted candidate CI on the exact public candidate.
+2. Bind the successful hosted run ID and SHA into the release gate.
 3. Verify the tag-bound PDF, source, and checksum assets in hosted CI.
 4. Publish only the exact assets uploaded by the successful tag workflow.
 5. Confirm the public claim and dissemination text against the tagged package.

@@ -9,7 +9,7 @@
 | ORCID | [0000-0003-4930-8981](https://orcid.org/0000-0003-4930-8981) |
 | Field | Ramsey theory, graph automorphisms, and proof-logged SAT |
 | Problem | Restrict prime-order automorphisms of hypothetical Ramsey `(5,5,43)` graphs |
-| Current result | Fourteen previously uncovered or unfinished automorphism cycle types are excluded: twelve by elementary arguments, `3^6 1^25` by four checked DRAT certificates, and `3^8 1^19` by ten checked DRAT certificates after elementary and structural reductions |
+| Current result | As of 2026-09-08, fourteen automorphism cycle types marked pending, uncovered, or unfinished in audited public case lists and coverage ledgers are excluded: twelve by elementary arguments, `3^6 1^25` by four checked DRAT certificates, and `3^8 1^19` by ten checked DRAT certificates after elementary and structural reductions |
 | Result type | Scoped structural theorem and certified finite exclusion |
 | Release | not yet released |
 | Version DOI | not yet assigned |
@@ -61,7 +61,7 @@ automorphisms could a hypothetical graph in `R(5,5,43)` admit?
 Exoo published the lower bound 43 in 1989. McKay and Radziszowski proved the
 upper bound 49 in 1997, Angeltveit and McKay improved it to 48 in 2018, and
 their 2025 computation improved it to 46. The verified global frontier on
-2026-09-07 was
+2026-09-08 was
 
 ```text
 43 <= R(5,5) <= 46.
@@ -92,8 +92,9 @@ prime-order cycle types:
 
 Four of these elementary cases, the two order-7 types and the order-11 and
 order-13 types, had already been covered by later computational campaigns.
-The following 12 elementary exclusions were still uncovered or unfinished
-in the audited public coverage:
+As of 2026-09-08, the following 12 elementary exclusions were still marked
+pending, uncovered, or unfinished in the audited public case lists and
+coverage ledgers:
 
 ```text
 2^c 1^(43-2c), 1 <= c <= 3
@@ -108,9 +109,15 @@ Two additional order-3 types are closed by proof-logged SAT:
 - `3^8 1^19`, through six canonical `t=2,3` branches and four
   matrix-split `t=4` branches.
 
-The combined original result excludes 14 cycle types that the dated public
-audit left unresolved or unfinished: the 12 elementary cases above,
-`3^6 1^25`, and `3^8 1^19`.
+The combined original result excludes 14 cycle types that the public case
+lists and coverage ledgers audited through 2026-09-08 still marked pending,
+uncovered, or unfinished: the 12 elementary cases above, `3^6 1^25`, and
+`3^8 1^19`.
+
+A targeted public search found no earlier completed exclusion or
+independently checkable certificate for these 14 types. This is a dated
+public-record resolution claim, not an absolute-priority or first-attempt
+claim.
 
 In particular:
 
@@ -404,8 +411,9 @@ of the 12 elementary cases and the certified exclusions of `3^6 1^25` and
 `3^8 1^19` identified above.
 
 The novelty statement is based on a targeted search of public literature and
-repositories available through 2026-09-07. The exact claim boundary is
-recorded in `docs/CLAIMS.md` and `research/claim.json`.
+repositories available through 2026-09-08. It is limited to the audited
+public record and does not assert absolute priority. The exact claim boundary
+is recorded in `docs/CLAIMS.md` and `research/claim.json`.
 
 ## Limitations And Nonclaims
 
@@ -464,9 +472,9 @@ tools/      independent audits, proof replay, and release tooling
 
 ## Publication Citation And Archive
 
-The planned permanent public repository is
+The permanent public repository is
 [`ruturajr-raval/ramsey-number-5-5`](https://github.com/ruturajr-raval/ramsey-number-5-5).
-No public release or DOI has yet been assigned.
+The repository is public, but no tagged release or DOI has yet been assigned.
 
 Package status: not yet released.
 

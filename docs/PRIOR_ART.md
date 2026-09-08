@@ -1,6 +1,6 @@
 # Prior-Art And Novelty Audit
 
-Audit date: 2026-09-07
+Audit date: 2026-09-08
 
 ## Global Ramsey Frontier
 
@@ -11,7 +11,7 @@ Audit date: 2026-09-07
 | 1997 | `R(5,5) <= 49` | McKay and Radziszowski |
 | 2018 | `R(5,5) <= 48` | Angeltveit and McKay |
 | 2025 | `R(5,5) <= 46` | Angeltveit and McKay |
-| 2026-09-07 | `43 <= R(5,5) <= 46` | Audited starting frontier |
+| 2026-09-08 | `43 <= R(5,5) <= 46` | Audited starting frontier |
 
 The project does not change this interval.
 
@@ -41,7 +41,7 @@ The same q7 summary lists `p3_c8_k1`, `p3_c8_k2`, `p3_c8_k3`, `p3_c8_k4`,
 and `p3_c8_k8` as pending. Its order-3 UNSAT representative list is empty.
 The current head remained
 `4b7b8275d41682a98add180ee05540be84037100` when rechecked on
-2026-09-07.
+2026-09-08.
 
 The earlier coverage audit at
 [`AlecKriebel/Math`](https://github.com/AlecKriebel/Math/tree/main/ramsey55)
@@ -86,13 +86,17 @@ Negative search evidence cannot establish absolute priority. The safe
 novelty statement is:
 
 > To the best of the targeted search of public literature and repositories
-> available through 2026-09-07, no previous source states or proves the 12
+> available through 2026-09-08, no previous source states or proves the 12
 > project-original elementary exclusions or supplies a completed,
 > independently checkable exclusion of `3^6 1^25` or `3^8 1^19`.
 
 The `3^6 1^25`, `3^7 1^22`, and `3^8 1^19` cases had been explicitly
 prepared as finite computational cases before this project. The novelty
 claim is therefore resolution, not first attempt.
+
+The safe release wording is a dated public-record resolution claim. It does
+not assert absolute priority over unpublished, unindexed, inaccessible, or
+differently notated work.
 
 ## Methodological Ancestry
 

@@ -1,6 +1,6 @@
 # Claim Ledger
 
-Audit date: 2026-09-07
+Audit date: 2026-09-08
 
 ## Supported Claims
 
@@ -34,8 +34,8 @@ Evidence:
 
 ### C3 - Original elementary delta
 
-The targeted public audit through 2026-09-07 found the following 12 cycle
-types still uncovered before this work:
+The targeted public audit through 2026-09-08 found the following 12 cycle
+types still marked pending, uncovered, or unfinished before this work:
 
 ```text
 2^c 1^(43-2c), 1 <= c <= 3
@@ -108,6 +108,11 @@ uncovered or unfinished:
 3^c 1^(43-3c), 1 <= c <= 8
 5^c 1^(43-5c), 1 <= c <= 3
 ```
+
+A targeted public search found no earlier completed exclusion or
+independently checkable certificate for these types. This is a dated
+public-record resolution claim, not an absolute-priority or first-attempt
+claim.
 
 ## Reproduced Or Prior Results
 

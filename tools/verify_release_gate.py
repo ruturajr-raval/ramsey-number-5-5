@@ -28,8 +28,9 @@ EXPECTED_CHECKER_SOURCE_COMMIT = (
     "2e3b2dc0ecf938addbd779d42877b6ed69d9a985"
 )
 EXPECTED_CANDIDATE_CLAIM = (
-    "Fourteen previously uncovered or unfinished prime-order automorphism "
-    "cycle types are excluded for hypothetical Ramsey (5,5,43) graphs."
+    "As of 2026-09-08, fourteen cycle types marked pending, uncovered, or "
+    "unfinished in audited public case lists and coverage ledgers are "
+    "excluded for hypothetical Ramsey (5,5,43) graphs."
 )
 C6_CLAIM = (
     "No graph on 43 vertices with clique number and independence "
@@ -82,6 +83,27 @@ VERSION_RE = re.compile(
     re.MULTILINE,
 )
 FINAL_RELEASE_REPOSITORY = "ruturajr-raval/ramsey-number-5-5"
+FINAL_RELEASE_RULESET_ID = 22507956
+HOSTED_CANDIDATE_KEYS = {
+    "repository",
+    "workflow",
+    "run_id",
+    "head_sha",
+    "head_branch",
+    "event",
+    "conclusion",
+    "url",
+}
+TAG_PROTECTION_KEYS = {
+    "repository",
+    "ruleset_id",
+    "name",
+    "target",
+    "enforcement",
+    "include",
+    "bypass_actor_count",
+    "rules",
+}
 
 
 @dataclass(frozen=True)
@@ -228,13 +250,85 @@ def checked_replay_artifact(
     return path
 
 
+def hosted_candidate_declaration_errors(
+    record: dict[str, object],
+    required: bool,
+) -> list[str]:
+    candidate = record.get("hosted_candidate_ci")
+    if candidate is None and not required:
+        return []
+    if not isinstance(candidate, dict):
+        return ["hosted candidate CI record is missing"]
+
+    errors: list[str] = []
+    keys = set(candidate)
+    if keys != HOSTED_CANDIDATE_KEYS:
+        errors.append("hosted candidate CI record has unexpected fields")
+    if candidate.get("repository") != FINAL_RELEASE_REPOSITORY:
+        errors.append("hosted candidate CI repository is unexpected")
+    if candidate.get("workflow") != "ci":
+        errors.append("hosted candidate CI workflow is unexpected")
+    run_id = candidate.get("run_id")
+    if not isinstance(run_id, int) or run_id <= 0:
+        errors.append("hosted candidate CI run ID is invalid")
+    head_sha = candidate.get("head_sha")
+    if not isinstance(head_sha, str) or not re.fullmatch(
+        r"[0-9a-f]{40}",
+        head_sha,
+    ):
+        errors.append("hosted candidate CI SHA is invalid")
+    if candidate.get("head_branch") != "main":
+        errors.append("hosted candidate CI branch is unexpected")
+    if candidate.get("event") != "push":
+        errors.append("hosted candidate CI event is unexpected")
+    if candidate.get("conclusion") != "success":
+        errors.append("hosted candidate CI did not pass")
+    expected_url = (
+        f"https://github.com/{FINAL_RELEASE_REPOSITORY}/actions/runs/"
+        f"{run_id}"
+    )
+    if candidate.get("url") != expected_url:
+        errors.append("hosted candidate CI URL is inconsistent")
+    return errors
+
+
+def tag_protection_declaration_errors(
+    record: dict[str, object],
+    required: bool,
+) -> list[str]:
+    protection = record.get("tag_protection")
+    if protection is None and not required:
+        return []
+    if not isinstance(protection, dict):
+        return ["tag protection record is missing"]
+
+    errors: list[str] = []
+    keys = set(protection)
+    if keys != TAG_PROTECTION_KEYS:
+        errors.append("tag protection record has unexpected fields")
+    expected = {
+        "repository": FINAL_RELEASE_REPOSITORY,
+        "ruleset_id": FINAL_RELEASE_RULESET_ID,
+        "name": "Protect version tags",
+        "target": "tag",
+        "enforcement": "active",
+        "include": ["refs/tags/v*"],
+        "bypass_actor_count": 0,
+        "rules": ["deletion", "update"],
+    }
+    for key, value in expected.items():
+        if protection.get(key) != value:
+            errors.append(f"tag protection {key} is unexpected")
+    return errors
+
+
 def declaration_errors(record: object, mode: str) -> list[str]:
     if not isinstance(record, dict):
         return ["release gate must be a JSON object"]
 
     errors: list[str] = []
-    if record.get("schema_version") != 2:
-        errors.append("release-gate schema version must be 2")
+    if record.get("schema_version") != 3:
+        errors.append("release-gate schema version must be 3")
     if record.get("project") != "ramsey-number-5-5":
         errors.append("unexpected release-gate project")
     if record.get("candidate_claim") != EXPECTED_CANDIDATE_CLAIM:
@@ -272,6 +366,18 @@ def declaration_errors(record: object, mode: str) -> list[str]:
             errors.append("theorem announcement is not ready")
     elif decision not in {"hold", "release"}:
         errors.append("candidate decision must be hold or release")
+    errors.extend(
+        hosted_candidate_declaration_errors(
+            record,
+            required=mode == "final",
+        )
+    )
+    errors.extend(
+        tag_protection_declaration_errors(
+            record,
+            required=mode == "final",
+        )
+    )
     return errors
 
 
@@ -1048,6 +1154,18 @@ def release_identity_errors(
         errors.append(
             f"release tag {tag!r} does not match version {version}"
         )
+    try:
+        tag_type = subprocess.run(
+            ["git", "cat-file", "-t", f"refs/tags/{tag}"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        tag_type = None
+    if tag_type is not None and tag_type != "tag":
+        errors.append("release tag must be an annotated tag object")
     tag_commit = resolve_commit(
         root,
         f"refs/tags/{tag}",
@@ -1057,6 +1175,52 @@ def release_identity_errors(
     if tag_commit is not None and commit != tag_commit:
         errors.append(
             f"release tag {tag} resolves to {tag_commit}, expected {commit}"
+        )
+    return errors
+
+
+def hosted_candidate_commit_errors(
+    record: dict[str, object],
+    root: Path,
+    reference: str,
+    mode: str,
+) -> list[str]:
+    if mode != "final":
+        return []
+    candidate = record.get("hosted_candidate_ci")
+    if not isinstance(candidate, dict):
+        return ["hosted candidate CI record is missing"]
+    head_sha = candidate.get("head_sha")
+    if not isinstance(head_sha, str) or not re.fullmatch(
+        r"[0-9a-f]{40}",
+        head_sha,
+    ):
+        return ["hosted candidate CI SHA is invalid"]
+
+    errors: list[str] = []
+    release_commit = resolve_commit(
+        root,
+        reference,
+        "release reference",
+        errors,
+    )
+    candidate_commit = resolve_commit(
+        root,
+        head_sha,
+        "hosted candidate CI SHA",
+        errors,
+    )
+    if release_commit is None or candidate_commit is None:
+        return errors
+    completed = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", candidate_commit, release_commit],
+        cwd=root,
+        check=False,
+        capture_output=True,
+    )
+    if completed.returncode != 0:
+        errors.append(
+            "hosted candidate CI SHA is not an ancestor of the release"
         )
     return errors
 
@@ -1241,6 +1405,14 @@ def main() -> int:
     gate = load_json(args.gate, "release gate", errors)
     if gate is not None:
         errors.extend(validation_errors(gate, paths, args.mode))
+        errors.extend(
+            hosted_candidate_commit_errors(
+                gate,
+                paths.root,
+                args.ref,
+                args.mode,
+            )
+        )
     citation = paths.root / "CITATION.cff"
     if not citation.is_file():
         errors.append("CITATION.cff is missing")

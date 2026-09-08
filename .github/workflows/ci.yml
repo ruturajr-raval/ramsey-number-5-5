@@ -79,6 +79,7 @@ jobs:
             build/release-candidate-evidence.json
           if-no-files-found: error
           compression-level: 0
+          retention-days: 3
 
       - name: Verify release manifest
         run: make verify-release-manifest PYTHON=python
@@ -95,7 +96,10 @@ jobs:
 
       - name: Verify final release gate
         if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
+          python tools/verify_github_ruleset.py
           make verify-release-gate \
             PYTHON=python \
             RELEASE_TAG="${GITHUB_REF_NAME}"
@@ -110,6 +114,7 @@ jobs:
             build/release-final-evidence.json
           if-no-files-found: error
           compression-level: 0
+          retention-days: 3
 
       - name: Assert tracked tree unchanged
         if: always()

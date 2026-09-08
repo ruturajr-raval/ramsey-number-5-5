@@ -4,8 +4,9 @@
 
 - Proves an elementary exclusion theorem for 16 prime-order automorphism
   cycle types of hypothetical Ramsey `(5,5,43)` graphs.
-- Identifies 12 of those elementary cases as uncovered or unfinished in the
-  audits.
+- Identifies 12 of those elementary cases as pending, uncovered, or
+  unfinished in public case lists and coverage ledgers audited through
+  2026-09-08.
 - Adds four independently checked DRAT certificates excluding the additional
   cycle type `3^6 1^25`.
 - Adds a counting proof excluding `3^7 1^22` without a solver certificate.
@@ -20,5 +21,5 @@
   the upstream `drat-trim` MIT license.
 - Does not determine `R(5,5)`, change `43 <= R(5,5) <= 46`, or exclude
   asymmetric graphs.
-- The next order-3 research target is `3^9 1^16`; public release remains subject to
-  the recorded prerelease gate.
+- The next order-3 research target is `3^9 1^16`; public release remains
+  subject to the recorded prerelease gate.
