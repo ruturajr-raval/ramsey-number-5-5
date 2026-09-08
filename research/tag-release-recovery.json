@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "project": "ramsey-number-5-5",
+  "audited_at": "2026-09-08T18:42:34Z",
+  "owner_audit_valid_until": "2026-09-09T18:42:34Z",
+  "reason": "The protected tag run passed every proof, paper, manifest, and deterministic-asset step, but its read-only GitHub Actions token cannot expose every bypass-policy field. The owner-authenticated API audit below was refreshed immediately before this recovery and is valid only through the recorded deadline. The recovery workflow rechecks every visible ruleset field and the exact annotated tag identity. Final publication also requires a second owner-authenticated audit.",
+  "release": {
+    "tag": "v0.1.0",
+    "tag_object_sha": "8663083baca77bad70f9e850741a79aa02b51d5f",
+    "commit_sha": "efbd19f319e9131fd550ec149bd1e5b72a82efee",
+    "tag_message": "Release v0.1.0",
+    "tagger_name": "Ruturaj R Raval",
+    "tagger_date": "2026-09-08T16:41:27Z",
+    "signature_status": "unsigned"
+  },
+  "failed_tag_run": {
+    "run_id": 34252608262,
+    "job_id": 102150449870,
+    "event": "push",
+    "head_branch": "v0.1.0",
+    "head_sha": "efbd19f319e9131fd550ec149bd1e5b72a82efee",
+    "conclusion": "failure",
+    "failure_step": "Verify final release gate",
+    "candidate_artifact_id": 10070157214,
+    "candidate_artifact_name": "release-candidate-evidence",
+    "candidate_artifact_size": 288598,
+    "candidate_artifact_digest": "sha256:a9aafbff8cbacbf48d7ffa404c9df6a23631393e37e0cdf79bfe864d09aa2190",
+    "candidate_artifact_expires_at": "2026-09-11T18:13:45Z",
+    "candidate_evidence_sha256": "012be8884e4e171c00d17b5b1bc0ddf5e44296752f46fc5d251eb4a7f88e6a73",
+    "paper_sha256": "391228329992b56fdad739404940d2fa31a6beb21bb9faee098481b59c5cb512",
+    "paper_build_record_sha256": "559e59b6d98b6c94183a22929cb7e51686ae1c52d7f2ede668ab80b0207fde2b"
+  },
+  "ruleset_owner_audit": {
+    "id": 22507956,
+    "name": "Protect version tags",
+    "target": "tag",
+    "source_type": "Repository",
+    "source": "ruturajr-raval/ramsey-number-5-5",
+    "enforcement": "active",
+    "bypass_actors": [],
+    "current_user_can_bypass": "never",
+    "conditions": {
+      "ref_name": {
+        "exclude": [],
+        "include": [
+          "refs/tags/v*"
+        ]
+      }
+    },
+    "rules": [
+      {
+        "type": "update"
+      },
+      {
+        "type": "deletion"
+      }
+    ]
+  }
+}
