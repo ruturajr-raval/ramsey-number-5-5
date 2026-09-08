@@ -11,11 +11,12 @@
 | Release | `v0.1.0` |
 | Release date | 2026-09-08 |
 | Audited candidate commit | `27ea32178dfe9169f8d787d424013921050a1d3d` |
-| Protected release commit | `efbd19f319e9131fd550ec149bd1e5b72a82efee` |
-| GitHub release | [`v0.1.0`](https://github.com/ruturajr-raval/ramsey-number-5-5/releases/tag/v0.1.0) |
+| Audited release commit | `efbd19f319e9131fd550ec149bd1e5b72a82efee` |
+| Tagged release | [`v0.1.0`](https://github.com/ruturajr-raval/ramsey-number-5-5/releases/tag/v0.1.0) |
 | Version DOI | `10.5281/zenodo.22653273` |
 | Concept DOI | `10.5281/zenodo.22653272` |
 | License | MIT |
+| Archive status | Published on GitHub and Zenodo; all public files independently download-verified |
 | Package status | published and independently download-verified |
 
 The protected release tag is a descendant of the audited candidate commit.
@@ -159,7 +160,13 @@ owner-authenticated audit is retained in
 `research/release-gate.json` remains the historical prerelease authorization
 record.
 
-The next order-3 research target is `3^9 1^16`.
+## Remaining Work And Next Acceptance Gate
+
+The next order-3 research target is `3^9 1^16`. A future proof-bearing
+release must establish a new scoped theorem, pass independent formula and
+certificate reconstruction, replay every retained proof from a protected
+tag, and publish under a new semantic version without changing the immutable
+`v0.1.0` archive.
 
 ## Citation
 

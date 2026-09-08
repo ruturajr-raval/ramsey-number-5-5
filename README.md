@@ -13,7 +13,7 @@
 | Problem | Restrict prime-order automorphisms of hypothetical Ramsey `(5,5,43)` graphs |
 | Current result | The package demonstrates 18 prime-order cycle-type exclusions in total. Fourteen form the original dated public-record delta: twelve by elementary arguments, `3^6 1^25` by four checked DRAT certificates, and `3^8 1^19` by ten checked DRAT certificates after elementary and structural reductions |
 | Result type | Scoped structural theorem and certified finite exclusion |
-| Release | [`v0.1.0`](https://github.com/ruturajr-raval/ramsey-number-5-5/releases/tag/v0.1.0), September 8, 2026 |
+| Release | `v0.1.0` |
 | Version DOI | [`10.5281/zenodo.22653273`](https://doi.org/10.5281/zenodo.22653273) |
 | Concept DOI | [`10.5281/zenodo.22653272`](https://doi.org/10.5281/zenodo.22653272) |
 | License | MIT |
@@ -501,6 +501,9 @@ concept DOI is
 The archival payload is the inspected paper, deterministic source archive,
 and `SHA256SUMS` produced by the protected tag workflow. The immutable GitHub
 release and Zenodo record contain byte-identical copies of all three files.
+The audited release commit is
+`efbd19f319e9131fd550ec149bd1e5b72a82efee`. Version history and the exact
+release scope are recorded in `RELEASE_NOTES.md`.
 Citation metadata is in `CITATION.cff`, archive metadata is in
 `.zenodo.json`, technical report source and submission metadata are in
 `paper/`, and the release dossier is in `PUBLICATION.md`.

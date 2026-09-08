@@ -21,6 +21,8 @@ GITHUB_RULESET_SNAPSHOT = (
 ZENODO_RECORD_SNAPSHOT = (
     ROOT / "research" / "zenodo-record-api-snapshot.json"
 )
+README = ROOT / "README.md"
+PUBLICATION = ROOT / "PUBLICATION.md"
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 MD5_RE = re.compile(r"^[0-9a-f]{32}$")
 EXPECTED_ASSETS = {
@@ -320,6 +322,29 @@ class PublicationRecordTests(unittest.TestCase):
         self.assertEqual(
             self.record["github_release"]["commit_sha"],
             release["protected_release_commit"],
+        )
+
+    def test_public_documents_use_canonical_release_identity(self) -> None:
+        readme = README.read_text(encoding="utf-8")
+        publication = PUBLICATION.read_text(encoding="utf-8")
+        self.assertIn(
+            "| Release | `v0.1.0` |",
+            readme,
+        )
+        self.assertIn(
+            "`efbd19f319e9131fd550ec149bd1e5b72a82efee`",
+            readme,
+        )
+        self.assertIn("`RELEASE_NOTES.md`", readme)
+        for label in (
+            "Audited release commit",
+            "Tagged release",
+            "Archive status",
+        ):
+            self.assertIn(f"| {label} |", publication)
+        self.assertIn(
+            "## Remaining Work And Next Acceptance Gate",
+            publication,
         )
 
 
