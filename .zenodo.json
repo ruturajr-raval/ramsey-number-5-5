@@ -11,6 +11,7 @@
   ],
   "license": "MIT",
   "version": "0.1.0",
+  "publication_date": "2026-09-08",
   "keywords": [
     "Ramsey theory",
     "graph automorphisms",
@@ -20,7 +21,7 @@
   ],
   "related_identifiers": [
     {
-      "identifier": "https://github.com/ruturajr-raval/ramsey-number-5-5",
+      "identifier": "https://github.com/ruturajr-raval/ramsey-number-5-5/tree/v0.1.0",
       "relation": "isSupplementTo",
       "scheme": "url"
     }

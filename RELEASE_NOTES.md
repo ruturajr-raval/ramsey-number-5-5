@@ -1,6 +1,6 @@
 # Release Notes
 
-## Unreleased
+## v0.1.0 - 2026-09-08
 
 - Proves an elementary exclusion theorem for 16 prime-order automorphism
   cycle types of hypothetical Ramsey `(5,5,43)` graphs.
@@ -13,6 +13,9 @@
 - Excludes `3^8 1^19` through elementary internal-type reductions, an exact
   structural slack identity, and ten independently replayed DRAT
   certificates.
+- Demonstrates 18 exclusions in total. Fourteen comprise the original delta
+  relative to public case lists and coverage ledgers audited through
+  2026-09-08.
 - Classifies the `t=4` mixed-link matrices into two equivalence classes and
   verifies the resulting four strengthened branches.
 - Retains exact formula, proof, log, and tool hashes in a machine-readable
@@ -21,5 +24,9 @@
   the upstream `drat-trim` MIT license.
 - Does not determine `R(5,5)`, change `43 <= R(5,5) <= 46`, or exclude
   asymmetric graphs.
-- The next order-3 research target is `3^9 1^16`; public release remains
-  subject to the recorded prerelease gate.
+- Defines the inspected paper, deterministic source archive, and checksums
+  for the protected
+  [`v0.1.0`](https://github.com/ruturajr-raval/ramsey-number-5-5/releases/tag/v0.1.0)
+  release and archival DOI
+  [`10.5281/zenodo.22653273`](https://doi.org/10.5281/zenodo.22653273).
+- The next order-3 research target is `3^9 1^16`.

@@ -42,8 +42,9 @@ Planned choice: arXiv perpetual, non-exclusive license.
 
 ## Submission Status
 
-Not submitted. The source compiles to the committed inspected PDF. Corrected
-package review, hosted CI, and release gating remain in progress.
+Not submitted. Release `v0.1.0` is designated by the protected GitHub tag and
+reserved Zenodo DOI `10.5281/zenodo.22653273`. The source compiles to the
+committed inspected PDF.
 
 ## Claim Boundary
 

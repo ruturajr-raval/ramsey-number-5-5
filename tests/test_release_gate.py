@@ -14,17 +14,27 @@ from pathlib import Path
 
 from record_paper_build import build_record
 from verify_release_gate import (
+    AUDITED_CANDIDATE_COMMIT,
     C6_CLAIM,
     C8_CLAIM,
+    CONCEPT_DOI,
     EXPECTED_CANDIDATE_CLAIM,
     EXPECTED_CHECKER_SOURCE_COMMIT,
     GATE_NAMES,
+    RELEASE_DATE,
+    RELEASE_TAG,
+    RELEASE_URL,
+    RELEASE_VERSION,
+    TAG_URL,
+    VERSION_DOI,
+    VERSION_DOI_URL,
     EvidencePaths,
     ReferenceEntry,
     archive_entry_errors,
     file_sha256,
     hosted_candidate_commit_errors,
     hosted_environment_errors,
+    publication_metadata_errors,
     release_identity_errors,
     reference_snapshot_errors,
     repository_clean_errors,
@@ -126,6 +136,19 @@ class ReleaseGateTests(unittest.TestCase):
             "bytes": len(label),
             "sha256": digest,
         }
+
+    @staticmethod
+    def citation_text() -> str:
+        return (
+            "cff-version: 1.2.0\n"
+            f"version: {RELEASE_VERSION}\n"
+            f"date-released: {RELEASE_DATE}\n"
+            f'doi: "{VERSION_DOI}"\n'
+            f'repository-artifact: "{RELEASE_URL}"\n'
+            f'url: "{VERSION_DOI_URL}"\n'
+            "preferred-citation:\n"
+            "  type: software\n"
+        )
 
     def checker_record(self, directory: Path) -> dict[str, object]:
         directory.mkdir(parents=True, exist_ok=True)
@@ -290,7 +313,13 @@ class ReleaseGateTests(unittest.TestCase):
     def make_paper_evidence(self) -> None:
         self.paths.paper_source.parent.mkdir(parents=True, exist_ok=True)
         self.paths.paper_source.write_text(
-            "\\documentclass{article}\n",
+            (
+                "\\documentclass{article}\n"
+                "\\section{Code and data availability}\n"
+                f"{TAG_URL}\n"
+                f"{VERSION_DOI}\n"
+                f"{CONCEPT_DOI}\n"
+            ),
             encoding="ascii",
         )
         self.paths.paper_pdf.parent.mkdir(parents=True, exist_ok=True)
@@ -350,8 +379,89 @@ class ReleaseGateTests(unittest.TestCase):
             },
         )
         (self.root / "CITATION.cff").write_text(
-            "cff-version: 1.2.0\nversion: 0.1.0\n",
+            self.citation_text(),
             encoding="ascii",
+        )
+        (self.root / "README.md").write_text(
+            (
+                "18 prime-order cycle-type exclusions\n"
+                "14-type audited delta\n"
+                f"{TAG_URL}\n"
+                f"{VERSION_DOI}\n"
+                f"{CONCEPT_DOI}\n"
+            ),
+            encoding="ascii",
+        )
+        (self.root / "PUBLICATION.md").write_text(
+            (
+                f"| Release | `{RELEASE_TAG}` |\n"
+                f"| Release date | {RELEASE_DATE} |\n"
+                f"| Audited candidate commit | "
+                f"`{AUDITED_CANDIDATE_COMMIT}` |\n"
+                f"| Version DOI | `{VERSION_DOI}` |\n"
+                f"| Concept DOI | `{CONCEPT_DOI}` |\n"
+                "| Package status | release authorized; publication requires "
+                "protected tag verification and exact archival |\n"
+            ),
+            encoding="ascii",
+        )
+        (self.root / "RELEASE_NOTES.md").write_text(
+            (
+                f"## {RELEASE_TAG} - {RELEASE_DATE}\n"
+                f"{RELEASE_URL}\n"
+                f"{VERSION_DOI}\n"
+            ),
+            encoding="ascii",
+        )
+        arxiv = self.root / "paper/ARXIV_METADATA.md"
+        arxiv.write_text(
+            f"Release `{RELEASE_TAG}` is designated\n{VERSION_DOI}\n",
+            encoding="ascii",
+        )
+        self.write_json(
+            self.root / ".zenodo.json",
+            {
+                "title": (
+                    "Prime-Order Automorphism Exclusions for Ramsey "
+                    "(5,5;43) Graphs"
+                ),
+                "upload_type": "software",
+                "creators": [
+                    {
+                        "name": "Raval, Ruturaj R",
+                        "affiliation": "Independent Researcher",
+                        "orcid": "0000-0003-4930-8981",
+                    }
+                ],
+                "license": "MIT",
+                "version": RELEASE_VERSION,
+                "publication_date": RELEASE_DATE,
+                "related_identifiers": [
+                    {
+                        "identifier": TAG_URL,
+                        "relation": "isSupplementTo",
+                        "scheme": "url",
+                    }
+                ],
+            },
+        )
+        self.write_json(
+            self.root / "research/claim.json",
+            {
+                "status": "release-authorized scoped theorem",
+                "release": {
+                    "version": RELEASE_VERSION,
+                    "tag": RELEASE_TAG,
+                    "date": RELEASE_DATE,
+                    "version_doi": VERSION_DOI,
+                    "concept_doi": CONCEPT_DOI,
+                    "audited_candidate_commit": AUDITED_CANDIDATE_COMMIT,
+                },
+                "evidence": {
+                    "total_exclusions_demonstrated": 18,
+                    "original_audited_delta": 14,
+                },
+            },
         )
 
     def make_release_manifest(self, gate: dict[str, object]) -> None:
@@ -417,7 +527,7 @@ class ReleaseGateTests(unittest.TestCase):
         paper_name = f"ramsey-number-5-5-paper-v{version}.pdf"
         source_name = f"ramsey-number-5-5-source-v{version}.tar.gz"
         (self.root / "CITATION.cff").write_text(
-            f"cff-version: 1.2.0\nversion: {version}\n",
+            self.citation_text(),
             encoding="ascii",
         )
         (self.paths.release_dir / paper_name).write_bytes(
@@ -669,6 +779,51 @@ class ReleaseGateTests(unittest.TestCase):
                 self.paths,
                 mode="final",
             ),
+        )
+
+    def test_final_release_rejects_incomplete_citation_metadata(self) -> None:
+        citation = self.root / "CITATION.cff"
+        citation.write_text(
+            self.citation_text().replace(
+                f'doi: "{VERSION_DOI}"\n',
+                "",
+            ),
+            encoding="ascii",
+        )
+        errors = publication_metadata_errors(self.paths)
+        self.assertTrue(
+            any(
+                "CITATION.cff" in error and VERSION_DOI in error
+                for error in errors
+            )
+        )
+
+    def test_final_release_rejects_mutable_zenodo_link(self) -> None:
+        zenodo = json.loads(
+            (self.root / ".zenodo.json").read_text(encoding="ascii")
+        )
+        zenodo["related_identifiers"][0]["identifier"] = (
+            "https://github.com/ruturajr-raval/ramsey-number-5-5"
+        )
+        self.write_json(self.root / ".zenodo.json", zenodo)
+        errors = publication_metadata_errors(self.paths)
+        self.assertIn(
+            "Zenodo metadata does not bind the release tag",
+            errors,
+        )
+
+    def test_final_release_rejects_prerelease_readme_wording(self) -> None:
+        readme = self.root / "README.md"
+        readme.write_text(
+            readme.read_text(encoding="ascii") + "not yet released\n",
+            encoding="ascii",
+        )
+        errors = publication_metadata_errors(self.paths)
+        self.assertTrue(
+            any(
+                "README.md" in error and "not yet released" in error
+                for error in errors
+            )
         )
 
     def test_release_paper_drift_is_rejected(self) -> None:

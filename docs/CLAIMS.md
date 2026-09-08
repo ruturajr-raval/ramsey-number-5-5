@@ -114,6 +114,14 @@ independently checkable certificate for these types. This is a dated
 public-record resolution claim, not an absolute-priority or first-attempt
 claim.
 
+### C8 - Total demonstrated exclusions
+
+The package demonstrates 18 distinct prime-order automorphism cycle-type
+exclusions in total: 16 elementary exclusions from C2 and the two additional
+certificate-backed exclusions from C4 and C6. Of these 18, the 14 types in C7
+form the original delta relative to the dated public audit. The remaining
+four are elementary reproofs of cases already covered computationally.
+
 ## Reproduced Or Prior Results
 
 - `43 <= R(5,5) <= 46`;

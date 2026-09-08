@@ -8,20 +8,27 @@
 | Author | Ruturaj R Raval |
 | Affiliation | Independent Researcher |
 | ORCID | `0000-0003-4930-8981` |
-| Candidate version | `v0.1.0` |
+| Release | `v0.1.0` |
+| Release date | 2026-09-08 |
+| Audited candidate commit | `27ea32178dfe9169f8d787d424013921050a1d3d` |
+| Version DOI | `10.5281/zenodo.22653273` |
+| Concept DOI | `10.5281/zenodo.22653272` |
 | License | MIT |
-| Package status | not yet released |
+| Package status | release authorized; publication requires protected tag verification and exact archival |
 
-Package status: not yet released.
+The protected release tag is a descendant of the audited candidate commit.
+The descendant changes publication metadata, release validation, and the
+paper availability statement; it does not change the mathematical formulas,
+proof certificates, or supported theorem.
 
 ## Claim-Safe Public Summary
 
-As of 2026-09-08, the package excludes 14 prime-order automorphism cycle
-types that audited public case lists and coverage ledgers still marked
-pending, uncovered, or unfinished. Twelve types follow from elementary
-fixed-point, degree, and incidence arguments. The types `3^6 1^25` and
-`3^8 1^19` follow from 14 retained UNSAT certificates checked by
-`drat-trim`.
+The package demonstrates 18 prime-order automorphism cycle-type exclusions.
+Fourteen form the original dated public-record delta: twelve follow from
+elementary fixed-point, degree, and incidence arguments, while `3^6 1^25`
+and `3^8 1^19` follow from 14 retained UNSAT certificates checked by
+`drat-trim`. The other four are elementary reproofs of cases already covered
+computationally.
 
 ## Supported Result And Delta
 
@@ -97,30 +104,35 @@ separate prerelease package reproducibility audit identified and corrected
 release-gate enforcement, closed-world manifest checking, source-proof
 provenance validation, multipart inventory checks, and candidate-versus-final
 CI separation. Complete fresh local replays now verify all four c6 and all ten
-c8 branches. The corrected committed snapshot passed separate read-only
-mathematical and release-integrity reviews with no remaining findings. Hosted
-replay, external journal review, and proof-assistant verification have not
+c8 branches. The corrected candidate passed separate read-only mathematical
+and release-integrity reviews. The final publication metadata, paper
+availability statement, and release validators then received another
+exact-snapshot review. Exact-SHA hosted candidate replay passes. Protected
+tag-bound verification and exact-asset archival are mandatory publication
+steps. External journal review and proof-assistant verification have not
 occurred.
 
-## Remaining Work And Release Gate
+## Release Gate And Publication Policy
 
-Before release:
+Release `v0.1.0` is authorized by the recorded candidate gate:
 
-1. Complete hosted candidate CI on the exact public candidate.
-2. Bind the successful hosted run ID and SHA into the release gate.
-3. Verify the tag-bound PDF, source, and checksum assets in hosted CI.
-4. Publish only the exact assets uploaded by the successful tag workflow.
-5. Confirm the public claim and dissemination text against the tagged package.
+1. Exact-SHA hosted candidate CI passed on the audited candidate.
+2. The successful hosted run ID and SHA are bound into the release gate.
+3. The annotated tag is protected against update and deletion without bypass.
+4. The tag workflow must verify the PDF, source, and checksum assets.
+5. The GitHub release and Zenodo record must use only that verified asset set.
 
-Both certificate manifests are generated and independently reconstructed by
-the certificate-verification targets. The local release-grade replay records
-verify all 14 retained proof branches and are retained with their checker
-binaries and logs. The rebuilt nine-page report has been inspected page by
-page, committed, and bound to its source and build log by SHA-256.
+Both certificate manifests are independently reconstructed by the
+certificate-verification targets. The local and candidate-hosted
+release-grade replay records verify all 14 retained proof branches. The
+nine-page report was inspected page by page, committed, and bound to its
+source and build log by SHA-256.
 
 The next order-3 research target is `3^9 1^16`.
 
 ## Citation
 
-The planned citation record is `CITATION.cff`. No DOI or tagged release is
-claimed before archival.
+Ruturaj R Raval, "Prime-Order Automorphism Exclusions for Ramsey (5,5;43)
+Graphs," version 0.1.0, 2026. DOI: `10.5281/zenodo.22653273`.
+
+The machine-readable citation record is `CITATION.cff`.

@@ -1,6 +1,7 @@
 PYTHON ?= python3
 CC ?= cc
 DRAT_TRIM ?= drat-trim
+CFFCONVERT ?= cffconvert
 DRAT_TRIM_COMMIT := 2e3b2dc0ecf938addbd779d42877b6ed69d9a985
 DRAT_TRIM_SOURCE ?= $(patsubst %/,%,$(dir $(DRAT_TRIM)))
 SOURCE_DATE_EPOCH ?= 1788825600
@@ -55,6 +56,7 @@ test:
 
 verify-text:
 	$(PYTHON) tools/check_repository_text.py
+	$(CFFCONVERT) --validate --infile CITATION.cff
 
 verify-elementary: verify-c6-elementary verify-c8-elementary
 

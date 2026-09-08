@@ -84,6 +84,22 @@ VERSION_RE = re.compile(
 )
 FINAL_RELEASE_REPOSITORY = "ruturajr-raval/ramsey-number-5-5"
 FINAL_RELEASE_RULESET_ID = 22507956
+RELEASE_VERSION = "0.1.0"
+RELEASE_TAG = f"v{RELEASE_VERSION}"
+RELEASE_DATE = "2026-09-08"
+VERSION_DOI = "10.5281/zenodo.22653273"
+CONCEPT_DOI = "10.5281/zenodo.22653272"
+RELEASE_URL = (
+    f"https://github.com/{FINAL_RELEASE_REPOSITORY}/releases/tag/{RELEASE_TAG}"
+)
+TAG_URL = (
+    f"https://github.com/{FINAL_RELEASE_REPOSITORY}/tree/{RELEASE_TAG}"
+)
+VERSION_DOI_URL = f"https://doi.org/{VERSION_DOI}"
+CONCEPT_DOI_URL = f"https://doi.org/{CONCEPT_DOI}"
+AUDITED_CANDIDATE_COMMIT = (
+    "27ea32178dfe9169f8d787d424013921050a1d3d"
+)
 HOSTED_CANDIDATE_KEYS = {
     "repository",
     "workflow",
@@ -1112,6 +1128,155 @@ def release_asset_errors(paths: EvidencePaths) -> list[str]:
     return errors
 
 
+def publication_metadata_errors(paths: EvidencePaths) -> list[str]:
+    errors: list[str] = []
+
+    text_requirements = {
+        "CITATION.cff": (
+            f"version: {RELEASE_VERSION}",
+            f"date-released: {RELEASE_DATE}",
+            f'doi: "{VERSION_DOI}"',
+            f'repository-artifact: "{RELEASE_URL}"',
+            f'url: "{VERSION_DOI_URL}"',
+            "preferred-citation:\n  type: software",
+        ),
+        "README.md": (
+            TAG_URL,
+            VERSION_DOI,
+            CONCEPT_DOI,
+            "18 prime-order cycle-type exclusions",
+            "14-type audited delta",
+        ),
+        "PUBLICATION.md": (
+            f"| Release | `{RELEASE_TAG}` |",
+            f"| Release date | {RELEASE_DATE} |",
+            f"| Audited candidate commit | `{AUDITED_CANDIDATE_COMMIT}` |",
+            f"| Version DOI | `{VERSION_DOI}` |",
+            f"| Concept DOI | `{CONCEPT_DOI}` |",
+            (
+                "| Package status | release authorized; publication requires "
+                "protected tag verification and exact archival |"
+            ),
+        ),
+        "RELEASE_NOTES.md": (
+            f"## {RELEASE_TAG} - {RELEASE_DATE}",
+            RELEASE_URL,
+            VERSION_DOI,
+        ),
+        "paper/ARXIV_METADATA.md": (
+            f"Release `{RELEASE_TAG}` is designated",
+            VERSION_DOI,
+        ),
+        "paper/main.tex": (
+            r"\section{Code and data availability}",
+            TAG_URL,
+            VERSION_DOI,
+            CONCEPT_DOI,
+        ),
+    }
+    stale_fragments = {
+        "README.md": (
+            "not yet released",
+            "Hosted CI is still pending",
+            "Before the tagged release",
+        ),
+        "PUBLICATION.md": (
+            "not yet released",
+            "Before release:",
+            "The planned citation record",
+        ),
+        "RELEASE_NOTES.md": (
+            "## Unreleased",
+            "subject to the recorded prerelease gate",
+        ),
+        "paper/ARXIV_METADATA.md": (
+            "release gating remain in progress",
+        ),
+    }
+
+    for relative, fragments in text_requirements.items():
+        path = paths.root / relative
+        if not path.is_file() or path.is_symlink():
+            errors.append(f"publication metadata is missing or unsafe: {relative}")
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError as error:
+            errors.append(f"publication metadata is not UTF-8: {relative}: {error}")
+            continue
+        for fragment in fragments:
+            if fragment not in text:
+                errors.append(
+                    f"publication metadata lacks required value: "
+                    f"{relative}: {fragment}"
+                )
+        for fragment in stale_fragments.get(relative, ()):
+            if fragment in text:
+                errors.append(
+                    f"publication metadata retains prerelease wording: "
+                    f"{relative}: {fragment}"
+                )
+
+    zenodo_path = paths.root / ".zenodo.json"
+    zenodo = load_json(zenodo_path, "Zenodo metadata", errors)
+    if zenodo is not None:
+        expected_scalars = {
+            "title": (
+                "Prime-Order Automorphism Exclusions for Ramsey "
+                "(5,5;43) Graphs"
+            ),
+            "upload_type": "software",
+            "license": "MIT",
+            "version": RELEASE_VERSION,
+            "publication_date": RELEASE_DATE,
+        }
+        for field, expected in expected_scalars.items():
+            if zenodo.get(field) != expected:
+                errors.append(f"Zenodo metadata {field} is unexpected")
+        creators = zenodo.get("creators")
+        expected_creator = {
+            "name": "Raval, Ruturaj R",
+            "affiliation": "Independent Researcher",
+            "orcid": "0000-0003-4930-8981",
+        }
+        if creators != [expected_creator]:
+            errors.append("Zenodo creator metadata is unexpected")
+        related = zenodo.get("related_identifiers")
+        expected_related = {
+            "identifier": TAG_URL,
+            "relation": "isSupplementTo",
+            "scheme": "url",
+        }
+        if not isinstance(related, list) or expected_related not in related:
+            errors.append("Zenodo metadata does not bind the release tag")
+
+    claim_path = paths.root / "research/claim.json"
+    claim = load_json(claim_path, "claim metadata", errors)
+    if claim is not None:
+        if claim.get("status") != "release-authorized scoped theorem":
+            errors.append("claim metadata is not release-authorized")
+        release = claim.get("release")
+        expected_release = {
+            "version": RELEASE_VERSION,
+            "tag": RELEASE_TAG,
+            "date": RELEASE_DATE,
+            "version_doi": VERSION_DOI,
+            "concept_doi": CONCEPT_DOI,
+            "audited_candidate_commit": AUDITED_CANDIDATE_COMMIT,
+        }
+        if release != expected_release:
+            errors.append("claim release metadata is unexpected")
+        evidence = claim.get("evidence")
+        if (
+            not isinstance(evidence, dict)
+            or evidence.get("total_exclusions_demonstrated") != 18
+            or evidence.get("original_audited_delta") != 14
+        ):
+            errors.append("claim count reconciliation is incomplete")
+
+    return errors
+
+
 def repository_clean_errors(root: Path) -> list[str]:
     if not (root / ".git").is_dir():
         return []
@@ -1303,6 +1468,7 @@ def validation_errors(
     errors.extend(release_manifest_errors(paths))
     errors.extend(repository_clean_errors(paths.root))
     if mode == "final":
+        errors.extend(publication_metadata_errors(paths))
         errors.extend(release_asset_errors(paths))
     return errors
 

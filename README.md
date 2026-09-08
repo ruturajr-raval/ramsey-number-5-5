@@ -1,5 +1,7 @@
 # Prime-Order Automorphism Exclusions for Ramsey `(5,5;43)` Graphs
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22653272.svg)](https://doi.org/10.5281/zenodo.22653272)
+
 ## Project Overview
 
 | Field | Value |
@@ -9,11 +11,11 @@
 | ORCID | [0000-0003-4930-8981](https://orcid.org/0000-0003-4930-8981) |
 | Field | Ramsey theory, graph automorphisms, and proof-logged SAT |
 | Problem | Restrict prime-order automorphisms of hypothetical Ramsey `(5,5,43)` graphs |
-| Current result | As of 2026-09-08, fourteen automorphism cycle types marked pending, uncovered, or unfinished in audited public case lists and coverage ledgers are excluded: twelve by elementary arguments, `3^6 1^25` by four checked DRAT certificates, and `3^8 1^19` by ten checked DRAT certificates after elementary and structural reductions |
+| Current result | The package demonstrates 18 prime-order cycle-type exclusions in total. Fourteen form the original dated public-record delta: twelve by elementary arguments, `3^6 1^25` by four checked DRAT certificates, and `3^8 1^19` by ten checked DRAT certificates after elementary and structural reductions |
 | Result type | Scoped structural theorem and certified finite exclusion |
-| Release | not yet released |
-| Version DOI | not yet assigned |
-| Concept DOI | not yet assigned |
+| Release | [`v0.1.0`](https://github.com/ruturajr-raval/ramsey-number-5-5/tree/v0.1.0), September 8, 2026 |
+| Version DOI | [`10.5281/zenodo.22653273`](https://doi.org/10.5281/zenodo.22653273) |
+| Concept DOI | [`10.5281/zenodo.22653272`](https://doi.org/10.5281/zenodo.22653272) |
 | License | MIT |
 
 The repository develops elementary structural arguments and proof-logged SAT
@@ -21,9 +23,11 @@ exclusions for prime-order automorphisms of a hypothetical graph on 43
 vertices with neither a clique nor an independent set of size 5.
 
 All 14 retained proof branches exist. The complete c6 and c8 certificate
-manifests, both local release-grade replays, and separate mathematical and
-release-integrity reviews pass. Hosted CI, the tagged GitHub release, and DOI
-publication remain pending.
+manifests, local release-grade replays, exact-SHA hosted candidate CI, and
+separate mathematical and release-integrity reviews pass. Publication policy
+requires an annotated protected tag and successful tag-bound verification;
+only the resulting paper, deterministic source archive, and checksums may be
+distributed.
 
 ## Problem And Background
 
@@ -33,8 +37,8 @@ size 5. Write `R(5,5,n)` for the class of finite simple undirected graphs on
 `n` vertices with clique number and independence number at most 4.
 
 The problem's origin is Ramsey's 1930 theorem on unavoidable homogeneous
-sets. For this specific diagonal case, Exoo established the enduring
-43-vertex lower bound in 1989, while later work by McKay, Radziszowski,
+sets. For this specific diagonal case, Exoo established the enduring lower
+bound `R(5,5) >= 43` in 1989, while later work by McKay, Radziszowski,
 Angeltveit, and McKay reduced the upper bound to 46.
 
 A prime-order automorphism with `c` moved cycles of length `p` has cycle type
@@ -354,8 +358,10 @@ The c8 replay covers 557,888,932 compressed bytes and 2,730,397,896
 decompressed bytes; its record SHA-256 is
 `0de9d8c9c66901ed326a13d6b2e54255b19556321f26c8d03e8ec13999611ddf`.
 The inspected PDF is committed, hash-bound, and reproducible byte for byte
-under the recorded source-date epoch. The corrected snapshot passed separate
-mathematical and release-integrity reviews. Hosted CI is still pending.
+with the pinned Tectonic 0.17.0 toolchain and recorded source-date epoch. The
+release snapshot passed separate mathematical and release-integrity reviews
+and exact-SHA hosted candidate CI. Protected tag-bound verification is the
+final publication gate.
 
 The c8 evidence records distinguish original solver output from retained
 proof cores and disclose whether exact artifact hashes came from the original
@@ -368,7 +374,7 @@ retained under `evidence/replay-c6/` and `evidence/replay-c8/`.
 
 The verified release manifest binds the source, documentation, formulas,
 proof packages, retained replay records and logs, audits, and committed report
-to one candidate snapshot.
+to the `v0.1.0` release snapshot.
 
 ## Reproduction
 
@@ -410,10 +416,11 @@ checkout. No GPU is used.
 
 ## Claims
 
-The repository claims the stated elementary exclusions and the two scoped
-certificate-backed order-3 exclusions. The original contribution consists
-of the 12 elementary cases and the certified exclusions of `3^6 1^25` and
-`3^8 1^19` identified above.
+The repository claims the stated 16 elementary exclusions and two scoped
+certificate-backed order-3 exclusions, for 18 demonstrated exclusions in
+total. The original dated public-record contribution consists of the 12
+elementary cases and the certified exclusions of `3^6 1^25` and
+`3^8 1^19`, for a 14-type audited delta.
 
 The novelty statement is based on a targeted search of public literature and
 repositories available through 2026-09-08. It is limited to the audited
@@ -451,17 +458,15 @@ problems.
 
 ## Remaining Work And Future Directions
 
-Before the tagged release, the project still requires:
-
-- hosted replay and candidate CI on the committed release snapshot;
-- tag-bound source and checksum asset verification;
-- tagged GitHub release publication; and
-- DOI archive publication.
+The `v0.1.0` theorem package closes the scoped 14-type gap identified by the
+dated public audit. It does not close the global Ramsey problem or the full
+automorphism classification. Release publication is conditioned on protected
+tag verification and exact-asset archival.
 
 The strongest next mathematical order-3 route is `3^9 1^16`, followed by the
 remaining order-2 and order-5 branches. Longer-term work includes reducing
-the checker trust boundary and reconstructing the elementary and certificate
-arguments in a proof assistant.
+the checker trust boundary, obtaining independent external reproduction, and
+reconstructing the elementary and certificate arguments in a proof assistant.
 
 ## Repository Layout
 
@@ -479,15 +484,18 @@ tools/      independent audits, proof replay, and release tooling
 
 The permanent public repository is
 [`ruturajr-raval/ramsey-number-5-5`](https://github.com/ruturajr-raval/ramsey-number-5-5).
-The repository is public, but no tagged release or DOI has yet been assigned.
+The designated immutable release is
+[`v0.1.0`](https://github.com/ruturajr-raval/ramsey-number-5-5/tree/v0.1.0).
+Its reserved version DOI is
+[`10.5281/zenodo.22653273`](https://doi.org/10.5281/zenodo.22653273), and its
+concept DOI is
+[`10.5281/zenodo.22653272`](https://doi.org/10.5281/zenodo.22653272).
 
-Package status: not yet released.
-
-Citation metadata is prepared in `CITATION.cff`, archive metadata is prepared
-in `.zenodo.json`, technical report source and submission metadata are in
-`paper/`, and the release dossier is in `PUBLICATION.md`. Final citation and
-archive links will be added only after the release gate, hosted CI, and
-archival checks pass.
+The archival payload is defined as the inspected paper, deterministic source
+archive, and `SHA256SUMS` produced by the protected tag workflow. Citation
+metadata is in `CITATION.cff`, archive metadata is in `.zenodo.json`,
+technical report source and submission metadata are in `paper/`, and the
+release dossier is in `PUBLICATION.md`.
 
 ## Authorship
 

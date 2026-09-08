@@ -93,13 +93,21 @@ values; it does not claim contemporaneous hash binding. In both cases the
 retained compact proof is hash-checked, independently verified, and freshly
 replayed against the regenerated CNF.
 
+The `source_proof` object records the historical solver-output artifact at
+the time of core extraction. That larger source file is not retained in the
+release. The packaged file at the same logical proof name is the smaller
+`compacted_proof` with role `retained-core`; its distinct size and hashes are
+checked against the compaction record.
+
 The `3^8 1^19` manifest requires exactly six canonical branches and four
 strengthened `t=4` branches. A partial replay or the older unsplit `t=4`
 cross-check cannot produce a release-grade theorem record.
 
 ## Fresh Proof Replay
 
-Build `drat-trim` from its upstream source at:
+Build
+[`drat-trim`](https://github.com/marijnheule/drat-trim)
+from its upstream source at:
 
 ```text
 2e3b2dc0ecf938addbd779d42877b6ed69d9a985

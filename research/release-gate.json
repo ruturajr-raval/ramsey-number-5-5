@@ -17,7 +17,17 @@
     "clean_environment_replay_passes": true,
     "paper_build_and_inspection_passes": true,
     "independent_package_review_passes": true,
-    "hosted_candidate_ci_passes": false
+    "hosted_candidate_ci_passes": true
+  },
+  "hosted_candidate_ci": {
+    "repository": "ruturajr-raval/ramsey-number-5-5",
+    "workflow": "ci",
+    "run_id": 34188847416,
+    "head_sha": "27ea32178dfe9169f8d787d424013921050a1d3d",
+    "head_branch": "main",
+    "event": "push",
+    "conclusion": "success",
+    "url": "https://github.com/ruturajr-raval/ramsey-number-5-5/actions/runs/34188847416"
   },
   "tag_protection": {
     "repository": "ruturajr-raval/ramsey-number-5-5",
@@ -34,8 +44,8 @@
       "update"
     ]
   },
-  "decision": "hold",
-  "artifact_reproducibility_ready": false,
-  "theorem_announcement_ready": false,
-  "reason": "The expanded mathematical result, branch reductions, formula audits, both certificate manifests, fresh local replays of all fourteen retained proofs, the closed-world manifest, the committed inspected report, the final snapshot audit, refreshed prior-art review, active no-bypass version-tag ruleset, and separate mathematical and release-integrity reviews pass. Release remains on hold until exact-SHA hosted candidate CI and tag-bound final verification pass."
+  "decision": "release",
+  "artifact_reproducibility_ready": true,
+  "theorem_announcement_ready": true,
+  "reason": "The expanded mathematical result, branch reductions, formula audits, both certificate manifests, fresh local replays of all fourteen retained proofs, the closed-world manifest, the inspected report, refreshed prior-art review, exact-SHA hosted candidate CI run 34188847416, active no-bypass version-tag ruleset, and separate mathematical and release-integrity reviews pass. Publication is authorized subject to successful protected tag-bound final verification and exact-asset archival."
 }
