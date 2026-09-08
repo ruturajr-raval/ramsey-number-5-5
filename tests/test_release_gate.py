@@ -331,7 +331,7 @@ class ReleaseGateTests(unittest.TestCase):
                 },
                 "build": {
                     "engine": "Tectonic 0.17.0",
-                    "source_date_epoch": 1788739200,
+                    "source_date_epoch": 1788825600,
                     "inspected_platform": "test-platform",
                     "inspected_engine_archive_sha256": "2" * 64,
                     "inspected_engine_sha256": "3" * 64,

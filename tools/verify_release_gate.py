@@ -656,7 +656,7 @@ def paper_errors(paths: EvidencePaths) -> list[str]:
     else:
         if release_build.get("engine") != "Tectonic 0.17.0":
             errors.append("release PDF engine changed")
-        if release_build.get("source_date_epoch") != 1788739200:
+        if release_build.get("source_date_epoch") != 1788825600:
             errors.append("release PDF source-date epoch changed")
         if not isinstance(release_build.get("inspected_platform"), str):
             errors.append("release PDF platform record is invalid")
