@@ -20,10 +20,10 @@ The repository develops elementary structural arguments and proof-logged SAT
 exclusions for prime-order automorphisms of a hypothetical graph on 43
 vertices with neither a clique nor an independent set of size 5.
 
-All 14 retained proof packages exist. The complete c6 and c8 certificate
+All 14 retained proof branches exist. The complete c6 and c8 certificate
 manifests, both local release-grade replays, and separate mathematical and
-release-integrity reviews pass. Hosted CI, public release, and DOI remain
-pending.
+release-integrity reviews pass. Hosted CI, the tagged GitHub release, and DOI
+publication remain pending.
 
 ## Problem And Background
 
@@ -401,7 +401,12 @@ its own fresh checker from that clean source before checking the ten proofs.
 
 Runtime depends on processor speed and current load. The proof replay is
 CPU-bound and requires sufficient local storage for regenerated formulas and
-streamed proof checking.
+streamed proof checking. The fast test suite normally completes in under one
+minute. A complete 14-proof release replay is expected to take about 45 to 60
+minutes on a modern commodity workstation, based on 2,336.405 aggregate
+checker seconds plus formula generation and audits. Allow at least 8 GB of
+memory and 3 GB of free working storage in addition to the repository
+checkout. No GPU is used.
 
 ## Claims
 
@@ -446,12 +451,12 @@ problems.
 
 ## Remaining Work And Future Directions
 
-Before public release, the project still requires:
+Before the tagged release, the project still requires:
 
 - hosted replay and candidate CI on the committed release snapshot;
 - tag-bound source and checksum asset verification;
-- public repository release; and
-- DOI archival.
+- tagged GitHub release publication; and
+- DOI archive publication.
 
 The strongest next mathematical order-3 route is `3^9 1^16`, followed by the
 remaining order-2 and order-5 branches. Longer-term work includes reducing

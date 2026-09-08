@@ -2,13 +2,13 @@
   "schema_version": 1,
   "source": {
     "path": "paper/main.tex",
-    "sha256": "c46b9eb88cb10a923244f2fd601d8754cabe80bd321e7bf7b5bf2cd7790510b6"
+    "sha256": "7496128de2921188de5b24baca3d66819851536d611dbe4512d1466ef66beeb9"
   },
   "pdf": {
     "path": "paper/ramsey-number-5-5-paper-v0.1.0.pdf",
-    "bytes": 91396,
+    "bytes": 91576,
     "pages": 9,
-    "sha256": "980bbd7b9c1b5857e98d5d0d4b73cf0e1449b15b26852823efc56a79a163f101"
+    "sha256": "a66d0ea98f10cfeaa4ec7715ac9cfd27ede77c4529360094e7f9c36b5da80c33"
   },
   "build": {
     "engine": "Tectonic 0.17.0",
@@ -17,7 +17,7 @@
     "inspected_engine_archive_sha256": "a3f1cac7c5678f01661a92212f58480ae3b0634115d880dbc59e2953ded45667",
     "inspected_engine_sha256": "b52b5a730e2b0b33087304f7720f649603953f270a6b1c88bb031e1ae01f7f9c",
     "latex_log_path": "paper/ramsey-number-5-5-paper-v0.1.0.log",
-    "latex_log_sha256": "b89ab487066f5d66898d9124c37f6b58dcac184ec914c6d2f384b21d5169942a"
+    "latex_log_sha256": "c14fae42781f61415334e334db0b1da0d0851986540e41ed146aabe487221b4c"
   },
   "inspection": {
     "date": "2026-09-08",
